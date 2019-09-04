@@ -54,16 +54,8 @@ function simplebar(){
 function groupbar(){
 
 	var margin = {top: 20, right: 20, bottom: 60, left: 40};
+    var width = 1400, height = 500;
     
-    d3.select(".gridster_ul")
-    .append("li")
-    .attr("class", "card")
-    .attr("data-row", "1")
-    .attr("data-col", "1")
-    .attr("data-sizex", "7")
-    .attr("data-sizey", "4")
-    var width = $('.card').data-sizex(), height = $('.card').height();
-    alert($('.card').width());
 	var x0 = d3.scale.ordinal()
 		.rangeRoundBands([0, width - 150], .1);
 

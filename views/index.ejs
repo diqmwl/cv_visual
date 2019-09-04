@@ -40,12 +40,13 @@
 
 
     <script>
-        var company = null;
+        var company = "B2B_1";
         var category = "driving_type";
         var subclass = null;
         var x_value = "carID"
         var y_value = "count"
         var rangeslider_value = 10;
+        
         function selectcompany(x){
             company = x;
             $('#nav-category-tab').last().trigger('click');
@@ -74,7 +75,7 @@
         function selectsubclass(x){
             subclass = x;
             $.get("/chartdraw", 
-                { company: company, category: category, subclass: subclass, }, 
+                { company: company, category: category, subclass: subclass, x_value: x_value, y_value: y_value }, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) { 
                         $("#text").html(data + "<br>" + status); // 전송받은 데이터와 전송 성공 여부를 보여줌.
@@ -159,13 +160,13 @@
                             <div class="tab-pane fade show active" id="company" role="tabpanel" aria-labelledby="nav-company-tab">
                                 <ul class="pcoded-item pcoded-left-item" id="selectcompany">
                                     <li class="pcoded-hasmenu  pcoded-trigger">
-                                        <a href="javascript:void(0)" onclick="selectcompany('B2B(물산)')">
+                                        <a href="javascript:void(0)" onclick="selectcompany('B2B_1')">
                                             <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                             <span class="pcoded-mtext">B2B(물산)</span>
                                         </a>
                                     </li>
                                     <li class="pcoded-hasmenu">
-                                        <a href="javascript:void(0)" onclick="selectcompany('B2B(기계)')">
+                                        <a href="javascript:void(0)" onclick="selectcompany('B2B_2')">
                                             <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                             <span class="pcoded-mtext">B2B(기계, 건설)</span>
                                         </a>
@@ -294,8 +295,8 @@
                                             <div class="row">
                                                     <!--  sale analytics start -->
                                                     <div class="col-xl-15 col-md-12" ">
-                                                        <div class="card main-body">
-                                                            
+                                                        <div class="card">
+                                                            <script>groupbar()</script>
                                                         </div>
                                                     </div>
                                             </div>
