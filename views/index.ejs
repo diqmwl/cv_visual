@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Adminty - Premium Admin Template by Colorlib </title>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="#">
+    <meta name="keywords" content="Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="#">
+    <!-- Favicon icon -->
+    <link rel="icon" href="..\files\assets\images\favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="..\files\bower_components\bootstrap\css\bootstrap.min.css">
+    <!-- feather Awesome -->
+    <link rel="stylesheet" type="text/css" href="..\files\assets\icon\feather\css\feather.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="..\files\assets\css\style.css">
+    <link rel="stylesheet" type="text/css" href="..\files\assets\css\jquery.mCustomScrollbar.css">
+    <!-- 그리드스터 
+    <link rel="stylesheet" href="..\files\assets\css\gridstack.css" />
+    <script src="..\files\assets\js\gridstack.js"></script>
+    <script src="..\files\assets\js\gridstack.jQueryUI.js"></script>
+    -->
+
+    <!--D3.JS-->
+    <script src="..\files\assets\js\d3_draw.js"></script>
+    <script src="..\files\bower_components\d3\js\d3.min.js"></script>
+    <script type="text/javascript" src="..\files\bower_components\jquery\js\jquery.min.js"></script>
+
+
+    <script>
+        var company = null;
+        var category = "driving_type";
+        var subclass = null;
+        var x_value = "carID"
+        var y_value = "count"
+        var rangeslider_value = 10;
+        function selectcompany(x){
+            company = x;
+            $('#nav-category-tab').last().trigger('click');
+        }
+        
+        function selectcategory(x){
+            category = x;
+            if(category == "driving_type"){
+                $('#driving_type').css("display", "block");   
+                $('#car_manage').css("display", "none");   
+                $('#etc').css("display", "none");   
+            }
+            else if (category == "car_manage"){
+                $('#car_manage').css("display", "block");   
+                $('#driving_type').css("display", "none");   
+                $('#etc').css("display", "none"); 
+            }
+            else{
+                $('#etc').css("display", "block");   
+                $('#driving_type').css("display", "none");   
+                $('#car_manage').css("display", "none");   
+            }
+            $('#nav-subclass-tab').last().trigger('click');
+        }
+
+        function selectsubclass(x){
+            subclass = x;
+            $.get("/chartdraw", 
+                { company: company, category: category, subclass: subclass, }, 
+            // 서버가 필요한 정보를 같이 보냄. 
+                    function(data, status) { 
+                        $("#text").html(data + "<br>" + status); // 전송받은 데이터와 전송 성공 여부를 보여줌.
+                    } 
+            ); 
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Pre-loader start -->
+    <div class="theme-loader">
+        <div class="ball-scale">
+            <div class='contain'>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pre-loader end -->
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+
+            <nav class="navbar header-navbar pcoded-header">
+                <div class="navbar-wrapper">
+
+                    <div class="navbar-logo">
+                        <a class="mobile-menu" id="mobile-collapse" href="#!">
+                            <i class="feather icon-menu"></i>
+                        </a>
+                        <a href="index-1.htm">
+                            <img class="img-fluid" src="..\files\assets\images\logo.png" alt="Theme-Logo">
+                        </a>
+                        <a class="mobile-options">
+                            <i class="feather icon-more-horizontal"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                        <div class="col-xs-12 ">
+                    <nav class="pcoded-navbar">
+                        
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-company-tab" data-toggle="tab" href="#company" role="tab" aria-controls="company" aria-selected="true">Company</a>
+                            <a class="nav-item nav-link" id="nav-category-tab" data-toggle="tab" href="#category" role="tab" aria-controls="category" aria-selected="false">Category</a>
+                            <a class="nav-item nav-link" id="nav-subclass-tab" data-toggle="tab" href="#subclass" role="tab" aria-controls="subclass" aria-selected="false">SubClass</a>
+                          </div>
+
+                          <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="company" role="tabpanel" aria-labelledby="nav-company-tab">
+                                <ul class="pcoded-item pcoded-left-item" id="selectcompany">
+                                    <li class="pcoded-hasmenu  pcoded-trigger">
+                                        <a href="javascript:void(0)" onclick="selectcompany('B2B(물산)')">
+                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-mtext">B2B(물산)</span>
+                                        </a>
+                                    </li>
+                                    <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)" onclick="selectcompany('B2B(기계)')">
+                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-mtext">B2B(기계, 건설)</span>
+                                        </a>
+                                    </li>
+                                    <li class="pcoded-hasmenu" onclick="selectcompany('CarSharring')">
+                                        <a href="javascript:void(0)">
+                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-mtext">CarSharring</span>
+                                        </a>
+                                    </li>
+                                </ul> 
+                            </div>
+                            <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="nav-category-tab">
+                                    <ul class="pcoded-item pcoded-left-item">
+                                            <li class="pcoded-hasmenu  pcoded-trigger">
+                                                <a href="javascript:void(0)" onclick="selectcategory('driving_type')">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">주행형태</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu">
+                                                <a href="javascript:void(0)" onclick="selectcategory('car_manage')">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">차량관리</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu" onclick="selectcategory('etc')">
+                                                <a href="javascript:void(0)">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">기타</span>
+                                                </a>
+                                            </li>
+                                        </ul>   
+                            </div>
+                            <div class="tab-pane fade" id="subclass" role="tabpanel" aria-labelledby="nav-subclass-tab">
+                                    <ul class="pcoded-item pcoded-left-item" id="driving_type">
+                                            <li class="pcoded-hasmenu  pcoded-trigger">
+                                                <a href="javascript:void(0)" onclick="selectsubclass('rapid_accel')">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">급 가속</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu">
+                                                <a href="javascript:void(0)" onclick="selectsubclass('rapid_decel')">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">급 감속</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('quick_start')">
+                                                <a href="javascript:void(0)">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">급 출발</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('quick_stop')">
+                                                    <a href="javascript:void(0)">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">급 정지</span>
+                                                    </a>
+                                            </li>
+                                    </ul>     
+                                    <ul class="pcoded-item pcoded-left-item" id="car_manage">
+                                                <li class="pcoded-hasmenu  pcoded-trigger">
+                                                    <a href="javascript:void(0)" onclick="selectsubclass('fuel_efficiency')">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">연비효율</span>
+                                                    </a>
+                                                </li>
+                                                <li class="pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" onclick="selectsubclass('evg_efficiency')">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">평균연비</span>
+                                                    </a>
+                                                </li>
+                                                <li class="pcoded-hasmenu" onclick="selectsubclass('idling')">
+                                                    <a href="javascript:void(0)">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">공회전</span>
+                                                    </a>
+                                                </li>
+                                                <li class="pcoded-hasmenu" onclick="selectsubclass('fuel_economy')">
+                                                        <a href="javascript:void(0)">
+                                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                            <span class="pcoded-mtext">연비 순위</span>
+                                                        </a>
+                                                </li>
+                                    </ul>     
+                                    <ul class="pcoded-item pcoded-left-item" id="etc">
+                                            <li class="pcoded-hasmenu  pcoded-trigger">
+                                                <a href="javascript:void(0)" onclick="selectsubclass('total_data')">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">총 데이터</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu">
+                                                <a href="javascript:void(0)" onclick="selectsubclass('car_gps')">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">차량 위치</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('car_route')">
+                                                <a href="javascript:void(0)">
+                                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                    <span class="pcoded-mtext">이동경로</span>
+                                                </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('car_stop')">
+                                                    <a href="javascript:void(0)">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">주/정차</span>
+                                                    </a>
+                                            </li>
+                                    </ul>     
+                            </div>
+                            
+                          </div>
+
+                          
+                    </nav>
+                        </div>
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                            <div class="row">
+                                                    <!--  sale analytics start -->
+                                                    <div class="col-xl-15 col-md-12" ">
+                                                        <div class="card main-body">
+                                                            
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div id="styleSelector">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Warning Section Starts -->
+    <!-- Older IE warning message -->
+    <!--[if lt IE 10]>
+<div class="ie-warning">
+    <h1>Warning!!</h1>
+    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+    <div class="iew-container">
+        <ul class="iew-download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="../files/assets/images/browser/chrome.png" alt="Chrome">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="../files/assets/images/browser/firefox.png" alt="Firefox">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="../files/assets/images/browser/opera.png" alt="Opera">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="../files/assets/images/browser/safari.png" alt="Safari">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="../files/assets/images/browser/ie.png" alt="">
+                    <div>IE (9 & above)</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p>Sorry for the inconvenience!</p>
+</div>
+<![endif]-->
+    <!-- Warning Section Ends -->
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="..\files\bower_components\jquery-ui\js\jquery-ui.min.js"></script>
+    <script type="text/javascript" src="..\files\bower_components\popper.js\js\popper.min.js"></script>
+    <script type="text/javascript" src="..\files\bower_components\bootstrap\js\bootstrap.min.js"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="..\files\bower_components\jquery-slimscroll\js\jquery.slimscroll.js"></script>
+    <!-- modernizr js -->
+    <script type="text/javascript" src="..\files\bower_components\modernizr\js\modernizr.js"></script>
+    <!-- Chart js -->
+    <script type="text/javascript" src="..\files\bower_components\chart.js\js\Chart.js"></script>
+    <!-- amchart js -->
+    <script src="..\files\assets\pages\widget\amchart\amcharts.js"></script>
+    <script src="..\files\assets\pages\widget\amchart\serial.js"></script>
+    <script src="..\files\assets\pages\widget\amchart\light.js"></script>
+    <script src="..\files\assets\js\jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="..\files\assets\js\SmoothScroll.js"></script>
+    <script src="..\files\assets\js\pcoded.min.js"></script>
+    <!-- custom js -->
+    <script src="..\files\assets\js\vartical-layout.min.js"></script>
+    <script type="text/javascript" src="..\files\assets\pages\dashboard\custom-dashboard.js"></script>
+    <script type="text/javascript" src="..\files\assets\js\script.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<!-- slider -->
+<link rel="stylesheet" type="text/css" href="..\files\assets\css\ion.rangeSlider.css">
+<script src="..\files\assets\js\ion.rangeSlider.js"></script>
+
+<!--
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+ calender-->
+
+<!--캘린더 2-->
+<link href="..\files\assets\css\lightpick.css" rel="stylesheet" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="..\files\assets\js\lightpick.js"></script>
+<script>
+    var picker = new Lightpick({ field: document.getElementById('datepicker'), singleDate:false });
+    picker.setDateRange(new Date(), moment().add(7,'day'));
+</script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+</body>
+
+</html>
