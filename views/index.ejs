@@ -34,18 +34,22 @@
     -->
 
     <!--D3.JS-->
+    <script src="https://d3js.org/d3.v5.js"></script>
     <script src="..\files\assets\js\d3_draw.js"></script>
-    <script src="..\files\bower_components\d3\js\d3.min.js"></script>
     <script type="text/javascript" src="..\files\bower_components\jquery\js\jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
 
     <script>
         var company = "B2B_1";
         var category = "driving_type";
         var subclass = null;
+        var chartType = "simplebar";
         var x_value = "carID"
         var y_value = "count"
         var rangeslider_value = 10;
+        var calender_start = null;
+        var calender_end = null;
         
         function selectcompany(x){
             company = x;
@@ -75,10 +79,21 @@
         function selectsubclass(x){
             subclass = x;
             $.get("/chartdraw", 
-                { company: company, category: category, subclass: subclass, x_value: x_value, y_value: y_value }, 
+                { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end }, 
             // 서버가 필요한 정보를 같이 보냄. 
-                    function(data, status) { 
-                        $("#text").html(data + "<br>" + status); // 전송받은 데이터와 전송 성공 여부를 보여줌.
+                    function(data, status) {
+                        if( !data[0] ){
+                            alert("데이터가 없습니다")
+                        } else{
+                            if(chartType == 'simplebar'){
+                                simplebar(data);
+                            } else if(chartType == 'groupbar'){
+                                groupbar(data);
+                                alert("그룹바 준비중")
+                            } else if(chartType == 'line'){
+                                linechart(data);
+                            }
+                        }
                     } 
             ); 
         }
@@ -210,7 +225,7 @@
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
-                                                <a href="javascript:void(0)" onclick="selectsubclass('rapid_decel')">
+                                                <a href="javascript:void(0)" onclick="selectsubclass('Decel')">
                                                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                     <span class="pcoded-mtext">급 감속</span>
                                                 </a>
@@ -293,10 +308,81 @@
                                 <div class="page-wrapper">
                                     <div class="page-body">
                                             <div class="row">
+                                                            <!-- task, page, download counter  start -->
+                                                            <div class="col-xl-4 col-md-6">
+                                                                <div class="card bg-c-yellow update-card">
+                                                                    <div class="card-block">
+                                                                        <div class="row align-items-end">
+                                                                            <div class="col-8">
+                                                                                <h4 class="text-white">$30200</h4>
+                                                                                <h6 class="text-white m-b-0">All Earnings</h6>
+                                                                            </div>
+                                                                            <div class="col-4 text-right">
+                                                                                <canvas id="update-chart-1" height="50"></canvas>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        <p class="text-white m-b-0"><i class="feather icon-clock text-white f-14 m-r-10"></i>update : 2:15 am</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6">
+                                                                <div class="card bg-c-green update-card">
+                                                                    <div class="card-block">
+                                                                        <div class="row align-items-end">
+                                                                            <div class="col-8">
+                                                                                <h4 class="text-white">290+</h4>
+                                                                                <h6 class="text-white m-b-0">Page Views</h6>
+                                                                            </div>
+                                                                            <div class="col-4 text-right">
+                                                                                <canvas id="update-chart-2" height="50"></canvas>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        <p class="text-white m-b-0"><i class="feather icon-clock text-white f-14 m-r-10"></i>update : 2:15 am</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6">
+                                                                <div class="card bg-c-lite-green update-card">
+                                                                    <div class="card-block">
+                                                                        <div class="row align-items-end">
+                                                                            <div class="col-8">
+                                                                                <h4 class="text-white">145</h4>
+                                                                                <h6 class="text-white m-b-0">Task Completed</h6>
+                                                                            </div>
+                                                                            <div class="col-4 text-right">
+                                                                                <canvas id="update-chart-3" height="50"></canvas>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        <p class="text-white m-b-0"><i class="feather icon-clock text-white f-14 m-r-10"></i>update : 2:15 am</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                           
+                                                            <!-- task, page, download counter  end -->
                                                     <!--  sale analytics start -->
                                                     <div class="col-xl-15 col-md-12" ">
                                                         <div class="card">
-                                                            <script>groupbar()</script>
+                                                                <div class="card-header">
+                                                                        <h5>Application Sales</h5>
+                                                                        <div class="card-header-right">
+                                                                            <ul class="list-unstyled card-option">
+                                                                                <li><i class="feather icon-maximize full-card"></i></li>
+                                                                                <li><i class="feather icon-minus minimize-card"></i></li>
+                                                                                <li><i class="feather icon-trash-2 close-card"></i></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-block">
+                                                                        <div class="table-responsive svg-container">
+                                                                           
+                                                                        </div>
+                                                                    </div>
                                                         </div>
                                                     </div>
                                             </div>
@@ -394,7 +480,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script src="..\files\assets\js\lightpick.js"></script>
 <script>
-    var picker = new Lightpick({ field: document.getElementById('datepicker'), singleDate:false });
+    var picker = new Lightpick({ field: document.getElementById('datepicker'), singleDate:false, 
+    onSelect: function(start, end){
+        calender_start = String(start.format('YYYY-MM-D')); 
+        calender_end = String(end.format('YYYY-MM-D'));
+    }
+    });
     picker.setDateRange(new Date(), moment().add(7,'day'));
 </script>
 

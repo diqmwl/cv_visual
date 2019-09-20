@@ -174,7 +174,8 @@ function toggleFullScreen() {
 //시각화 차트 수정할때 함수
 $(document).ready(function() {
     $("#chart_type").on('change', function() {
-        alert(this.value);
+        chartType = this.value
+        selectsubclass(subclass)
     });
 })
 
@@ -192,6 +193,10 @@ $(document).ready(function() {
             x_value = "year"
             $("#carID_div").css('display','none');
             $("#calendar_div").css('display','block');
+        } else if(this.value == "none"){
+            x_value = "none"
+            $("#carID_div").css('display','none');
+            $("#calendar_div").css('display','none');
         }
     });
 });
@@ -205,7 +210,7 @@ $(document).ready(function() {
         if(this.value == "avg"){
             y_value = "avg"
         } else if(this.value == "count"){
-            y_value = "count"
+            y_value = "Count"
         } else if(this.value == "max"){
             y_value = "max"
         } else if(this.value == "min"){
@@ -226,7 +231,7 @@ $(document).ready(function() {
         grid: true,
         onFinish: function (data) {
             rangeslider_value = data['from_pretty'];
-            alert(rangeslider_value);
+            selectsubclass(subclass)
         },
     });
 });
@@ -242,8 +247,9 @@ $('#styleSelector').append('' +
         '<li>' +
             '<p class="selector-title main-title st-main-title"><b>시각화 </b>차트 설정</p>' +
             '<select id="chart_type" name="chart_type" class="form-control minimal">' +
-                '<option name="chart_type" value="Bar_chart">막대 차트</option>' +
-                '<option name="chart_type" value="GroupBar_chart">그룹바 차트</option>' +
+                '<option name="chart_type" value="simplebar">막대 차트</option>' +
+                '<option name="chart_type" value="groupbar">그룹바 차트</option>' +
+                '<option name="chart_type" value="line">라인 차트</option>' +
                 '<option name="chart_type" value="donut_chart">도넛 차트</option>' +
             '</select>' +
         '</li>' +
@@ -263,12 +269,12 @@ $('#styleSelector').append('' +
                 '<p>연도별</p>' +
             '</div>' +
             '<div class="process-step">' +
-                '<button type="button" class="btn btn-default btn-circle x_value" value="day"><i class="fa fa-thumbs-up fa-3x"></i></button>' +
-                '<p>일별</p>' +
+                '<button type="button" class="btn btn-default btn-circle x_value" value="none"><i class="fa fa-thumbs-up fa-3x"></i></button>' +
+                '<p>미지원</p>' +
             '</div>' +
              '<div class="process-step">' +
-                '<button type="button" class="btn btn-default btn-circle x_value"><i class="fa fa-eur fa-3x"></i></button>' +
-                '<p>월별</p>' + 
+                '<button type="button" class="btn btn-default btn-circle x_value" value="none"><i class="fa fa-eur fa-3x"></i></button>' +
+                '<p>미지원</p>' + 
             '</div> ' +
         '</div>' +
         '</li>' +

@@ -25452,12 +25452,86 @@ nav > div a.nav-item.nav-link:focus
 .range.range-info input[type="range"] {
     outline-color: rgb(91, 192, 222);
 }
-
+/* 캘린더 */
 .calendar{
-    width: 47%;
-    margin-left: 27%;
+    width: 80%;
+    text-align: center;
 }
 .calendar_div{
-    width:100%;
+    width:80%;
+    margin-left:18%;
+}
+.lightpick{
+    margin-left:-1%;
+}
+
+/*스크롤바 차트*/
+svg {
+    font: 10px sans-serif;
+  }
+  
+  
+  .bar {
+    fill: steelblue;
+    clip-path: url(#clip);
+  }
+    
+  .subBar { 
+    fill: gray;
+    opacity: 0.5;
+  }
+  
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+  
+  .brush .extent {
+    stroke: #fff;
+    fill: steelblue;
+    fill-opacity: .25;
+    shape-rendering: crispEdges;
+  }
+  
+    rect.mover {
+              stroke: red;
+              stroke-opacity: .1;
+              fill: lightSteelBlue;
+              fill-opacity: .5;
+    }
+
+  /*툴팁*/
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* 라인차트*/
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+  
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+/* Style the dots by assigning a fill and stroke */
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+  
+  .focus circle {
+  fill: none;
+  stroke: steelblue;
 }
 /*# sourceMappingURL=style.css.map */
