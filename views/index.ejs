@@ -89,7 +89,6 @@
                                 simplebar(data);
                             } else if(chartType == 'groupbar'){
                                 groupbar(data);
-                                alert("그룹바 준비중")
                             } else if(chartType == 'line'){
                                 linechart(data);
                             }
@@ -219,7 +218,7 @@
                             <div class="tab-pane fade" id="subclass" role="tabpanel" aria-labelledby="nav-subclass-tab">
                                     <ul class="pcoded-item pcoded-left-item" id="driving_type">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
-                                                <a href="javascript:void(0)" onclick="selectsubclass('rapid_accel')">
+                                                <a href="javascript:void(0)" onclick="selectsubclass('Accel')">
                                                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                     <span class="pcoded-mtext">급 가속</span>
                                                 </a>
@@ -230,13 +229,13 @@
                                                     <span class="pcoded-mtext">급 감속</span>
                                                 </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('quick_start')">
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('QuickStart')">
                                                 <a href="javascript:void(0)">
                                                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                     <span class="pcoded-mtext">급 출발</span>
                                                 </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('quick_stop')">
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('SuddenStop')">
                                                     <a href="javascript:void(0)">
                                                         <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                         <span class="pcoded-mtext">급 정지</span>

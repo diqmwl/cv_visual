@@ -210,7 +210,7 @@ function groupbar(data){
     .selectAll("g")
     .data(data)
     .enter().append("g")
-    bars.attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; })
+    .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; })
     .selectAll("rect")
     .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
     .enter().append("rect")
@@ -309,22 +309,16 @@ function groupbar(data){
         xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
         diagram.select(".x.axis").call(xAxis);
         
-
-        var bars = diagram.append("g")
-        .selectAll("g")
-        .data(new_data)
-        .enter().append("g")
-        .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; })
-        .selectAll("rect")
-        .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
+        rects = bars.selectAll("rect")
+        .data(new_data, function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
         .enter().append("rect")
         .attr("x", function (d) { return xscale1(d.key);})
         .attr("y", function (d) { return yscale(d.value); })
         .attr("width", xscale1.bandwidth())
-        .attr("height", function (d) { return height - yscale(d.value); })
+        .attr("height", function (d) { return height - yscale(d[y_value]); })
         .attr("fill", function (d) { return z(d.key); });
 
-        bars.exit().remove();
+        rects.exit().remove();
 
     };
 
