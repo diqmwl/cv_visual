@@ -77,11 +77,13 @@
         }
 
         function selectsubclass(x){
+            $('.loading_div').css("display", "block");
             subclass = x;
             $.get("/chartdraw", 
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end }, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
+                        $('.loading_div').css("display", "none");
                         if( !data[0] ){
                             alert("데이터가 없습니다")
                         } else{
@@ -379,8 +381,8 @@
                                                                     </div>
                                                                     <div class="card-block">
                                                                         <div class="table-responsive svg-container">
-                                                                           
-                                                                        </div>
+                                                                            <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                        </div> 
                                                                     </div>
                                                         </div>
                                                     </div>

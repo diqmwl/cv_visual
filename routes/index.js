@@ -45,11 +45,10 @@ router.get('/chartdraw', async function(req, res, next) {
     var startdate = new Date(calender_start);
     var enddate = new Date(calender_end);
     var datevalue = (enddate.getTime() - startdate.getTime()) / (1000*60*60*24);
-    startdate.setDate((startdate.getDate()-1))
     var data;
     for(var i = 0; i <= datevalue; i++){
         startdate.setDate((startdate.getDate()+1))
-        data = await date_query(startdate.toISOString().slice(0,10));
+        data = await date_query(startdate.toISOString().slice(0,10), subclass, y_value);
     }
     res.send(data);
   }
@@ -58,9 +57,8 @@ router.get('/chartdraw', async function(req, res, next) {
 
 module.exports = router;
 
-async function date_query(val){
-    //console.log(val)
-    await client.query('Decel_CountDetail')
+async function date_query(val,subclass, y_value){
+    await client.query(subclass+'_'+y_value+'Detail')
     .addFunction('count(CAR_ID)')
     .set({format: 'json'})
         .where('CAR_ID', '1365')
@@ -76,7 +74,7 @@ async function date_query(val){
             } else {
                 dataJson.time = "0";
                 dataJson.date = val;
-                dataJson.count = data['Decel_CountDetail'][0]['count']/2;
+                dataJson.count = data[subclass+'_'+y_value+'Detail'][0]['count']/2;
                 calAry.push(dataJson);
             }
         }).catch(console.error);    

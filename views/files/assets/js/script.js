@@ -187,16 +187,16 @@ $(document).ready(function() {
 
         if(this.value == "CAR_ID"){
             x_value = "CAR_ID"
-            $("#calendar_div").css('display','none');
+            $("#calender_div").css('display','none');
             $("#carID_div").css('display','block');
         } else if(this.value == "year"){
             x_value = "year"
             $("#carID_div").css('display','none');
-            $("#calendar_div").css('display','block');
+            $("#calender_div").css('display','block');
         } else if(this.value == "none"){
             x_value = "none"
             $("#carID_div").css('display','none');
-            $("#calendar_div").css('display','none');
+            $("#calender_div").css('display','none');
         }
     });
 });
@@ -290,8 +290,12 @@ $('#styleSelector').append('' +
             '<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />'+
         '</div>'+
 */
-        '<div id=calendar_div class="calendar_div" >'+
-            '<input type="text" id="datepicker" class="calendar" />'+
+        '<div id=calender_div class="calender_div" >'+
+            '<select name="job">'+
+            '<option value="">차량선택</option>'+
+            '</select>'+
+            '<p class="selector-title">날짜선택</p>' +
+            '<input type="text" id="datepicker" class="calender" />'+
         '</div>'+
         '</li>' +
 

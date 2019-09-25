@@ -25453,11 +25453,16 @@ nav > div a.nav-item.nav-link:focus
     outline-color: rgb(91, 192, 222);
 }
 /* 캘린더 */
-.calendar{
+.calender{
     width: 80%;
     text-align: center;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
-.calendar_div{
+.calender_div{
     width:80%;
     margin-left:18%;
 }
