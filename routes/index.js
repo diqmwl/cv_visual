@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 const Influx = require('influxdb-nodejs');
 var client;
+var calAry = new Array();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -15,7 +16,8 @@ router.get('/index', function(req, res, next) {
 });
 
 //차트 그리는 함수
-router.get('/chartdraw', function(req, res, next) {
+router.get('/chartdraw', async function(req, res, next) {
+  calAry = [];
   var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end } = req.query
   console.log(subclass+'_'+y_value+'Detail')
   if(company == 'B2B_1'){
@@ -40,40 +42,43 @@ router.get('/chartdraw', function(req, res, next) {
     }).catch(err => res.send(err));
   } else if(x_value == 'year'){
     //client.query(subclass+'_'+y_value+'Detail')
-    var calAry = new Array();
-    var calInfo = new Object();
     var startdate = new Date(calender_start);
     var enddate = new Date(calender_end);
     var datevalue = (enddate.getTime() - startdate.getTime()) / (1000*60*60*24);
     startdate.setDate((startdate.getDate()-1))
-   
+    var data;
     for(var i = 0; i <= datevalue; i++){
         startdate.setDate((startdate.getDate()+1))
-        console.log(startdate.toISOString().slice(0,10));
-        setTimeout(function(){
-            client.query('Decel_CountDetail')
-            .addFunction('count(CAR_ID)')
-            .set({format: 'json'})
-                .where('CAR_ID', '1365')
-                .where('time', startdate.toISOString().slice(0,10)+' 00:00:00','>=')
-                .where('time', startdate.toISOString().slice(0,10)+' 23:59:59','>=')
-                .then((data)=> {
-                    calInfo.date = startdate.toISOString().slice(0,10);
-                    calInfo.count = data['Decel_CountDetail'][0]['count'];
-                    calAry.push(calInfo);
-                }).catch(console.error);
-        },3000);
-        
+        data = await date_query(startdate.toISOString().slice(0,10));
     }
-
+    res.send(data);
   }
 
 });
 
 module.exports = router;
 
-function chartselect(company, category, subclass, chartType, x_value, y_value){
-   
-
-    return dbdata;
+async function date_query(val){
+    //console.log(val)
+    await client.query('Decel_CountDetail')
+    .addFunction('count(CAR_ID)')
+    .set({format: 'json'})
+        .where('CAR_ID', '1365')
+        .where('time', val+' 00:00:00','>=')
+        .where('time', val+' 23:59:59','<=')
+        .then((data)=> {
+            var dataJson = new Object();
+            if(JSON.stringify(data) == '{}'){
+                dataJson.time = "0";
+                dataJson.date = val;
+                dataJson.count = "0";
+                calAry.push(dataJson);
+            } else {
+                dataJson.time = "0";
+                dataJson.date = val;
+                dataJson.count = data['Decel_CountDetail'][0]['count']/2;
+                calAry.push(dataJson);
+            }
+        }).catch(console.error);    
+    return calAry;
 }
