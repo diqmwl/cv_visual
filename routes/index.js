@@ -55,6 +55,27 @@ router.get('/chartdraw', async function(req, res, next) {
 
 });
 
+router.get('/getcarlist', async function(req, res, next) {
+    var { calender_start, calender_end } = req.query
+    if(company == 'B2B_1'){
+        client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/미정');
+      } else if(company == 'B2B_2') {
+        client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
+      } else if(company == 'CarSharring'){
+        client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/Analysis');
+      }
+
+      client.query(subclass+'_'+y_value+'Detail')
+      .addFunction('CAR_ID')
+      .set({format: 'json'})
+      .where('time', calender_start+' 00:00:00','>=')
+      .where('time', calender_end+' 23:59:59','<=')
+      .then((data)=> {
+        console.log(data);
+      }).catch(err => res.send(err));
+})
+
+
 module.exports = router;
 
 async function date_query(val,subclass, y_value){

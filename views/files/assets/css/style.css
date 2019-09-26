@@ -25454,20 +25454,21 @@ nav > div a.nav-item.nav-link:focus
 }
 /* 캘린더 */
 .calender{
-    width: 80%;
+    width: 100%;
     text-align: center;
-    margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    letter-spacing: 3px;
+    word-spacing: 3px;
 }
 .calender_div{
-    width:80%;
-    margin-left:18%;
+    width:100%;
 }
+/*달력 밑에창*/
 .lightpick{
-    margin-left:-1%;
+    margin-left:2.5%;
 }
 
 /*스크롤바 차트*/
@@ -25539,4 +25540,75 @@ svg {
   fill: none;
   stroke: steelblue;
 }
+
+
+/*드롭다운 버튼*/
+.dropbtn {
+    background-color: #4CAF50;
+    width: 100%;
+    color: white;
+    padding: 7px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    width:100%;
+    position: relative;
+    display: inline-block;
+  }
+
+  
+  .dropdown-content {
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+
+    opacity: 0;
+    transition: all .5s ease;
+    transform: translateY(0);
+  }
+  .dropdown-content-inner {
+    position: relative;
+    display: inline;
+  }
+  .dropdown-left {
+    display: table-cell;
+    width:10%;
+    text-align: center;
+    height: 100%;
+  }
+  .dropdown-right{
+    display: table-cell;
+    width:10%;
+    text-align: center;
+    height: 100%;
+  }
+  .dropdown-center{
+    display: table-cell;
+    padding: 12px 16px;
+    width:80%;
+    text-align: center;
+    height: 100%;
+
+  }
+  .dropdown-content a {
+    display: inline-block;
+    color: black;
+    padding: 5px;
+    text-decoration: none;
+  }
+
+
+  
+  .dropdown-content a:hover {background-color: #f1f1f1;}
+  
+  
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }
 /*# sourceMappingURL=style.css.map */

@@ -236,6 +236,19 @@ $(document).ready(function() {
     });
 });
 
+//드롭다운 이벤트
+$(document).ready(function() {
+    $('.dropbtn').click(function() {
+        if($(".dropdown-content").css('opacity') == 0){
+            $(".dropdown-content").css('opacity','1');
+
+        } else {
+            $(".dropdown-content").css('opacity','0');
+
+        }
+    })
+});
+
 /* --------------------------------------------------------
         Color picker - demo only
         --------------------------------------------------------   */
@@ -284,23 +297,54 @@ $('#styleSelector').append('' +
         '<div id=carID_div>'+
             '<input type="text" class="js-range-slider" name="my_range" value="" />'+
         '</div>'+
+        '</li>' +
+
 //캘린더
 /*
         '<div id=year_div class="process-row">'+
             '<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />'+
         '</div>'+
 */
-        '<div id=calender_div class="calender_div" >'+
-            '<select name="job">'+
-            '<option value="">차량선택</option>'+
-            '</select>'+
+        '<li>' +
             '<p class="selector-title">날짜선택</p>' +
+        '</li>' +
+        '<li>' +
+            '<div id=calender_div class="calender_div" >'+
             '<input type="text" id="datepicker" class="calender" />'+
-        '</div>'+
+            '<p class="selector-title">차량선택</p>' +
+                '<div class="dropdown">'+
+                    '<button class="dropbtn">차량을 선택하세요</button>'+
+                    '<div class="dropdown-content" style="left:0;">'+
+                    '<div class="dropdown-content-inner" style="left:0;">'+
+                    '<div class="dropdown-left">'+
+                    '이전'+
+                    '</div>'+
+
+                    '<div class="dropdown-center">'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '<a href="#">Link 1</a>'+
+                    '</div>'+
+
+                    '<div class="dropdown-right">'+
+                    '다음'+
+                    '</div>'+
+
+                    '</div>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'+
         '</li>' +
 
-
-
+        
         '<li>' +
             '<p class="selector-title">Y축 설정</p>' +
         '</li>' +

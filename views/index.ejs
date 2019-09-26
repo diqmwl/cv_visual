@@ -41,6 +41,7 @@
 
 
     <script>
+        var claender_check = 0;
         var company = "B2B_1";
         var category = "driving_type";
         var subclass = null;
@@ -50,12 +51,12 @@
         var rangeslider_value = 10;
         var calender_start = null;
         var calender_end = null;
-        
+//회사 설정        
         function selectcompany(x){
             company = x;
             $('#nav-category-tab').last().trigger('click');
         }
-        
+//메인 카테고리 설정        
         function selectcategory(x){
             category = x;
             if(category == "driving_type"){
@@ -75,7 +76,7 @@
             }
             $('#nav-subclass-tab').last().trigger('click');
         }
-
+//차트에 필요한 데이터 요청
         function selectsubclass(x){
             $('.loading_div').css("display", "block");
             subclass = x;
@@ -97,6 +98,18 @@
                         }
                     } 
             ); 
+        }
+
+
+//캘린더 클릭시 사용가능한 차 종류 만들어냄
+        function getcarList(start, end){
+            $.get("/getcarlist", 
+            { calender_start: start, calender_end: end }, 
+        // 서버가 필요한 정보를 같이 보냄. 
+                function(data, status) {
+
+                } 
+        ); 
         }
     </script>
 </head>
@@ -483,11 +496,12 @@
 <script>
     var picker = new Lightpick({ field: document.getElementById('datepicker'), singleDate:false, 
     onSelect: function(start, end){
+        claender_check++;
         calender_start = String(start.format('YYYY-MM-D')); 
         calender_end = String(end.format('YYYY-MM-D'));
+        if(claender_check == 2) { getcarList(calender_start, calender_end); claender_check = 0;}
     }
     });
-    picker.setDateRange(new Date(), moment().add(7,'day'));
 </script>
 
 <script>
