@@ -41,13 +41,16 @@
 
 
     <script>
-        var claender_check = 0;
-        var company = "B2B_1";
-        var category = "driving_type";
-        var subclass = null;
-        var chartType = "simplebar";
-        var x_value = "carID"
+        var claender_check = 0; //캘린더 처음 클릭인지 두번째 클릭인지 확인
+        var company = "B2B_1"; //어떤 회사인지
+        var category = "driving_type"; //어떤 카테고리인지
+        var subclass = null;  // 어떤 서브클래스인지
+        var chartType = "simplebar"; //차트 형태선택
+        var x_value = "carID" 
         var y_value = "count"
+        var car_ID = null; //연도별에서 차량 ID선택 할때 사용
+        var car_location = 0; //연도별에서 차량 ID보여주는 현재 페이지
+        var car_mlocation = 0;
         var rangeslider_value = 10;
         var calender_start = null;
         var calender_end = null;
@@ -81,9 +84,10 @@
             $('.loading_div').css("display", "block");
             subclass = x;
             $.get("/chartdraw", 
-                { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end }, 
+                { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
+                        console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
                             alert("데이터가 없습니다")
@@ -99,15 +103,28 @@
                     } 
             ); 
         }
+//차트에 필요한 카 입력
+        function selectCarID(x){
+            car_ID = x;
+            selectsubclass(subclass);
+        }
 
 
 //캘린더 클릭시 사용가능한 차 종류 만들어냄
         function getcarList(start, end){
             $.get("/getcarlist", 
-            { calender_start: start, calender_end: end }, 
-        // 서버가 필요한 정보를 같이 보냄. 
+            { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
+            // 서버가 필요한 정보를 같이 보냄. 
                 function(data, status) {
-
+                    car_mlocation = data.length;
+                    $(".dropdown-center").empty();
+                    if(car_location != data.length){
+                        var maxlength = ((car_location+1)*10)-1;
+                        if(maxlength > data.length) maxlength = data.length;
+                        for(var i = car_location*10; i < maxlength; i++){
+                            $(".dropdown-center").append('<a href="#" onclick="selectCarID('+data[i]+')">'+data[i]+'</a>');
+                        }                    
+                    }
                 } 
         ); 
         }
@@ -256,8 +273,20 @@
                                                         <span class="pcoded-mtext">급 정지</span>
                                                     </a>
                                             </li>
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('Sudden_LeftAndRight')">
+                                                    <a href="javascript:void(0)">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">급 좌우회전</span>
+                                                    </a>
+                                            </li>
                                     </ul>     
                                     <ul class="pcoded-item pcoded-left-item" id="car_manage">
+                                            <li class="pcoded-hasmenu  pcoded-trigger">
+                                                    <a href="javascript:void(0)" onclick="selectsubclass('Distance')">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">이동거리</span>
+                                                    </a>
+                                                </li>
                                                 <li class="pcoded-hasmenu  pcoded-trigger">
                                                     <a href="javascript:void(0)" onclick="selectsubclass('fuel_efficiency')">
                                                         <span class="pcoded-micon"><i class="feather icon-home"></i></span>
@@ -497,9 +526,9 @@
     var picker = new Lightpick({ field: document.getElementById('datepicker'), singleDate:false, 
     onSelect: function(start, end){
         claender_check++;
-        calender_start = String(start.format('YYYY-MM-D')); 
-        calender_end = String(end.format('YYYY-MM-D'));
-        if(claender_check == 2) { getcarList(calender_start, calender_end); claender_check = 0;}
+        calender_start = String(start.format('YYYY-MM-DD')); 
+        calender_end = String(end.format('YYYY-MM-DD'));
+        if(claender_check == 2) { car_location = 0; getcarList(calender_start, calender_end); claender_check = 0;}
     }
     });
 </script>

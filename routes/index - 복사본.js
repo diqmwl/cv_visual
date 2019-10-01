@@ -29,15 +29,15 @@ router.get('/chartdraw', async function(req, res, next) {
   }
   
   if(x_value == 'CAR_ID'){
-    client.query(subclass+'_Year')
+    client.query(subclass+'_'+y_value)
+    .addFunction('count(CAR_ID)')
     .set({format: 'json'})
-    .where('time', '2017-12-31 11:59:59', '<=')
     .then((countdata)=> {
-        var percent = parseInt(countdata[subclass+'_Year'].length * (rangeslider_value/100))
-        client.query(subclass+'_Year')
+        var percent = parseInt(countdata[subclass+'_'+y_value][0]['count'] * (rangeslider_value/100))
+        client.query(subclass+'_'+y_value)
         .set({format: 'json', limit: percent})
         .then((data)=> {
-          res.send(data[subclass+'_Year']);
+          res.send(data[subclass+'_'+y_value]);
         }).catch(console.error);
     }).catch(err => res.send(err));
   } else if(x_value == 'year'){
@@ -46,7 +46,6 @@ router.get('/chartdraw', async function(req, res, next) {
     var enddate = new Date(calender_end);
     var datevalue = (enddate.getTime() - startdate.getTime()) / (1000*60*60*24);
     var data;
-    startdate.setDate((startdate.getDate()-1))
     for(var i = 0; i <= datevalue; i++){
         startdate.setDate((startdate.getDate()+1))
         data = await date_query(startdate.toISOString().slice(0,10), subclass, y_value, car_ID);
@@ -68,14 +67,14 @@ router.get('/getcarlist', async function(req, res, next) {
       }
       var startdate = new Date(calender_start);
       var enddate = new Date(calender_end);
-      client.query(subclass+'_Day')
+      client.query(subclass+'_'+y_value+'Detail')
+      .addFunction('CAR_ID')
       .set({format: 'json'})
       .where('time', startdate.toISOString().slice(0,10)+' 00:00:00','>=')
       .where('time', enddate.toISOString().slice(0,10)+' 23:59:59','<=')
       .then((data)=> {
-          console.log(data)
-        for(var i=0; i<data[subclass+'_Day'].length; i++){
-            carAry.push(data[subclass+'_Day'][i]['CAR_ID']);
+        for(var i=0; i<data[subclass+'_'+y_value+'Detail'].length; i++){
+            carAry.push(data[subclass+'_'+y_value+'Detail'][i]['CAR_ID']);
         }
         res.send(Array.from(new Set(carAry)));
         }).catch(err => res.send(err));
@@ -85,7 +84,8 @@ router.get('/getcarlist', async function(req, res, next) {
 module.exports = router;
 
 async function date_query(val,subclass, y_value, car_ID){
-    await client.query(subclass+'_Day')
+    await client.query(subclass+'_'+y_value+'Detail')
+    .addFunction('count(CAR_ID)')
     .set({format: 'json'})
         .where('CAR_ID', car_ID)
         .where('time', val+' 00:00:00','>=')
@@ -100,7 +100,7 @@ async function date_query(val,subclass, y_value, car_ID){
             } else {
                 dataJson.time = "0";
                 dataJson.date = val;
-                dataJson.count = data[subclass+'_Day'][0]['TOTAL_DISTANCE'];
+                dataJson.count = data[subclass+'_'+y_value+'Detail'][0]['count']/2;
                 calAry.push(dataJson);
             }
         }).catch(console.error);    

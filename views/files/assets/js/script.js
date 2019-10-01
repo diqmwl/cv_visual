@@ -249,6 +249,24 @@ $(document).ready(function() {
     })
 });
 
+//페이징 함수
+function paging(x){
+    if(x == 0){
+        if(car_location >= 1){
+            car_location --;
+            console.log('left');
+            getcarList(calender_start, calender_end);
+        }
+    } else{
+        var max;
+        if(car_mlocation%10) max = parseInt(car_mlocation/10) + 1;
+        else max = parseInt(car_mlocation/10);
+        if(car_location < max-1){
+            car_location ++;
+            getcarList(calender_start, calender_end);
+        }
+    }
+}
 /* --------------------------------------------------------
         Color picker - demo only
         --------------------------------------------------------   */
@@ -314,29 +332,18 @@ $('#styleSelector').append('' +
             '<p class="selector-title">차량선택</p>' +
                 '<div class="dropdown">'+
                     '<button class="dropbtn">차량을 선택하세요</button>'+
-                    '<div class="dropdown-content" style="left:0;">'+
-                    '<div class="dropdown-content-inner" style="left:0;">'+
-                    '<div class="dropdown-left">'+
-                    '이전'+
-                    '</div>'+
+                    '<div class="dropdown-content" >'+
+                    '<div class="dropdown-content-inner" >'+
+
+                    '<div class="dropdown-left"><a href="#" onclick="paging(0)"><img src="Left.png" style="width:15px; height:15px;"/></a></div>'+
 
                     '<div class="dropdown-center">'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
-                    '<a href="#">Link 1</a>'+
+                    '<a href="#">aaaaaa</a>'+
+                    '<a href="#">aaaaaa</a>'+
                     '</div>'+
 
-                    '<div class="dropdown-right">'+
-                    '다음'+
-                    '</div>'+
+                    '<div class="dropdown-right"><a href="#" onclick="paging(1)"><img src="Right.png" style="width:15px; height:15px;"/></a></div>'+
+                    '<div class="dropdown-bottom"><a href="#" style="width: 100%">1</a></div>'+
 
                     '</div>'+
                     '</div>'+

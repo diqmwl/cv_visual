@@ -49,12 +49,14 @@ function simplebar(data){
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       
     diagram.append("g")
-               .attr("class", "x axis")
+            .attr("class", "x axis")
+            .style("font","12px Verdana")
            .attr("transform", "translate(0, " + height + ")")
            .call(xAxis);
       
     diagram.append("g")
            .attr("class", "y axis")
+           .style("font","12px Verdana")
            .call(yAxis);
       
     var bars = diagram.append("g");
@@ -429,11 +431,13 @@ var diagram = svg.append("g")
 diagram.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
+    .style("font","12px Verdana")
     .call(xAxis); // Create an axis component with d3.axisBottom
 
 // 4. Call the y axis in a group tag
 diagram.append("g")
     .attr("class", "y axis")
+    .style("font","12px Verdana")
     .call(yAxis); // Create an axis component with d3.axisLeft
 
 // 9. Append the path, bind the data, and call the line generator 
