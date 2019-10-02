@@ -187,6 +187,7 @@ $(document).ready(function() {
 
         if(this.value == "CAR_ID"){
             x_value = "CAR_ID"
+            $("#carID_img").attr('src','id_white.png')
             $("#calender_div").css('display','none');
             $("#carID_div").css('display','block');
         } else if(this.value == "year"){
@@ -278,7 +279,7 @@ $('#styleSelector').append('' +
         '<li>' +
             '<p class="selector-title main-title st-main-title"><b>시각화 </b>차트 설정</p>' +
             '<select id="chart_type" name="chart_type" class="form-control minimal">' +
-                '<option name="chart_type" value="simplebar">막대 차트</option>' +
+                '<option name="chart_type"  style="background-image:url(barchart.png);" value="simplebar">막대 차트</option>' +
                 '<option name="chart_type" value="groupbar">그룹바 차트</option>' +
                 '<option name="chart_type" value="line">라인 차트</option>' +
                 '<option name="chart_type" value="donut_chart">도넛 차트</option>' +

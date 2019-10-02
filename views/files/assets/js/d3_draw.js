@@ -1,7 +1,7 @@
 function simplebar(data){
     d3.select('.svgclass').remove();
     
-    var margin =  {top: 20, right: 10, bottom: 20, left: 40};
+    var margin =  {top: 20, right: 10, bottom: 20, left: 60};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
     var width = 1300 - margin.left - margin.right;
@@ -365,7 +365,7 @@ function donutbar(){
 function linechart(data){
     d3.select('.svgclass').remove();
 
-    var margin =  {top: 20, right: 10, bottom: 20, left: 40};
+    var margin =  {top: 20, right: 10, bottom: 20, left: 60};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
     var width = 1300 - margin.left - margin.right;

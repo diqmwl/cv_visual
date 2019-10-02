@@ -25521,7 +25521,7 @@ svg {
 /* 라인차트*/
 .line {
     fill: none;
-    stroke: #ffab00;
+    stroke: #FE9365;
     stroke-width: 3;
 }
   
@@ -25532,7 +25532,7 @@ svg {
 
 /* Style the dots by assigning a fill and stroke */
 .dot {
-    fill: #ffab00;
+    fill: #FE9365;
     stroke: #fff;
 }
   
@@ -25551,6 +25551,7 @@ svg {
     font-size: 16px;
     border: none;
     cursor: pointer;
+    border-radius: 2px;
   }
   
   .dropdown {
@@ -25624,4 +25625,6 @@ svg {
   .dropdown:hover .dropbtn {
     background-color: #3e8e41;
   }
+
+  
 /*# sourceMappingURL=style.css.map */

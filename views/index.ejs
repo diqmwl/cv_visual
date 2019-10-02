@@ -87,6 +87,7 @@
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
+                        $('.chart-name').text(subclass)
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
@@ -181,8 +182,8 @@
                         <a class="mobile-menu" id="mobile-collapse" href="#!">
                             <i class="feather icon-menu"></i>
                         </a>
-                        <a href="index-1.htm">
-                            <img class="img-fluid" src="..\files\assets\images\logo.png" alt="Theme-Logo">
+                        <a href="/">
+                            <img class="img-fluid" src="..\files\assets\images\logo2.png" alt="Theme-Logo">
                         </a>
                         <a class="mobile-options">
                             <i class="feather icon-more-horizontal"></i>
@@ -277,6 +278,12 @@
                                                     <a href="javascript:void(0)">
                                                         <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                         <span class="pcoded-mtext">급 좌우회전</span>
+                                                    </a>
+                                            </li>
+                                            <li class="pcoded-hasmenu" onclick="selectsubclass('UTurn')">
+                                                    <a href="javascript:void(0)">
+                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-mtext">급 유턴</span>
                                                     </a>
                                             </li>
                                     </ul>     
@@ -412,7 +419,7 @@
                                                     <div class="col-xl-15 col-md-12" ">
                                                         <div class="card">
                                                                 <div class="card-header">
-                                                                        <h5>Application Sales</h5>
+                                                                        <h5 class="chart-name">Application Sales</h5>
                                                                         <div class="card-header-right">
                                                                             <ul class="list-unstyled card-option">
                                                                                 <li><i class="feather icon-maximize full-card"></i></li>

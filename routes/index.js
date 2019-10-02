@@ -5,6 +5,7 @@ var router = express.Router();
 const Influx = require('influxdb-nodejs');
 var client;
 var calAry = new Array();
+var scname;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,15 +18,16 @@ router.get('/index', function(req, res, next) {
 
 //차트 그리는 함수
 router.get('/chartdraw', async function(req, res, next) {
+    subclassName(subclass);
   calAry = [];
   var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
-  console.log(subclass+'_'+y_value+'Detail')
+  console.log(subclass+'_Year')
   if(company == 'B2B_1'){
     client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/미정');
   } else if(company == 'B2B_2') {
     client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
   } else if(company == 'CarSharring'){
-    client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/Analysis');
+    client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/CS_ANALYSIS');
   }
   
   if(x_value == 'CAR_ID'){
@@ -64,7 +66,7 @@ router.get('/getcarlist', async function(req, res, next) {
       } else if(company == 'B2B_2') {
         client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
       } else if(company == 'CarSharring'){
-        client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/Analysis');
+        client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/CS_ANALYSIS');
       }
       var startdate = new Date(calender_start);
       var enddate = new Date(calender_end);
@@ -85,12 +87,14 @@ router.get('/getcarlist', async function(req, res, next) {
 module.exports = router;
 
 async function date_query(val,subclass, y_value, car_ID){
+    subclassName(subclass);
     await client.query(subclass+'_Day')
     .set({format: 'json'})
         .where('CAR_ID', car_ID)
         .where('time', val+' 00:00:00','>=')
         .where('time', val+' 23:59:59','<=')
         .then((data)=> {
+            console.log(scname)
             var dataJson = new Object();
             if(JSON.stringify(data) == '{}'){
                 dataJson.time = "0";
@@ -100,9 +104,17 @@ async function date_query(val,subclass, y_value, car_ID){
             } else {
                 dataJson.time = "0";
                 dataJson.date = val;
-                dataJson.count = data[subclass+'_Day'][0]['TOTAL_DISTANCE'];
+                dataJson.count = data[subclass+'_Day'][0][scname];
                 calAry.push(dataJson);
             }
         }).catch(console.error);    
     return calAry;
+}
+
+function subclassName(val){
+    if(val == 'Distance'){
+        scname = 'TOTAL_DISTANCE';
+    } else {
+        scname = 'TOTAL_COUNT';
+    }
 }
