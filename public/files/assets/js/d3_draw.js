@@ -14,7 +14,11 @@ function simplebar(data){
     var x_value = Object.keys(data[0])[1]
     var y_value = Object.keys(data[0])[2]
     var isScrollDisplayed = barWidth * data.length > width;
-    
+    if(x_value == 'CAR_ID'){
+        if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
+            y_value = Object.keys(data[0])[7]
+        }
+    }
     console.log(isScrollDisplayed)
       
     var tip = d3.tip()
@@ -196,10 +200,10 @@ function groupbar(data){
     .attr("class", "svgclass")
     .call(responsivefy);
 
-    diagram = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var diagram = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr("class", "gcontainer");
 
     var keys = Object.keys(data[0]).slice(1);
-
     xscale.domain(data.slice(0,numBars).map(function (d) { return d[x_value]; }));
     xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
     yscale.domain([0, d3.max(data, function (d) { return d3.max(keys, function (key) { return parseInt(d[key]); }); })]).nice();
@@ -208,12 +212,13 @@ function groupbar(data){
     var yAxis  = d3.axisLeft(yscale);
 
     
-    var bars = diagram.append("g")
-    .selectAll("g")
-    .data(data)
+    var bar = diagram.selectAll(".gcontainer")
+    .data(data.slice(0,numBars))
     .enter().append("g")
+    .attr("class","bars")
     .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; })
-    .selectAll("rect")
+    
+    bar.selectAll("rect")
     .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
     .enter().append("rect")
     .attr("x", function (d) { return xscale1(d.key);})
@@ -307,20 +312,30 @@ function groupbar(data){
 
         var keys = Object.keys(new_data[0]).slice(1);
 
-        xscale.domain(new_data.map(function (d) { return d[x_value]; }));
+        xscale.domain(new_data.slice(0,numBars).map(function (d) { return d[x_value]; }));
         xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
         diagram.select(".x.axis").call(xAxis);
         
-        rects = bars.selectAll("rect")
-        .data(new_data, function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
-        .enter().append("rect")
-        .attr("x", function (d) { return xscale1(d.key);})
-        .attr("y", function (d) { return yscale(d.value); })
-        .attr("width", xscale1.bandwidth())
-        .attr("height", function (d) { return height - yscale(d[y_value]); })
-        .attr("fill", function (d) { return z(d.key); });
+    var rect = bar.selectAll(".gcontainer")
+    .data(new_data)
+    rect.exit().remove();
 
-        rects.exit().remove();
+    var rect2 = rect.enter().append("g")
+    .attr("class", "bars")
+    .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; })
+    rect2.exit().remove()
+
+    rect2.selectAll("rect")
+    .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
+    rect2.enter().append("rect")
+    rect2.exit().remove()
+
+    rect2.attr("x", function (d) { return xscale1(d.key);})
+    .attr("y", function (d) { return yscale(d.value); })
+    .attr("width", xscale1.bandwidth())
+    .attr("height", function (d) { return height - yscale(d.value); })
+    .attr("fill", function (d) { return z(d.key); });
+    rect2.exit().remove()
 
     };
 
@@ -378,7 +393,10 @@ function linechart(data){
     var x_value = Object.keys(data[0])[1]
     var y_value = Object.keys(data[0])[2]
     var isScrollDisplayed = barWidth * data.length > width;
-
+    if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
+        y_value = Object.keys(data[0])[7]
+    }
+    
     console.log(isScrollDisplayed)
 
 // The number of datapoints
@@ -531,7 +549,6 @@ diagram.selectAll(".dot")
           rects.datum(new_data)
           .attr("class", "line") // Assign a class for styling 
           .attr("d", line); // 11. Calls the line generator 
-        rects.exit().remove();
 
 
     

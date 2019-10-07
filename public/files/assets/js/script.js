@@ -190,14 +190,18 @@ $(document).ready(function() {
             $("#carID_img").attr('src','id_white.png')
             $("#calender_div").css('display','none');
             $("#carID_div").css('display','block');
-        } else if(this.value == "year"){
-            x_value = "year"
+        } else if(this.value == "Year"){
+            x_value = "Year"
             $("#carID_div").css('display','none');
             $("#calender_div").css('display','block');
-        } else if(this.value == "none"){
-            x_value = "none"
+        } else if(this.value == "Month"){
+            x_value = "Month"
             $("#carID_div").css('display','none');
-            $("#calender_div").css('display','none');
+            $("#calender_div").css('display','block');
+        } else if(this.value == "Day"){
+            x_value = "Day"
+            $("#carID_div").css('display','none');
+            $("#calender_div").css('display','block');
         }
     });
 });
@@ -297,16 +301,16 @@ $('#styleSelector').append('' +
                 '<p>Car ID</p>' +
             '</div>' +
             '<div class="process-step">' +
-                '<button type="button" class="btn btn-default btn-circle x_value" value="year"><img src="calendar.png" id="calendar_img" alt="" style="max-width: 60%; height: auto;><i class="fa fa-comments-o fa-3x"></i></button>' +
+                '<button type="button" class="btn btn-default btn-circle x_value" value="Year"><img src="calendar.png" id="calendar_img" alt="" style="max-width: 60%; height: auto;><i class="fa fa-comments-o fa-3x"></i></button>' +
                 '<p>연도별</p>' +
             '</div>' +
             '<div class="process-step">' +
-                '<button type="button" class="btn btn-default btn-circle x_value" value="none"><i class="fa fa-thumbs-up fa-3x"></i></button>' +
-                '<p>미지원</p>' +
+                '<button type="button" class="btn btn-default btn-circle x_value" value="Month"><i class="fa fa-thumbs-up fa-3x"></i></button>' +
+                '<p>월별</p>' +
             '</div>' +
              '<div class="process-step">' +
-                '<button type="button" class="btn btn-default btn-circle x_value" value="none"><i class="fa fa-eur fa-3x"></i></button>' +
-                '<p>미지원</p>' + 
+                '<button type="button" class="btn btn-default btn-circle x_value" value="Day"><i class="fa fa-eur fa-3x"></i></button>' +
+                '<p>일별</p>' + 
             '</div> ' +
         '</div>' +
         '</li>' +
@@ -324,11 +328,12 @@ $('#styleSelector').append('' +
             '<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />'+
         '</div>'+
 */
+
+'<div id=calender_div class="calender_div" >'+
         '<li>' +
             '<p class="selector-title">날짜선택</p>' +
         '</li>' +
         '<li>' +
-            '<div id=calender_div class="calender_div" >'+
             '<input type="text" id="datepicker" class="calender" />'+
             '<p class="selector-title">차량선택</p>' +
                 '<div class="dropdown">'+
@@ -349,8 +354,8 @@ $('#styleSelector').append('' +
                     '</div>'+
                     '</div>'+
                 '</div>'+
-            '</div>'+
         '</li>' +
+        '</div>'+
 
         
         '<li>' +
