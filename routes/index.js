@@ -80,6 +80,54 @@ router.get('/chartdraw', async function(req, res, next) {
 
 });
 
+router.get('/groupdraw', async function(req, res, next) {
+  subclassName(subclass);
+  calAry = [];
+  var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
+  if(company == 'B2B_1'){
+    client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/미정');
+  } else if(company == 'B2B_2') {
+    client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
+  } else if(company == 'CarSharring'){
+    client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/CS_ANALYSIS');
+  }
+  
+    //client.query(subclass+'_'+y_value+'Detail')
+    var startdate = new Date(calender_start);
+    var enddate = new Date(calender_end);
+
+    var datevalue = (enddate.getTime() - startdate.getTime()) / (1000*60*60*24);
+    if(x_value == 'Year'){
+        startdate = new Date(startdate.getFullYear()+'-01-01');
+        enddate = new Date(enddate.getFullYear()+'-12-31');
+        datevalue = enddate.getFullYear() - startdate.getFullYear();
+        startdate.setFullYear((startdate.getFullYear()-1))
+    } else if(x_value == 'Month'){
+        startdate = new Date(startdate.getFullYear()+'-'+(startdate.getMonth()+1)+'-01');
+        enddate = new Date(enddate.getFullYear(),enddate.getMonth()+1,0);
+        datevalue = enddate.getMonth() - startdate.getMonth() ;
+    }else{
+        startdate.setDate((startdate.getDate()-1))
+    }
+    var data;
+    console.log(startdate+'a'+enddate+"b"+datevalue);
+    for(var i = 0; i <= datevalue; i++){
+
+        if(x_value == 'Year'){
+            startdate.setFullYear((startdate.getFullYear()+1))
+            data = await year_query(startdate.toISOString().slice(0,4), enddate.toISOString().slice(0,10), subclass, x_value, car_ID);
+        } else if(x_value == 'Month'){
+            startdate.setMonth((startdate.getMonth()+1))
+            data = await month_query(startdate.toISOString().slice(0,7), enddate.toISOString().slice(0,10), subclass, x_value, car_ID);
+        } else{
+            startdate.setDate((startdate.getDate()+1))
+            data = await date_query(startdate.toISOString().slice(0,10), subclass, x_value, car_ID);
+        }
+    }
+    res.send(data);
+
+});
+
 router.get('/getcarlist', async function(req, res, next) {
     var {company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
     var carAry = new Array();

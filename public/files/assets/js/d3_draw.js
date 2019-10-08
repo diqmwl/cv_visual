@@ -203,7 +203,7 @@ function groupbar(data){
     var diagram = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .attr("class", "gcontainer");
 
-    var keys = Object.keys(data[0]).slice(1);
+    var keys = Object.keys(data[0]).slice(2);
     xscale.domain(data.slice(0,numBars).map(function (d) { return d[x_value]; }));
     xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
     yscale.domain([0, d3.max(data, function (d) { return d3.max(keys, function (key) { return parseInt(d[key]); }); })]).nice();
@@ -241,8 +241,7 @@ function groupbar(data){
     .attr("dy", "0.32em")
     .attr("fill", "#000")
     .attr("font-weight", "bold")
-    .attr("text-anchor", "start")
-    .text("Population");
+    .attr("text-anchor", "start");
 
     var legend = diagram.append("g")
     .attr("font-family", "sans-serif")
@@ -268,14 +267,39 @@ function groupbar(data){
     if (isScrollDisplayed)
     {
 
-      var xOverview = d3.scaleBand()
-                      .domain(data.map(function (d) { return d[x_value]; }))
-                      .rangeRound([0, width], .2)
-                      .padding(0.2);      
+        var xOverview = d3.scaleBand()
+        .rangeRound([0, width])
+        .paddingInner(0.1);
+    
+        var xOverview1 = d3.scaleBand()
+        .padding(0.05);
+
+         xOverview = d3.scaleBand()
+        .domain(data.map(function (d) { return d[x_value]; }))
+        .rangeRound([0, width], .2)
+        .padding(0.2);     
+         xOverview1.domain(keys).rangeRound([0, xOverview.bandwidth()]);
+    
+      
                       
       yOverview = d3.scaleLinear().range([heightOverview, 0]);
       yOverview.domain(yscale.domain());
     
+      var bar = diagram.selectAll(".gcontainer")
+    .data(data)
+    .enter().append("g")
+    .attr("class","subbars")
+    .attr("transform", function (d) { return "translate(" + xOverview(d[x_value]) + ",0)"; })
+    
+    bar.selectAll("rect")
+    .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
+    .enter().append("rect")
+    .classed('subBar', true)
+    .attr("x", function (d) { return xOverview1(d.key);})
+    .attr("y", function (d) { return height + heightOverview + yOverview(d.value); })
+    .attr("width", xOverview1.bandwidth())
+    .attr("height", function (d) { return heightOverview - yOverview(d.value); })
+    .attr("fill", function (d) { return z(d.key); });
       
       var displayed = d3.scaleQuantize()
                   .domain([0, width])
@@ -310,33 +334,31 @@ function groupbar(data){
 
         new_data = data.slice(nf, nf + numBars);
 
-        var keys = Object.keys(new_data[0]).slice(1);
+        var keys = Object.keys(new_data[0]).slice(2);
 
         xscale.domain(new_data.slice(0,numBars).map(function (d) { return d[x_value]; }));
         xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
         diagram.select(".x.axis").call(xAxis);
         
-    var rect = bar.selectAll(".gcontainer")
-    .data(new_data)
-    rect.exit().remove();
+        var rect = svg.selectAll(".bars")
+        .data(new_data);
+        
+        rect.enter().append("g")
+        .attr("class","bars")
+        .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; });
 
-    var rect2 = rect.enter().append("g")
-    .attr("class", "bars")
-    .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; })
-    rect2.exit().remove()
+        var rect2 = rect.selectAll("rect")
+        .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); });
 
-    rect2.selectAll("rect")
-    .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
-    rect2.enter().append("rect")
-    rect2.exit().remove()
+        rect2.enter().append("rect")
+        .attr("width", xscale1.bandwidth());
 
-    rect2.attr("x", function (d) { return xscale1(d.key);})
-    .attr("y", function (d) { return yscale(d.value); })
-    .attr("width", xscale1.bandwidth())
-    .attr("height", function (d) { return height - yscale(d.value); })
-    .attr("fill", function (d) { return z(d.key); });
-    rect2.exit().remove()
-
+        rect2.attr("x", function (d) { return xscale1(d.key);})
+        .attr("y", function (d) { return yscale(d.value); })
+        .attr("height", function (d) { return height - yscale(d.value); })
+        .attr("fill", function (d) { return z(d.key); });
+        
+        rect2.exit().remove();
     };
 
 }

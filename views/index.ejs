@@ -48,7 +48,7 @@
         var chartType = "simplebar"; //차트 형태선택
         var x_value = "carID" 
         var y_value = "count"
-        var car_ID = null; //연도별에서 차량 ID선택 할때 사용
+        var car_ID = new Array();//날짜별 차량 선택할때 확인
         var car_location = 0; //연도별에서 차량 ID보여주는 현재 페이지
         var car_mlocation = 0;
         var rangeslider_value = 10;
@@ -83,7 +83,24 @@
         function selectsubclass(x){
             $('.loading_div').css("display", "block");
             subclass = x;
-            $.get("/chartdraw", 
+            if(chartType == 'groupbar' && x_value != 'CAR_ID'){
+                $.get("/groupdraw", 
+                { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
+            // 서버가 필요한 정보를 같이 보냄. 
+                    function(data, status) {
+                        $('.chart-name').text(subclass)
+                        console.log(data)
+                        $('.loading_div').css("display", "none");
+                        if( !data[0] ){
+                            alert("데이터가 없습니다")
+                        } else{
+                                groupbar(data);
+                        }
+                    } 
+                ); 
+            }
+            else{
+                $.get("/chartdraw", 
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
@@ -102,12 +119,22 @@
                             }
                         }
                     } 
-            ); 
+                ); 
+            }
         }
 //차트에 필요한 카 입력
         function selectCarID(x){
-            car_ID = x;
-            selectsubclass(subclass);
+                        if($("#"+x).is(":checked")){
+                            if(car_ID.length >= 1 && chartType != 'groupbar'){
+                                alert('두개이상의 선택은 그룹 차트만 가능합니다')
+                                $("#"+x).prop("checked", false)
+                            } else{
+                                car_ID.push(x);
+                                selectsubclass(subclass);
+                            }
+                        }else{
+                            car_ID.splice(car_ID.indexOf(x),1); 
+                        }
         }
 
 
@@ -123,7 +150,7 @@
                         var maxlength = ((car_location+1)*10)-1;
                         if(maxlength > data.length) maxlength = data.length;
                         for(var i = car_location*10; i < maxlength; i++){
-                            $(".dropdown-center").append('<a href="#" onclick="selectCarID('+data[i]+')">'+data[i]+'</a>');
+                            $(".dropdown-center").append('<input type="checkbox" id= "'+data[i]+'" onclick="selectCarID('+data[i]+')">'+data[i]+'</a>');
                         }                    
                     }
                 } 
