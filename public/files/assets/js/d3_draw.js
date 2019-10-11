@@ -363,6 +363,206 @@ function groupbar(data){
 
 }
 
+function calgroupbar(data){
+    d3.select('.svgclass').remove();
+
+    var margin =  {top: 20, right: 10, bottom: 20, left: 40};
+    var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
+    var selectorHeight = 40;
+    var width = 1300 - margin.left - margin.right;
+    var height = 400 - margin.top - margin.bottom - selectorHeight;
+    var heightOverview = 80 - marginOverview.top - marginOverview.bottom;
+       
+    var maxLength = data.length
+    var barWidth = maxLength * 4;
+    var numBars = Math.round(width/barWidth);
+    var x_value = Object.keys(data[0])[1]
+    var y_value = Object.keys(data[0])[2]
+    var isScrollDisplayed = barWidth * data.length > width;
+
+    console.log(isScrollDisplayed)
+
+    var xscale = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.1);
+
+    var xscale1 = d3.scaleBand()
+    .padding(0.05);
+
+    var yscale = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+    var z = d3.scaleOrdinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+    var svg = d3.select(".svg-container").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom + selectorHeight)
+    .attr("class", "svgclass")
+    .call(responsivefy);
+
+    var diagram = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr("class", "gcontainer");
+
+    var keys = Object.keys(data[0]).slice(2);
+    xscale.domain(data.slice(0,numBars).map(function (d) { return d[x_value]; }));
+    xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
+    yscale.domain([0, d3.max(data, function (d) { return d3.max(keys, function (key) { return parseInt(d[key]); }); })]).nice();
+
+    var xAxis  = d3.axisBottom(xscale);
+    var yAxis  = d3.axisLeft(yscale);
+
+    
+    var bar = diagram.selectAll(".gcontainer")
+    .data(data.slice(0,numBars))
+    .enter().append("g")
+    .attr("class","bars")
+    .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; })
+    
+    bar.selectAll("rect")
+    .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
+    .enter().append("rect")
+    .attr("x", function (d) { return xscale1(d.key);})
+    .attr("y", function (d) { return yscale(d.value); })
+    .attr("width", xscale1.bandwidth())
+    .attr("height", function (d) { return height - yscale(d.value); })
+    .attr("fill", function (d) { return z(d.key); });
+
+    diagram.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+    diagram.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("x", 2)
+    .attr("y", yscale(yscale.ticks().pop()) + 0.5)
+    .attr("dy", "0.32em")
+    .attr("fill", "#000")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start");
+
+    var legend = diagram.append("g")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 10)
+    .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+    .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+
+    legend.append("rect")
+    .attr("x", width - 19)
+    .attr("width", 19)
+    .attr("height", 19)
+    .attr("fill", z);
+
+    legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 9.5)
+    .attr("dy", "0.32em")
+    .text(function (d) { return d; });
+    
+    if (isScrollDisplayed)
+    {
+
+        var xOverview = d3.scaleBand()
+        .rangeRound([0, width])
+        .paddingInner(0.1);
+    
+        var xOverview1 = d3.scaleBand()
+        .padding(0.05);
+
+         xOverview = d3.scaleBand()
+        .domain(data.map(function (d) { return d[x_value]; }))
+        .rangeRound([0, width], .2)
+        .padding(0.2);     
+         xOverview1.domain(keys).rangeRound([0, xOverview.bandwidth()]);
+    
+      
+                      
+      yOverview = d3.scaleLinear().range([heightOverview, 0]);
+      yOverview.domain(yscale.domain());
+    
+      var bar = diagram.selectAll(".gcontainer")
+    .data(data)
+    .enter().append("g")
+    .attr("class","subbars")
+    .attr("transform", function (d) { return "translate(" + xOverview(d[x_value]) + ",0)"; })
+    
+    bar.selectAll("rect")
+    .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); })
+    .enter().append("rect")
+    .classed('subBar', true)
+    .attr("x", function (d) { return xOverview1(d.key);})
+    .attr("y", function (d) { return height + heightOverview + yOverview(d.value); })
+    .attr("width", xOverview1.bandwidth())
+    .attr("height", function (d) { return heightOverview - yOverview(d.value); })
+    .attr("fill", function (d) { return z(d.key); });
+      
+      var displayed = d3.scaleQuantize()
+                  .domain([0, width])
+                  .range(d3.range(data.length));
+    
+      diagram.append("rect")
+                  .attr("transform", "translate(0, " + (height + margin.bottom) + ")")
+                  .attr("class", "mover")
+                  .attr("x", 0)
+                  .attr("y", 0)
+                  .attr("height", selectorHeight)
+                  .attr("width", Math.round(parseFloat(numBars * width)/data.length))
+                  .attr("pointer-events", "all")
+                  .attr("cursor", "ew-resize")
+                  .call(d3.drag().on("drag", display));
+    }
+    function display () {
+        var x = parseInt(d3.select(this).attr("x")),
+            nx = x + d3.event.dx,
+            w = parseInt(d3.select(this).attr("width")),
+            f, nf, new_data, rects;
+    
+        if ( nx < 0 || nx + w > width ) return;
+    
+        d3.select(this).attr("x", nx);
+    
+        f = displayed(x);
+        nf = displayed(nx);
+    
+        if ( f === nf ) return;
+     //   var keys = Object.keys(data[0]).slice(1);
+
+        new_data = data.slice(nf, nf + numBars);
+
+        var keys = Object.keys(new_data[0]).slice(2);
+
+        xscale.domain(new_data.slice(0,numBars).map(function (d) { return d[x_value]; }));
+        xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
+        diagram.select(".x.axis").call(xAxis);
+        
+        var rect = svg.selectAll(".bars")
+        .data(new_data);
+        
+        rect.enter().append("g")
+        .attr("class","bars")
+        .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; });
+
+        var rect2 = rect.selectAll("rect")
+        .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); });
+
+        rect2.enter().append("rect")
+        .attr("width", xscale1.bandwidth());
+
+        rect2.attr("x", function (d) { return xscale1(d.key);})
+        .attr("y", function (d) { return yscale(d.value); })
+        .attr("height", function (d) { return height - yscale(d.value); })
+        .attr("fill", function (d) { return z(d.key); });
+        
+        rect2.exit().remove();
+    };
+
+}
 function donutbar(){
  var timerInterval = 1500;
 

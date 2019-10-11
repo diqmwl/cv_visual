@@ -110,15 +110,15 @@ router.get('/groupdraw', async function(req, res, next) {
         startdate.setDate((startdate.getDate()-1))
     }
     var data;
-    console.log(startdate+'a'+enddate+"b"+datevalue);
     for(var i = 0; i <= datevalue; i++){
-
+        
         if(x_value == 'Year'){
             startdate.setFullYear((startdate.getFullYear()+1))
-            data = await year_query(startdate.toISOString().slice(0,4), enddate.toISOString().slice(0,10), subclass, x_value, car_ID);
+            data = await groupyear_query(startdate.toISOString().slice(0,4), startdate.toISOString().slice(0,4), subclass, x_value, car_ID);
+
         } else if(x_value == 'Month'){
             startdate.setMonth((startdate.getMonth()+1))
-            data = await month_query(startdate.toISOString().slice(0,7), enddate.toISOString().slice(0,10), subclass, x_value, car_ID);
+            data = await groupmonth_query(startdate.toISOString().slice(0,7), startdate.toISOString().slice(0,7), subclass, x_value, car_ID);
         } else{
             startdate.setDate((startdate.getDate()+1))
             data = await date_query(startdate.toISOString().slice(0,10), subclass, x_value, car_ID);
@@ -239,6 +239,67 @@ async function year_query(startdate, enddate,subclass, x_value, car_ID){
     return calAry;
 }
 
+async function groupyear_query(startdate, enddate,subclass, x_value, car_ID){
+    subclassName(subclass);
+    console.log('한번')
+        await client.query(subclass+'_'+x_value)
+        .set({format: 'json'})
+            .where('CAR_ID', car_ID)
+            .where('time', startdate+'-01-01 00:00:00','>=')
+            .where('time', enddate+'-12-31 23:59:59','<=')
+            .then((data)=> {
+                console.log(data);
+                var dataJson = new Object();
+                if(JSON.stringify(data) == '{}'){
+                    dataJson.time = "0";
+                    dataJson.date = startdate;
+                    for(var i = 0; i < data[subclass+'_'+x_value].length; i++){
+                        dataJson[car_ID[i]] = car_ID[i];
+                    }
+                    dataJson.count = "0";
+                    calAry.push(dataJson);
+                } else {
+                    dataJson.time = "0";
+                    dataJson.date = startdate;
+                    for(var i = 0; i < data[subclass+'_'+x_value].length; i++){
+                        dataJson['C'+car_ID[i]] = data[subclass+'_'+x_value][i][scname];
+                    }
+                    calAry.push(dataJson);
+                }
+            }).catch(console.error);    
+            console.log(calAry)
+    return calAry;
+}
+
+async function groupmonth_query(startdate, enddate,subclass, x_value, car_ID){
+    subclassName(subclass);
+    await client.query(subclass+'_'+x_value)
+    .set({format: 'json'})
+        .where('CAR_ID', car_ID)
+        .where('time', startdate+'-01 00:00:00','>=')
+        .where('time', enddate+'-31 23:59:59','<=')
+        .then((data)=> {
+            console.log(data)
+            var dataJson = new Object();
+            if(JSON.stringify(data) == '{}'){
+                dataJson.time = "0";
+                dataJson.date = startdate;
+                for(var i = 0; i < data[subclass+'_'+x_value].length; i++){
+                    dataJson['C'+car_ID[i]] = data[subclass+'_'+x_value][i][scname];
+                }                
+                calAry.push(dataJson);
+            } else {
+                dataJson.time = "0";
+                dataJson.date = startdate;
+                for(var i = 0; i < data[subclass+'_'+x_value].length; i++){
+                    dataJson['C'+car_ID[i]] = data[subclass+'_'+x_value][i][scname];
+                }
+                calAry.push(dataJson);
+            }
+        }).catch(console.error);  
+        console.log(calAry)  
+    return calAry;
+}
 
 function subclassName(val){
     if(val == 'Distance'){
