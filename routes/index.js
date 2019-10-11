@@ -36,8 +36,12 @@ router.get('/chartdraw', async function(req, res, next) {
     .where('time', '2017-12-31 11:59:59', '<=')
     .then((countdata)=> {
         var percent = parseInt(countdata[subclass+'_Year'].length * (rangeslider_value/100))
+        if(percent == 0){
+            percent = 1;
+        }
         client.query(subclass+'_Year')
         .set({format: 'json', limit: percent})
+        .where('time', '2017-12-31 11:59:59', '<=')
         .then((data)=> {
           res.send(data[subclass+'_Year']);
         }).catch(console.error);

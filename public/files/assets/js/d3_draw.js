@@ -5,7 +5,7 @@ function simplebar(data){
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
     var width = 1300 - margin.left - margin.right;
-    var height = 400 - margin.top - margin.bottom - selectorHeight;
+    var height = 500 - margin.top - margin.bottom - selectorHeight;
     var heightOverview = 80 - marginOverview.top - marginOverview.bottom;
            
     var maxLength = data.length
@@ -56,13 +56,16 @@ function simplebar(data){
             .attr("class", "x axis")
             .style("font","12px Verdana")
            .attr("transform", "translate(0, " + height + ")")
-           .call(xAxis);
-      
+           .call(xAxis);  
+    
     diagram.append("g")
            .attr("class", "y axis")
            .style("font","12px Verdana")
-           .call(yAxis);
-      
+           .call(yAxis)
+           
+           //레전드 두개
+   
+
     var bars = diagram.append("g");
       
     bars.selectAll("rect")
@@ -76,6 +79,11 @@ function simplebar(data){
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
     
+                
+svg.append("text")
+.attr("text-anchor", "middle") // This makes it easy to centre the text as the transform is applied to the anchor.
+.attr("transform", "translate(" + (width / 2) + "," + (height - (padding / 3)) + ")") // Centre below axis.
+.text("Date");
       
     if (isScrollDisplayed)
     {
