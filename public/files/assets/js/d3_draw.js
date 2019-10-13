@@ -1,7 +1,7 @@
 function simplebar(data){
     d3.select('.svgclass').remove();
     
-    var margin =  {top: 20, right: 10, bottom: 20, left: 60};
+    var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
     var width = 1300 - margin.left - margin.right;
@@ -13,10 +13,16 @@ function simplebar(data){
     var numBars = Math.round(width/barWidth);
     var x_value = Object.keys(data[0])[1]
     var y_value = Object.keys(data[0])[2]
+	
+    var keys = Object.keys(data[0]).slice(2);
+	 var z = d3.scaleOrdinal()
+    .range(["#01A9AC", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
     var isScrollDisplayed = barWidth * data.length > width;
     if(x_value == 'CAR_ID'){
         if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
             y_value = Object.keys(data[0])[7]
+			keys = Object.keys(data[0]).slice(7);
         }
     }
     console.log(isScrollDisplayed)
@@ -61,11 +67,54 @@ function simplebar(data){
     diagram.append("g")
            .attr("class", "y axis")
            .style("font","12px Verdana")
-           .call(yAxis)
+           .call(yAxis);
            
-           //레전드 두개
-   
+           //레전드 
+	diagram.append("text")
+	  .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left - 5)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Count"); 
+	
+	var x_labels = diagram.append("text")   
+	  .attr("class", "label")	
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top +30) + ")")
+      .style("text-anchor", "middle")
+      .text(x_value);
+	  
+    if (isScrollDisplayed){
+		x_labels.attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.bottom) + ")")
+	}
+	//범례
+	    var legend = diagram.append("g")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 10)
+    .attr("text-anchor", "end")
+	//.attr("style", "outline: thin solid red;")   //This will do the job
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+    .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
+    legend.append("rect")
+    .attr("x", width - 19)
+    .attr("width", 19)
+    .attr("height", 19)
+    .attr("fill", z);
+
+    legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 9.5)
+    .attr("dy", "0.32em")
+    .text(function (d) { return d; });
+		   
     var bars = diagram.append("g");
       
     bars.selectAll("rect")
@@ -80,10 +129,7 @@ function simplebar(data){
                 .on('mouseout', tip.hide);
     
                 
-svg.append("text")
-.attr("text-anchor", "middle") // This makes it easy to centre the text as the transform is applied to the anchor.
-.attr("transform", "translate(" + (width / 2) + "," + (height - (padding / 3)) + ")") // Centre below axis.
-.text("Date");
+
       
     if (isScrollDisplayed)
     {
@@ -121,7 +167,7 @@ svg.append("text")
                   .range(d3.range(data.length));
     
       diagram.append("rect")
-                  .attr("transform", "translate(0, " + (height + margin.bottom) + ")")
+                  .attr("transform", "translate(0, " + (height + margin.top) + ")")
                   .attr("class", "mover")
                   .attr("x", 0)
                   .attr("y", 0)
@@ -172,12 +218,11 @@ svg.append("text")
 
 function groupbar(data){
     d3.select('.svgclass').remove();
-
-    var margin =  {top: 20, right: 10, bottom: 20, left: 40};
+    var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
     var width = 1300 - margin.left - margin.right;
-    var height = 400 - margin.top - margin.bottom - selectorHeight;
+    var height = 500 - margin.top - margin.bottom - selectorHeight;
     var heightOverview = 80 - marginOverview.top - marginOverview.bottom;
        
     var maxLength = data.length
@@ -242,14 +287,30 @@ function groupbar(data){
 
     diagram.append("g")
     .attr("class", "y axis")
-    .call(yAxis)
-    .append("text")
-    .attr("x", 2)
-    .attr("y", yscale(yscale.ticks().pop()) + 0.5)
-    .attr("dy", "0.32em")
-    .attr("fill", "#000")
-    .attr("font-weight", "bold")
-    .attr("text-anchor", "start");
+    .call(yAxis);
+	
+           //레전드 
+	diagram.append("text")
+		  .attr("class", "label")	
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left - 5)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Count"); 
+	
+	var x_labels = diagram.append("text")    
+	  .attr("class", "label")		
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top +30) + ")")
+      .style("text-anchor", "middle")
+      .text(x_value);
+    if (isScrollDisplayed){
+		x_labels.attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.bottom) + ")")
+	}
 
     var legend = diagram.append("g")
     .attr("font-family", "sans-serif")
@@ -314,7 +375,7 @@ function groupbar(data){
                   .range(d3.range(data.length));
     
       diagram.append("rect")
-                  .attr("transform", "translate(0, " + (height + margin.bottom) + ")")
+                  .attr("transform", "translate(0, " + (height + margin.top) + ")")
                   .attr("class", "mover")
                   .attr("x", 0)
                   .attr("y", 0)
@@ -374,11 +435,11 @@ function groupbar(data){
 function calgroupbar(data){
     d3.select('.svgclass').remove();
 
-    var margin =  {top: 20, right: 10, bottom: 20, left: 40};
+    var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
     var width = 1300 - margin.left - margin.right;
-    var height = 400 - margin.top - margin.bottom - selectorHeight;
+    var height = 500 - margin.top - margin.bottom - selectorHeight;
     var heightOverview = 80 - marginOverview.top - marginOverview.bottom;
        
     var maxLength = data.length
@@ -443,14 +504,30 @@ function calgroupbar(data){
 
     diagram.append("g")
     .attr("class", "y axis")
-    .call(yAxis)
-    .append("text")
-    .attr("x", 2)
-    .attr("y", yscale(yscale.ticks().pop()) + 0.5)
-    .attr("dy", "0.32em")
-    .attr("fill", "#000")
-    .attr("font-weight", "bold")
-    .attr("text-anchor", "start");
+    .call(yAxis);
+	
+	           //레전드 
+	diagram.append("text")
+		  .attr("class", "label")		
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left - 5)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Count"); 
+	
+	var x_labels = diagram.append("text")  
+	  .attr("class", "label")			
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top +30) + ")")
+      .style("text-anchor", "middle")
+      .text(x_value);
+    if (isScrollDisplayed){
+		x_labels.attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.bottom) + ")")
+	}
 
     var legend = diagram.append("g")
     .attr("font-family", "sans-serif")
@@ -515,7 +592,7 @@ function calgroupbar(data){
                   .range(d3.range(data.length));
     
       diagram.append("rect")
-                  .attr("transform", "translate(0, " + (height + margin.bottom) + ")")
+                  .attr("transform", "translate(0, " + (height + margin.top) + ")")
                   .attr("class", "mover")
                   .attr("x", 0)
                   .attr("y", 0)
@@ -610,11 +687,11 @@ function donutbar(){
 function linechart(data){
     d3.select('.svgclass').remove();
 
-    var margin =  {top: 20, right: 10, bottom: 20, left: 60};
+    var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
     var width = 1300 - margin.left - margin.right;
-    var height = 400 - margin.top - margin.bottom - selectorHeight;
+    var height = 500 - margin.top - margin.bottom - selectorHeight;
     var heightOverview = 80 - marginOverview.top - marginOverview.bottom;
        
     var maxLength = data.length
@@ -623,8 +700,14 @@ function linechart(data){
     var x_value = Object.keys(data[0])[1]
     var y_value = Object.keys(data[0])[2]
     var isScrollDisplayed = barWidth * data.length > width;
+	
+	 var keys = Object.keys(data[0]).slice(2);
+	 var z = d3.scaleOrdinal()
+    .range(["#FE9365", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+	
     if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
         y_value = Object.keys(data[0])[7]
+					keys = Object.keys(data[0]).slice(7);
     }
     
     console.log(isScrollDisplayed)
@@ -686,7 +769,52 @@ diagram.append("g")
 diagram.append("g")
     .attr("class", "y axis")
     .style("font","12px Verdana")
-    .call(yAxis); // Create an axis component with d3.axisLeft
+    .call(yAxis);
+		           //레전드 
+	diagram.append("text")
+		  .attr("class", "label")		
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left - 5)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Count"); 
+	
+	//범례
+	    var legend = diagram.append("g")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 10)
+    .attr("text-anchor", "end")
+	//.attr("style", "outline: thin solid red;")   //This will do the job
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+    .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+
+    legend.append("rect")
+    .attr("x", width - 19)
+    .attr("width", 19)
+    .attr("height", 19)
+    .attr("fill", z);
+
+    legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 9.5)
+    .attr("dy", "0.32em")
+    .text(function (d) { return d; });
+	
+	var x_labels = diagram.append("text")  
+	  .attr("class", "label")			
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top +30) + ")")
+      .style("text-anchor", "middle")
+      .text(x_value);
+    if (isScrollDisplayed){
+		x_labels.attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.bottom) + ")")
+	}
 
 // 9. Append the path, bind the data, and call the line generator 
 diagram.append("path")
@@ -735,7 +863,7 @@ diagram.selectAll(".dot")
                   .range(d3.range(data.length));
     
       diagram.append("rect")
-                  .attr("transform", "translate(0, " + (height + margin.bottom) + ")")
+                  .attr("transform", "translate(0, " + (height + margin.top) + ")")
                   .attr("class", "mover")
                   .attr("background-color","black")
                   .attr("x", 0)

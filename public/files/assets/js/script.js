@@ -233,6 +233,7 @@ $(document).ready(function() {
 //slider 함수
 $(document).ready(function() {
     $(".js-range-slider").ionRangeSlider({
+		from: 60,
         grid: true,
         onFinish: function (data) {
             rangeslider_value = data['from_pretty'];
@@ -349,7 +350,6 @@ $('#styleSelector').append('' +
                     '</div>'+
 
                     '<div class="dropdown-right"><a href="#" onclick="paging(1)"><img src="Right.png" style="width:15px; height:15px;"/></a></div>'+
-                    '<div class="dropdown-bottom"><a href="#" style="width: 100%">1</a></div>'+
 
                     '</div>'+
                     '</div>'+
