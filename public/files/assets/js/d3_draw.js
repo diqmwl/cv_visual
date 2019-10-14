@@ -23,6 +23,9 @@ function simplebar(data){
         if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
             y_value = Object.keys(data[0])[7]
 			keys = Object.keys(data[0]).slice(7);
+        } else if(subclass == 'FuelEfficiency'){
+            y_value = Object.keys(data[0])[4]
+			keys = Object.keys(data[0]).slice(4);
         }
     }
     console.log(isScrollDisplayed)
@@ -70,7 +73,26 @@ function simplebar(data){
            .call(yAxis);
            
            //레전드 
-	diagram.append("text")
+    if(subclass == 'Distance'){
+        diagram.append("text")
+	  .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left - 5)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Meter"); 
+    } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
+        diagram.append("text")
+        .attr("class", "label")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left - 5)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Amount");   
+    }else {
+        diagram.append("text")
 	  .attr("class", "label")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - margin.left - 5)
@@ -78,6 +100,8 @@ function simplebar(data){
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("Count"); 
+    }
+	
 	
 	var x_labels = diagram.append("text")   
 	  .attr("class", "label")	
@@ -290,14 +314,34 @@ function groupbar(data){
     .call(yAxis);
 	
            //레전드 
-	diagram.append("text")
-		  .attr("class", "label")	
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left - 5)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Count"); 
+           if(subclass == 'Distance'){
+            diagram.append("text")
+          .attr("class", "label")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left - 5)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .text("Meter"); 
+        } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
+            diagram.append("text")
+            .attr("class", "label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left - 5)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Amount");   
+        }else {
+            diagram.append("text")
+          .attr("class", "label")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left - 5)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .text("Count"); 
+        }
 	
 	var x_labels = diagram.append("text")    
 	  .attr("class", "label")		
@@ -507,14 +551,34 @@ function calgroupbar(data){
     .call(yAxis);
 	
 	           //레전드 
-	diagram.append("text")
-		  .attr("class", "label")		
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left - 5)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Count"); 
+               if(subclass == 'Distance'){
+                diagram.append("text")
+              .attr("class", "label")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 0 - margin.left - 5)
+              .attr("x",0 - (height / 2))
+              .attr("dy", "1em")
+              .style("text-anchor", "middle")
+              .text("Meter"); 
+            } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
+                diagram.append("text")
+                .attr("class", "label")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left - 5)
+                .attr("x",0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Amount");   
+            }else {
+                diagram.append("text")
+              .attr("class", "label")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 0 - margin.left - 5)
+              .attr("x",0 - (height / 2))
+              .attr("dy", "1em")
+              .style("text-anchor", "middle")
+              .text("Count"); 
+            }
 	
 	var x_labels = diagram.append("text")  
 	  .attr("class", "label")			
@@ -708,6 +772,9 @@ function linechart(data){
     if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
         y_value = Object.keys(data[0])[7]
 					keys = Object.keys(data[0]).slice(7);
+    } else if(subclass == 'FuelEfficiency'){
+        y_value = Object.keys(data[0])[4]
+        keys = Object.keys(data[0]).slice(4);
     }
     
     console.log(isScrollDisplayed)
@@ -771,14 +838,34 @@ diagram.append("g")
     .style("font","12px Verdana")
     .call(yAxis);
 		           //레전드 
-	diagram.append("text")
-		  .attr("class", "label")		
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left - 5)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Count"); 
+                   if(subclass == 'Distance'){
+                    diagram.append("text")
+                  .attr("class", "label")
+                  .attr("transform", "rotate(-90)")
+                  .attr("y", 0 - margin.left - 5)
+                  .attr("x",0 - (height / 2))
+                  .attr("dy", "1em")
+                  .style("text-anchor", "middle")
+                  .text("Meter"); 
+                } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
+                    diagram.append("text")
+                    .attr("class", "label")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 0 - margin.left - 5)
+                    .attr("x",0 - (height / 2))
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("Amount");   
+                }else {
+                    diagram.append("text")
+                  .attr("class", "label")
+                  .attr("transform", "rotate(-90)")
+                  .attr("y", 0 - margin.left - 5)
+                  .attr("x",0 - (height / 2))
+                  .attr("dy", "1em")
+                  .style("text-anchor", "middle")
+                  .text("Count"); 
+                }
 	
 	//범례
 	    var legend = diagram.append("g")

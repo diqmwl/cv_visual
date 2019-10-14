@@ -25,7 +25,7 @@ router.get('/chartdraw', async function(req, res, next) {
   if(company == 'B2B_1'){
     client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/미정');
   } else if(company == 'B2B_2') {
-    client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
+    client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_ANALYSIS');
   } else if(company == 'CarSharring'){
     client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/CS_ANALYSIS');
   }
@@ -33,7 +33,7 @@ router.get('/chartdraw', async function(req, res, next) {
   if(x_value == 'CAR_ID'){
     client.query(subclass+'_Year')
     .set({format: 'json'})
-    .where('time', '2017-12-31 11:59:59', '<=')
+    .where('time', '2018-01-01 00:00:00', '>=')
     .then((countdata)=> {
         var percent = parseInt(countdata[subclass+'_Year'].length * (rangeslider_value/100))
         if(percent == 0){
@@ -41,7 +41,7 @@ router.get('/chartdraw', async function(req, res, next) {
         }
         client.query(subclass+'_Year')
         .set({format: 'json', limit: percent})
-        .where('time', '2017-12-31 11:59:59', '<=')
+        .where('time', '2018-01-01 00:00:00', '>=')
         .then((data)=> {
           res.send(data[subclass+'_Year']);
         }).catch(console.error);

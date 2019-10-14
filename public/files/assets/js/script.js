@@ -273,6 +273,7 @@ function paging(x){
         }
     }
 }
+
 /* --------------------------------------------------------
         Color picker - demo only
         --------------------------------------------------------   */
@@ -336,6 +337,9 @@ $('#styleSelector').append('' +
         '</li>' +
         '<li>' +
             '<input type="text" id="datepicker" class="calender" />'+
+
+            
+
             '<p class="selector-title">차량선택</p>' +
                 '<div class="dropdown">'+
                     '<button class="dropbtn">차량을 선택하세요</button>'+
@@ -345,8 +349,7 @@ $('#styleSelector').append('' +
                     '<div class="dropdown-left"><a href="#" onclick="paging(0)"><img src="Left.png" style="width:15px; height:15px;"/></a></div>'+
 
                     '<div class="dropdown-center">'+
-                    '<a href="#">aaaaaa</a>'+
-                    '<a href="#">aaaaaa</a>'+
+                    '<a href="#">데이터가 없습니다</a>'+
                     '</div>'+
 
                     '<div class="dropdown-right"><a href="#" onclick="paging(1)"><img src="Right.png" style="width:15px; height:15px;"/></a></div>'+
