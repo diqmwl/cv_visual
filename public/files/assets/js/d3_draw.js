@@ -13,7 +13,7 @@ function simplebar(data){
     var numBars = Math.round(width/barWidth);
     var x_value = Object.keys(data[0])[1]
     var y_value = Object.keys(data[0])[2]
-	
+
     var keys = Object.keys(data[0]).slice(2);
 	 var z = d3.scaleOrdinal()
     .range(["#01A9AC", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
@@ -77,29 +77,29 @@ function simplebar(data){
         diagram.append("text")
 	  .attr("class", "label")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left - 5)
+      .attr("y", 0 - margin.left - 3)
       .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Meter"); 
+      .text("미터"); 
     } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
         diagram.append("text")
         .attr("class", "label")
         .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left - 5)
+        .attr("y", 0 - margin.left - 3)
         .attr("x",0 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text("Amount");   
+        .text("양");   
     }else {
         diagram.append("text")
 	  .attr("class", "label")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left - 5)
+      .attr("y", 0 - margin.left - 3)
       .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Count"); 
+      .text("횟수"); 
     }
 	
 	
@@ -318,29 +318,29 @@ function groupbar(data){
             diagram.append("text")
           .attr("class", "label")
           .attr("transform", "rotate(-90)")
-          .attr("y", 0 - margin.left - 5)
+          .attr("y", 0 - margin.left - 3)
           .attr("x",0 - (height / 2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("Meter"); 
+          .text("미터"); 
         } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
             diagram.append("text")
             .attr("class", "label")
             .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left - 5)
+            .attr("y", 0 - margin.left - 3)
             .attr("x",0 - (height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .text("Amount");   
+            .text("양");   
         }else {
             diagram.append("text")
           .attr("class", "label")
           .attr("transform", "rotate(-90)")
-          .attr("y", 0 - margin.left - 5)
+          .attr("y", 0 - margin.left - 3)
           .attr("x",0 - (height / 2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("Count"); 
+          .text("횟수"); 
         }
 	
 	var x_labels = diagram.append("text")    
@@ -555,29 +555,29 @@ function calgroupbar(data){
                 diagram.append("text")
               .attr("class", "label")
               .attr("transform", "rotate(-90)")
-              .attr("y", 0 - margin.left - 5)
+              .attr("y", 0 - margin.left - 3)
               .attr("x",0 - (height / 2))
               .attr("dy", "1em")
               .style("text-anchor", "middle")
-              .text("Meter"); 
+              .text("미터"); 
             } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
                 diagram.append("text")
                 .attr("class", "label")
                 .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left - 5)
+                .attr("y", 0 - margin.left - 3)
                 .attr("x",0 - (height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
-                .text("Amount");   
+                .text("양");   
             }else {
                 diagram.append("text")
               .attr("class", "label")
               .attr("transform", "rotate(-90)")
-              .attr("y", 0 - margin.left - 5)
+              .attr("y", 0 - margin.left - 3)
               .attr("x",0 - (height / 2))
               .attr("dy", "1em")
               .style("text-anchor", "middle")
-              .text("Count"); 
+              .text("횟수"); 
             }
 	
 	var x_labels = diagram.append("text")  
@@ -842,29 +842,29 @@ diagram.append("g")
                     diagram.append("text")
                   .attr("class", "label")
                   .attr("transform", "rotate(-90)")
-                  .attr("y", 0 - margin.left - 5)
+                  .attr("y", 0 - margin.left - 3)
                   .attr("x",0 - (height / 2))
                   .attr("dy", "1em")
                   .style("text-anchor", "middle")
-                  .text("Meter"); 
+                  .text("미터"); 
                 } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
                     diagram.append("text")
                     .attr("class", "label")
                     .attr("transform", "rotate(-90)")
-                    .attr("y", 0 - margin.left - 5)
+                    .attr("y", 0 - margin.left - 3)
                     .attr("x",0 - (height / 2))
                     .attr("dy", "1em")
                     .style("text-anchor", "middle")
-                    .text("Amount");   
+                    .text("양");   
                 }else {
                     diagram.append("text")
                   .attr("class", "label")
                   .attr("transform", "rotate(-90)")
-                  .attr("y", 0 - margin.left - 5)
+                  .attr("y", 0 - margin.left - 3)
                   .attr("x",0 - (height / 2))
                   .attr("dy", "1em")
                   .style("text-anchor", "middle")
-                  .text("Count"); 
+                  .text("횟수"); 
                 }
 	
 	//범례

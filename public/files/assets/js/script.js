@@ -194,14 +194,24 @@ $(document).ready(function() {
             x_value = "Year"
             $("#carID_div").css('display','none');
             $("#calender_div").css('display','block');
+            $("#yearpicker").css('display','block');
+            $("#monthpicker").css('display','none');
+            $("#datepicker").css('display','none');
+
         } else if(this.value == "Month"){
             x_value = "Month"
             $("#carID_div").css('display','none');
             $("#calender_div").css('display','block');
+            $("#yearpicker").css('display','none');
+            $("#monthpicker").css('display','block');
+            $("#datepicker").css('display','none');
         } else if(this.value == "Day"){
             x_value = "Day"
             $("#carID_div").css('display','none');
             $("#calender_div").css('display','block');
+            $("#yearpicker").css('display','none');
+            $("#monthpicker").css('display','none');
+            $("#datepicker").css('display','block');
         }
     });
 });
@@ -336,11 +346,12 @@ $('#styleSelector').append('' +
             '<p class="selector-title">날짜선택</p>' +
         '</li>' +
         '<li>' +
-            '<input type="text" id="datepicker" class="calender" />'+
+        '<input type="text" id="yearpicker" class=" calender datepicker-here" data-range="true" data-language="en" data-multiple-dates-separator=" - " data-min-view="years" data-view="years" data-date-format="yyyy-mm-dd" />'+
+        '<input type="text" id="monthpicker" class=" calender datepicker-here" data-range="true" data-language="en" data-multiple-dates-separator=" - " data-min-view="months" data-view="months" data-date-format="yyyy-mm-dd" />'+
+        '<input type="text" id="datepicker" class=" calender datepicker-here" data-range="true" data-language="en" data-multiple-dates-separator=" - " data-date-format="yyyy-mm-dd" />'+
 
-            
 
-            '<p class="selector-title">차량선택</p>' +
+        '<p class="selector-title">차량선택</p>' +
                 '<div class="dropdown">'+
                     '<button class="dropbtn">차량을 선택하세요</button>'+
                     '<div class="dropdown-content" >'+

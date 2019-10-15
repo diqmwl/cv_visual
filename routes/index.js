@@ -50,7 +50,7 @@ router.get('/chartdraw', async function(req, res, next) {
     //client.query(subclass+'_'+y_value+'Detail')
     var startdate = new Date(calender_start);
     var enddate = new Date(calender_end);
-
+    var startenddate = new Date(calender_start);
     var datevalue = (enddate.getTime() - startdate.getTime()) / (1000*60*60*24);
     if(x_value == 'Year'){
         startdate = new Date(startdate.getFullYear()+'-01-01');
@@ -59,21 +59,24 @@ router.get('/chartdraw', async function(req, res, next) {
         startdate.setFullYear((startdate.getFullYear()-1))
     } else if(x_value == 'Month'){
         startdate = new Date(startdate.getFullYear()+'-'+(startdate.getMonth()+1)+'-01');
+        startenddate = new Date(startdate.getFullYear(),startdate.getMonth()+1,0);
         enddate = new Date(enddate.getFullYear(),enddate.getMonth()+1,0);
         datevalue = enddate.getMonth() - startdate.getMonth() ;
     }else{
         startdate.setDate((startdate.getDate()-1))
     }
     var data;
-    console.log(startdate+'a'+enddate+"b"+datevalue);
+    console.log(startdate + startenddate);
+
     for(var i = 0; i <= datevalue; i++){
 
         if(x_value == 'Year'){
             startdate.setFullYear((startdate.getFullYear()+1))
-            data = await year_query(startdate.toISOString().slice(0,4), enddate.toISOString().slice(0,10), subclass, x_value, car_ID);
+            data = await year_query(startdate.toISOString().slice(0,4), startdate.toISOString().slice(0,4), subclass, x_value, car_ID);
         } else if(x_value == 'Month'){
             startdate.setMonth((startdate.getMonth()+1))
-            data = await month_query(startdate.toISOString().slice(0,7), enddate.toISOString().slice(0,10), subclass, x_value, car_ID);
+            startenddate.setMonth((startdate.getMonth()+1))
+            data = await month_query(startdate.toISOString().slice(0,7), startenddate.toISOString().slice(0,10), subclass, x_value, car_ID);
         } else{
             startdate.setDate((startdate.getDate()+1))
             data = await date_query(startdate.toISOString().slice(0,10), subclass, x_value, car_ID);
@@ -195,11 +198,13 @@ async function date_query(val,subclass, x_value, car_ID){
 
 async function month_query(startdate, enddate,subclass, x_value, car_ID){
     subclassName(subclass);
+    console.log(startdate + enddate)
+
     await client.query(subclass+'_'+x_value)
     .set({format: 'json'})
         .where('CAR_ID', car_ID)
         .where('time', startdate+'-01 00:00:00','>=')
-        .where('time', enddate+' 23:59:59','<=')
+        .where('time', enddate+' 00:00:00','<=')
         .then((data)=> {
             console.log(data)
             var dataJson = new Object();
@@ -224,7 +229,7 @@ async function year_query(startdate, enddate,subclass, x_value, car_ID){
     .set({format: 'json'})
         .where('CAR_ID', car_ID)
         .where('time', startdate+'-01-01 00:00:00','>=')
-        .where('time', enddate+' 23:59:59','<=')
+        .where('time', enddate+'-12-31 23:59:59','<=')
         .then((data)=> {
             console.log(data)
             var dataJson = new Object();
