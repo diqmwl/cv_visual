@@ -459,7 +459,7 @@ function groupbar(data){
         rect.enter().append("g")
         .attr("class","bars")
         .attr("transform", function (d) { return "translate(" + xscale(d[x_value]) + ",0)"; });
-
+      
         var rect2 = rect.selectAll("rect")
         .data(function (d) { return keys.map(function (key) { return { key: key, value: d[key] }; }); });
 
