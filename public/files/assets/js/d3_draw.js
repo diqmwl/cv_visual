@@ -48,7 +48,7 @@ function simplebar(data){
                   .range([height, 0]);
                   
     var xAxis  = d3.axisBottom(xscale);
-    var yAxis  = d3.axisLeft(yscale);
+    var yAxis  = d3.axisLeft(yscale).ticks(8);
     
 
     var svg = d3.select(".svg-container").append("svg")
@@ -57,6 +57,7 @@ function simplebar(data){
                 .attr("class", "svgclass")
                 .call(tip)
                 .call(responsivefy);
+                
 
     var diagram = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -286,7 +287,7 @@ function groupbar(data){
     yscale.domain([0, d3.max(data, function (d) { return d3.max(keys, function (key) { return parseInt(d[key]); }); })]).nice();
 
     var xAxis  = d3.axisBottom(xscale);
-    var yAxis  = d3.axisLeft(yscale);
+    var yAxis  = d3.axisLeft(yscale).ticks(8);
 
     
     var bar = diagram.selectAll(".gcontainer")
@@ -521,9 +522,10 @@ function calgroupbar(data){
     xscale.domain(data.slice(0,numBars).map(function (d) { return d[x_value]; }));
     xscale1.domain(keys).rangeRound([0, xscale.bandwidth()]);
     yscale.domain([0, d3.max(data, function (d) { return d3.max(keys, function (key) { return parseInt(d[key]); }); })]).nice();
+    
 
     var xAxis  = d3.axisBottom(xscale);
-    var yAxis  = d3.axisLeft(yscale);
+    var yAxis  = d3.axisLeft(yscale).ticks(8);
 
     
     var bar = diagram.selectAll(".gcontainer")
@@ -793,7 +795,7 @@ var yscale = d3.scaleLinear()
     .range([height, 0]); // output 
     
     var xAxis  = d3.axisBottom(xscale);
-    var yAxis  = d3.axisLeft(yscale);
+    var yAxis  = d3.axisLeft(yscale).ticks(8);
 
 // 7. d3's line generator
 var line = d3.line()
