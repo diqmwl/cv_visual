@@ -50,6 +50,18 @@ function simplebar(data){
     var xAxis  = d3.axisBottom(xscale);
     var yAxis  = d3.axisLeft(yscale).ticks(8);
     
+	
+	function make_x_gridlines() {		
+    return d3.axisBottom(xscale)
+        .ticks(5)
+}
+
+// gridlines in y axis function
+function make_y_gridlines() {		
+    return d3.axisLeft(yscale)
+        .ticks(5)
+}
+
 
     var svg = d3.select(".svg-container").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -72,6 +84,22 @@ function simplebar(data){
            .attr("class", "y axis")
            .style("font","12px Verdana")
            .call(yAxis);
+
+diagram.append("g")			
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      )
+
+  // add the Y gridlines
+  diagram.append("g")			
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
            
            //레전드 
     if(subclass == 'Distance'){
