@@ -50,17 +50,17 @@ function simplebar(data){
     var xAxis  = d3.axisBottom(xscale);
     var yAxis  = d3.axisLeft(yscale).ticks(8);
     
-	
+	//background line
 	function make_x_gridlines() {		
-    return d3.axisBottom(xscale)
+		return d3.axisBottom(xscale)
         .ticks(5)
-}
+	}
 
-// gridlines in y axis function
-function make_y_gridlines() {		
-    return d3.axisLeft(yscale)
-        .ticks(5)
-}
+	// gridlines in y axis function
+	function make_y_gridlines() {		
+		return d3.axisLeft(yscale)
+		.ticks(5)
+	}
 
 
     var svg = d3.select(".svg-container").append("svg")
@@ -84,22 +84,22 @@ function make_y_gridlines() {
            .attr("class", "y axis")
            .style("font","12px Verdana")
            .call(yAxis);
-
-diagram.append("g")			
+	
+	//background line
+	diagram.append("g")			
       .attr("class", "grid")
       .attr("transform", "translate(0," + height + ")")
       .call(make_x_gridlines()
           .tickSize(-height)
           .tickFormat("")
-      )
+    )
 
-  // add the Y gridlines
-  diagram.append("g")			
+	diagram.append("g")			
       .attr("class", "grid")
       .call(make_y_gridlines()
           .tickSize(-width)
           .tickFormat("")
-      )
+    )
            
            //레전드 
     if(subclass == 'Distance'){
@@ -824,6 +824,18 @@ var yscale = d3.scaleLinear()
     
     var xAxis  = d3.axisBottom(xscale);
     var yAxis  = d3.axisLeft(yscale).ticks(8);
+	
+	//background line
+	function make_x_gridlines() {		
+		return d3.axisBottom(xscale)
+        .ticks(5)
+	}
+
+	// gridlines in y axis function
+	function make_y_gridlines() {		
+		return d3.axisLeft(yscale)
+		.ticks(5)
+	}
 
 // 7. d3's line generator
 var line = d3.line()
@@ -838,13 +850,13 @@ var line = d3.line()
       return "<strong>"+d[x_value]+":</strong> <span style='color:red'>" + d[y_value] + "</span>";
     })
 
-var subline = d3.line()
+	var subline = d3.line()
     .x(function(d) {return xOverview(d[x_value]);})
     .y(function(d) {return height + heightOverview + yOverview(d[y_value])})
-  .curve(d3.curveMonotoneX) // apply smoothing to the line
+	.curve(d3.curveMonotoneX) // apply smoothing to the line
 
-// 1. Add the SVG to the page and employ #2
-var svg = d3.select(".svg-container").append("svg")
+	// 1. Add the SVG to the page and employ #2
+	var svg = d3.select(".svg-container").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom + selectorHeight)
     .attr("class", "svgclass")
@@ -852,21 +864,38 @@ var svg = d3.select(".svg-container").append("svg")
     .call(responsivefy);
 
     
-var diagram = svg.append("g")
+	var diagram = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// 3. Call the x axis in a group tag
-diagram.append("g")
+	// 3. Call the x axis in a group tag
+	diagram.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .style("font","12px Verdana")
     .call(xAxis); // Create an axis component with d3.axisBottom
 
-// 4. Call the y axis in a group tag
-diagram.append("g")
+	// 4. Call the y axis in a group tag
+	diagram.append("g")
     .attr("class", "y axis")
     .style("font","12px Verdana")
     .call(yAxis);
+	
+	//background line
+	diagram.append("g")			
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+    )
+
+	diagram.append("g")			
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+    )
+	
 		           //레전드 
                    if(subclass == 'Distance'){
                     diagram.append("text")
