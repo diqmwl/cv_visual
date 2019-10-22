@@ -25242,52 +25242,32 @@ body.dark #styleSelector .form-control {
 }
 
 
-
+/* 탭 */
 nav > .nav.nav-tabs{
 
   border: none;
     color:#fff;
-    background:#272e38;
-    border-radius:0;
-
-}
-nav > div a.nav-item.nav-link,
-nav > div a.nav-item.nav-link.active
-{
-  border: none;
-    padding: 15px 7px;
-    color:#fff;
-    background:#272e38;
+    background:#404E67;
     border-radius:0;
 }
 
-nav > div a.nav-item.nav-link.active:after
- {
-  content: "";
-  position: relative;
-  bottom: -60px;
-  left: -10%;
-  border: 15px solid transparent;
-  border-top-color: #e74c3c ;
-}
-.tab-content{
-  background: #404E67;
-    line-height: 25px;
-    border: 1px solid #404E67;
-    border-top:2px solid #e74c3c;
-    padding:30px 25px;
+.tab{
+    color:#404E67;
+    background-color: #fff;
+    border-right: 1 !important;
+    vertical-align: middle !important; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-nav > div a.nav-item.nav-link:hover,
-nav > div a.nav-item.nav-link:focus
-{
-  border: none;
-    background: #404E67;
-    color:#fff;
-    border-radius:0;
-    transition:background 0.20s linear;
+.tab:focus, .active{
+    color:#fff !important;
+    background-color:#404E67 !important;
+    border: 0 !important;
+    outline: 0 !important;
 }
-
 
 
 .stepwizard-step p {
@@ -25648,4 +25628,12 @@ svg {
   .grid path {
     stroke-width: 0;
   }
+
+  .span_img{
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    }
 /*# sourceMappingURL=style.css.map */

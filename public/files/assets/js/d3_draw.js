@@ -506,6 +506,7 @@ function groupbar(data){
 }
 
 function calgroupbar(data){
+    
     d3.select('.svgclass').remove();
 
     var margin =  {top: 20, right: 20, bottom: 100, left: 80};
