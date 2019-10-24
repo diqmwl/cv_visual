@@ -40,7 +40,7 @@
 
     <!--D3.JS-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
     <script src="..\files\assets\js\d3_draw.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
@@ -57,6 +57,7 @@
         var company = "B2B_1"; //어떤 회사인지
         var category = "driving_type"; //어떤 카테고리인지
         var subclass = null;  // 어떤 서브클래스인지
+        var korsubclass = null; // 서브클래스 한글명
         var chartType = "simplebar"; //차트 형태선택
         var x_value = "carID" 
         var y_value = "count"
@@ -66,13 +67,15 @@
         var rangeslider_value = 60;
         var calender_start = null;
         var calender_end = null;
-//회사 설정        
+//회사 설정     
         function selectcompany(x){
             company = x;
-            $('#nav-category-tab').last().trigger('click');
             $('#nav-company-tab').text(company);
+            $('#nav-category-tab').last().trigger('click');
+            $('#nav-category-tab').focus();
+
         }
-//메인 카테고리 설정        
+        //메인 카테고리 설정        
         function selectcategory(x){
             category = x;
             if(category == "driving_type"){
@@ -91,10 +94,13 @@
                 $('#car_manage').css("display", "none");   
             }
             $('#nav-subclass-tab').last().trigger('click');
+            $('#nav-subclass-tab').focus();
             $('#nav-category-tab').text(category);
         }
 //차트에 필요한 데이터 요청
         function selectsubclass(x){
+            $('#nav-subclass-tab').last().trigger('click');
+            $('#nav-subclass-tab').focus();
             $('.loading_div').css("display", "block");
             subclass = x;
             if(chartType == 'groupbar' && x_value != 'CAR_ID'){
@@ -102,7 +108,7 @@
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
-                        $('.chart-name').text(subclass)
+                        $('.chart-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
@@ -112,13 +118,30 @@
                         }
                     } 
                 ); 
-            }
-            else{
+            } else if(chartType == 'donut'){
+                if(subclass != "total_data"){
+                    alert("도넛차트는 총 데이터에만 이용할 수 있습니다.")
+                    $('.loading_div').css("display", "none");
+                } else{            // 서버가 필요한 정보를 같이 보냄. 
+                    $.get("/donutdraw", { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
+                    function(data, status) {
+                        $('.chart-name').text(ksubclass(subclass))
+                        console.log(data)
+                        $('.loading_div').css("display", "none");
+                        if( !data[0] ){
+                            alert("데이터가 없습니다")
+                        } else{
+                                donutbar(data);
+                        }
+                    } 
+                    ); 
+                }
+            } else{
                 $.get("/chartdraw", 
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
-                        $('.chart-name').text(subclass)
+                        $('.chart-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
@@ -130,6 +153,8 @@
                                 groupbar(data);
                             } else if(chartType == 'line'){
                                 linechart(data);
+                            } else if(chartType == 'donut'){
+                                donutbar();
                             }
                         }
                     } 
@@ -171,6 +196,44 @@
                 } 
         ); 
         }
+
+//서브클래스 한글화
+function ksubclass(val){
+    if(val == 'Accel'){
+        korsubclass = '급 가속';
+    } else if(val == 'Decel'){
+        korsubclass = '급 감속';
+    } else if(val == 'QuickStart'){
+        korsubclass = '급 출발';
+    } else if(val == 'SuddenStop'){
+        korsubclass = '급 정지';
+    } else if(val == 'LeftAndRight'){
+        korsubclass = '급 좌우회전';
+    } else if(val == 'UTurn'){
+        korsubclass = '급 유턴';
+    } else if(val == 'Distance'){
+        korsubclass = '이동거리';
+    } else if(val == 'Fuel'){
+        korsubclass = '연료 사용량';
+    } else if(val == 'FuelEfficiency'){
+        korsubclass = '연비효율';
+    } else if(val == 'avg_efficiency'){
+        korsubclass = '평균연비';
+    } else if(val == 'idling'){
+        korsubclass = '공회전';
+    } else if(val == 'fuel_economy'){
+        korsubclass = '연비순위';
+    } else if(val == 'total_data'){
+        korsubclass = '총 데이터';
+    } else if(val == 'car_gps'){
+        korsubclass = '차량 위치';
+    } else if(val == 'car_route'){
+        korsubclass = '이동 경로';
+    } else if(val == 'car_stop'){
+        korsubclass = '주/정차';
+    }
+    return korsubclass;
+}
     </script>
 </head>
 
@@ -240,7 +303,7 @@
                     <nav class="pcoded-navbar">
                         
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item tab nav-link active" id="nav-company-tab" data-toggle="tab" href="#company" role="tab" aria-controls="company" aria-selected="true">Company</a>
+                            <a class="nav-item tab nav-link active2" id="nav-company-tab" data-toggle="tab" href="#company" role="tab" aria-controls="company" aria-selected="true">Company</a>
                             <a class="nav-item tab nav-link" id="nav-category-tab" data-toggle="tab" href="#category" role="tab" aria-controls="category" aria-selected="false">Category</a>
                             <a class="nav-item tab nav-link" id="nav-subclass-tab" data-toggle="tab" href="#subclass" role="tab" aria-controls="subclass" aria-selected="false">SubClass</a>
                           </div>
@@ -250,19 +313,19 @@
                                 <ul class="pcoded-item pcoded-left-item" id="selectcompany">
                                     <li class="pcoded-hasmenu  pcoded-trigger">
                                         <a href="javascript:void(0)" onclick="selectcompany('B2B_1')">
-                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-micon span_img"><img src="Product.png"></span>
                                             <span class="pcoded-mtext"><b>B2B(물산)</b></span>
                                         </a>
                                     </li>
                                     <li class="pcoded-hasmenu">
                                         <a href="javascript:void(0)" onclick="selectcompany('B2B_2')">
-                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-micon span_img"><img src="Machine.png"></span>
                                             <span class="pcoded-mtext"><b>B2B(기계, 건설)</b></span>
                                         </a>
                                     </li>
                                     <li class="pcoded-hasmenu" onclick="selectcompany('CarSharring')">
                                         <a href="javascript:void(0)">
-                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-micon span_img"><img src="Sharing.png"></span>
                                             <span class="pcoded-mtext"><b>CarSharring</b></span>
                                         </a>
                                     </li>
@@ -332,37 +395,37 @@
                                     <ul class="pcoded-item pcoded-left-item" id="car_manage">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
                                                     <a href="javascript:void(0)" onclick="selectsubclass('Distance')">
-                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-micon span_img"><img src="Distance.png"></span>
                                                         <span class="pcoded-mtext">이동거리</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu  pcoded-trigger">
                                                     <a href="javascript:void(0)" onclick="selectsubclass('Fuel')">
-                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-micon span_img"><img src="Fuel.png"></span>
                                                         <span class="pcoded-mtext">연료 사용량</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu  pcoded-trigger">
                                                         <a href="javascript:void(0)" onclick="selectsubclass('FuelEfficiency')">
-                                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                            <span class="pcoded-micon span_img"><img src="Efficiency.png"></span>
                                                             <span class="pcoded-mtext">연비효율</span>
                                                         </a>
                                                     </li>
                                                 <li class="pcoded-hasmenu">
                                                     <a href="javascript:void(0)" onclick="selectsubclass('evg_efficiency')">
-                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-micon span_img"><img src="Efficiency.png"></span>
                                                         <span class="pcoded-mtext">평균연비</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu" onclick="selectsubclass('idling')">
                                                     <a href="javascript:void(0)">
-                                                        <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                        <span class="pcoded-micon span_img"><img src="Idling.png"></span>
                                                         <span class="pcoded-mtext">공회전</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu" onclick="selectsubclass('fuel_economy')">
                                                         <a href="javascript:void(0)">
-                                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                                            <span class="pcoded-micon span_img"><img src="Rank.png"></span>
                                                             <span class="pcoded-mtext">연비 순위</span>
                                                         </a>
                                                 </li>
@@ -575,6 +638,9 @@
 <script>
 //캘린더
 $(document).ready(function() {
+    //탭 메뉴 포커스 주려고!
+    $('#nav-company-tab').last().trigger('click');
+    $('#nav-company-tab').focus();
 
     $('#yearpicker').datepicker({
         range: true,

@@ -3,6 +3,8 @@ var jslib = require('../public/files/assets/js/d3_draw.js');
 var express = require('express');
 var router = express.Router();
 const Influx = require('influxdb-nodejs');
+var http = require("http");
+
 var client;
 var calAry = new Array();
 var scname;
@@ -170,6 +172,60 @@ router.get('/getcarlist', async function(req, res, next) {
         }).catch(err => res.send(err));
 })
 
+router.get('/donutdraw', async function(req, res, next) {
+    var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
+    if(company == 'B2B_1'){
+      client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/미정');
+    } else if(company == 'B2B_2') {
+      client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
+    } else if(company == 'CarSharring'){
+        var options = {
+            url: 'http://125.140.110.217/query?db=CS_ANALYSIS',
+            port: 8999,
+            method: 'POST',
+            auth: {
+                'user': 'tinyos',
+                'pass': 'tinyos'
+            },
+            form: {
+                q: 'show measurements',
+            },
+            headers: {
+                'Accept': '*/*'
+            }
+        };
+        const req = http.request(options, (res) => {
+            console.log(`STATUS: ${res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+              console.log(`BODY: ${chunk}`);
+            });
+            res.on('end', () => {
+              console.log('No more data in response.');
+            });
+        });
+    }
+    
+    //curl -XPOST 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS' --data-urlencode 'q=show measurements'
+    
+    client.query(subclass+'_Year')
+        .set({format: 'json'})
+        .where('time', '2018-01-01 00:00:00', '>=')
+        .then((countdata)=> {
+            var percent = parseInt(countdata[subclass+'_Year'].length * (rangeslider_value/100))
+            if(percent == 0){
+                percent = 1;
+            }
+            client.query(subclass+'_Year')
+            .set({format: 'json', limit: percent})
+            .where('time', '2018-01-01 00:00:00', '>=')
+            .then((data)=> {
+              res.send(data[subclass+'_Year']);
+            }).catch(console.error);
+        }).catch(err => res.send(err));
+});
+
 
 module.exports = router;
 
@@ -185,12 +241,12 @@ async function date_query(val,subclass, x_value, car_ID){
             var dataJson = new Object();
             if(JSON.stringify(data) == '{}'){
                 dataJson.time = "0";
-                dataJson.date = val;
+                dataJson.Day = val;
                 dataJson.count = "0";
                 calAry.push(dataJson);
             } else {
                 dataJson.time = "0";
-                dataJson.date = val;
+                dataJson.Day = val;
                 dataJson.count = data[subclass+'_'+x_value][0][scname];
                 calAry.push(dataJson);
             }
@@ -211,12 +267,12 @@ async function month_query(startdate, enddate,subclass, x_value, car_ID){
             var dataJson = new Object();
             if(JSON.stringify(data) == '{}'){
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Month = startdate;
                 dataJson.count = "0";
                 calAry.push(dataJson);
             } else {
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Month = startdate;
                 dataJson.count = data[subclass+'_'+x_value][0][scname];
                 calAry.push(dataJson);
             }
@@ -236,12 +292,12 @@ async function year_query(startdate, enddate,subclass, x_value, car_ID){
             var dataJson = new Object();
             if(JSON.stringify(data) == '{}'){
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Year = startdate;
                 dataJson.count = "0";
                 calAry.push(dataJson);
             } else {
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Year = startdate;
                 dataJson.count = data[subclass+'_'+x_value][0][scname];
                 calAry.push(dataJson);
             }
@@ -261,14 +317,14 @@ async function groupyear_query(startdate, enddate,subclass, x_value, car_ID){
                 var dataJson = new Object();
                 if(JSON.stringify(data) == '{}'){
                     dataJson.time = "0";
-                    dataJson.date = startdate;
+                    dataJson.Year = startdate;
                     for(var i = 0; i < car_ID.length; i++){
                         dataJson['C'+car_ID[i]] = 0;
                     }
                     calAry.push(dataJson);
                 } else {
                     dataJson.time = "0";
-                    dataJson.date = startdate;
+                    dataJson.Year = startdate;
                     for(var i = 0; i < data[subclass+'_'+x_value].length; i++){
                         dataJson['C'+car_ID[i]] = data[subclass+'_'+x_value][i][scname];
                     }
@@ -291,14 +347,14 @@ async function groupmonth_query(startdate, enddate,subclass, x_value, car_ID){
             var dataJson = new Object();
             if(JSON.stringify(data) == '{}'){
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Month = startdate;
                 for(var i = 0; i < car_ID.length; i++){
                     dataJson['C'+car_ID[i]] = 0;
                 }                
                 calAry.push(dataJson);
             } else {
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Month = startdate;
                 for(var i = 0; i < data[subclass+'_'+x_value].length; i++){
                     dataJson['C'+car_ID[i]] = data[subclass+'_'+x_value][i][scname];
                 }
@@ -321,14 +377,14 @@ async function groupdate_query(startdate,subclass, x_value, car_ID){
             var dataJson = new Object();
             if(JSON.stringify(data) == '{}'){
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Day = startdate;
                 for(var i = 0; i < car_ID.length; i++){
                     dataJson['C'+car_ID[i]] = 0;
                 }  
                 calAry.push(dataJson);
             } else {
                 dataJson.time = "0";
-                dataJson.date = startdate;
+                dataJson.Day = startdate;
                 for(var i = 0; i < car_ID.length; i++){
                     try{
                         dataJson['C'+car_ID[i]] = data[subclass+'_'+x_value][i][scname];

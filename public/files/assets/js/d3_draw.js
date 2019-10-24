@@ -16,7 +16,7 @@ function simplebar(data){
 
     var keys = Object.keys(data[0]).slice(2);
 	 var z = d3.scaleOrdinal()
-    .range(["#01A9AC", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    .range(["#8DDBDA", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     var isScrollDisplayed = barWidth * data.length > width;
     if(x_value == 'CAR_ID'){
@@ -102,7 +102,6 @@ function simplebar(data){
     )
            
            //레전드 
-    if(subclass == 'Distance'){
         diagram.append("text")
 	  .attr("class", "label")
       .attr("transform", "rotate(-90)")
@@ -110,26 +109,8 @@ function simplebar(data){
       .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("미터"); 
-    } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
-        diagram.append("text")
-        .attr("class", "label")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left - 3)
-        .attr("x",0 - (height / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("양");   
-    }else {
-        diagram.append("text")
-	  .attr("class", "label")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left - 3)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("횟수"); 
-    }
+      .text(kyaxis()); 
+    
 	
 	
 	var x_labels = diagram.append("text")   
@@ -138,7 +119,7 @@ function simplebar(data){
             "translate(" + (width/2) + " ," + 
                            (height + margin.top +30) + ")")
       .style("text-anchor", "middle")
-      .text(x_value);
+      .text(kxaxis());
 	  
     if (isScrollDisplayed){
 		x_labels.attr("transform",
@@ -166,10 +147,9 @@ function simplebar(data){
     .attr("x", width - 24)
     .attr("y", 9.5)
     .attr("dy", "0.32em")
-    .text(function (d) { return d; });
+    .text(function (d) { return klegend(d); });
 		   
     var bars = diagram.append("g");
-      
     bars.selectAll("rect")
                 .data(data.slice(0, numBars), function (d) {return d[x_value]; })
                 .enter().append("rect")
@@ -343,7 +323,6 @@ function groupbar(data){
     .call(yAxis);
 	
            //레전드 
-           if(subclass == 'Distance'){
             diagram.append("text")
           .attr("class", "label")
           .attr("transform", "rotate(-90)")
@@ -351,26 +330,8 @@ function groupbar(data){
           .attr("x",0 - (height / 2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("미터"); 
-        } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
-            diagram.append("text")
-            .attr("class", "label")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left - 3)
-            .attr("x",0 - (height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text("양");   
-        }else {
-            diagram.append("text")
-          .attr("class", "label")
-          .attr("transform", "rotate(-90)")
-          .attr("y", 0 - margin.left - 3)
-          .attr("x",0 - (height / 2))
-          .attr("dy", "1em")
-          .style("text-anchor", "middle")
-          .text("횟수"); 
-        }
+          .text(kyaxis()); 
+        
 	
 	var x_labels = diagram.append("text")    
 	  .attr("class", "label")		
@@ -378,7 +339,7 @@ function groupbar(data){
             "translate(" + (width/2) + " ," + 
                            (height + margin.top +30) + ")")
       .style("text-anchor", "middle")
-      .text(x_value);
+      .text(kxaxis());
     if (isScrollDisplayed){
 		x_labels.attr("transform",
             "translate(" + (width/2) + " ," + 
@@ -404,7 +365,7 @@ function groupbar(data){
     .attr("x", width - 24)
     .attr("y", 9.5)
     .attr("dy", "0.32em")
-    .text(function (d) { return d; });
+    .text(function (d) { return klegend(d); });
     
     if (isScrollDisplayed)
     {
@@ -582,7 +543,6 @@ function calgroupbar(data){
     .call(yAxis);
 	
 	           //레전드 
-               if(subclass == 'Distance'){
                 diagram.append("text")
               .attr("class", "label")
               .attr("transform", "rotate(-90)")
@@ -590,26 +550,7 @@ function calgroupbar(data){
               .attr("x",0 - (height / 2))
               .attr("dy", "1em")
               .style("text-anchor", "middle")
-              .text("미터"); 
-            } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
-                diagram.append("text")
-                .attr("class", "label")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left - 3)
-                .attr("x",0 - (height / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("양");   
-            }else {
-                diagram.append("text")
-              .attr("class", "label")
-              .attr("transform", "rotate(-90)")
-              .attr("y", 0 - margin.left - 3)
-              .attr("x",0 - (height / 2))
-              .attr("dy", "1em")
-              .style("text-anchor", "middle")
-              .text("횟수"); 
-            }
+              .text(kyaxis()); 
 	
 	var x_labels = diagram.append("text")  
 	  .attr("class", "label")			
@@ -617,7 +558,7 @@ function calgroupbar(data){
             "translate(" + (width/2) + " ," + 
                            (height + margin.top +30) + ")")
       .style("text-anchor", "middle")
-      .text(x_value);
+      .text(kxaxis());
     if (isScrollDisplayed){
 		x_labels.attr("transform",
             "translate(" + (width/2) + " ," + 
@@ -643,7 +584,7 @@ function calgroupbar(data){
     .attr("x", width - 24)
     .attr("y", 9.5)
     .attr("dy", "0.32em")
-    .text(function (d) { return d; });
+    .text(function (d) { return klegend(d); });
     
     if (isScrollDisplayed)
     {
@@ -743,41 +684,6 @@ function calgroupbar(data){
     };
 
 }
-function donutbar(){
- var timerInterval = 1500;
-
-    var donut = donutChart()
-        .width(960)
-        .height(500)
-        .transTime(750) // length of transitions in ms
-        .cornerRadius(3) // sets how rounded the corners are on each slice
-        .padAngle(0.015) // effectively dictates the gap between slices
-        .variable('prob')
-        .category('species');
-
-    var i = 0;
-
-    d3.tsv('species.tsv', function(error, data) {
-        if (error) throw error;
-
-        // group entries together by timestamp to simulate  receiving real-time data
-        var nestData = d3.nest()
-            .key(function(d) { return d.time; }) // collects entries with the same time value
-            .entries(data);
-
-        // timer to update chart with new data every timeInterval milliseconds.
-        var timer = setInterval(function() {
-        	if (i === nestData.length - 1) { clearInterval(timer); }
-        	donut.data(nestData[i].values);
-            if (i === 0) { // if first time receiving data...
-                i++;
-                d3.select('#chart')
-                    .call(donut); // draw chart in div
-            }
-            i++;
-        }, timerInterval);
-    });
-}
 
 function linechart(data){
     d3.select('.svgclass').remove();
@@ -799,15 +705,15 @@ function linechart(data){
 	 var keys = Object.keys(data[0]).slice(2);
 	 var z = d3.scaleOrdinal()
     .range(["#FE9365", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-	
-    if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
-        y_value = Object.keys(data[0])[7]
-					keys = Object.keys(data[0]).slice(7);
-    } else if(subclass == 'FuelEfficiency'){
-        y_value = Object.keys(data[0])[4]
-        keys = Object.keys(data[0]).slice(4);
+    if(x_value == 'CAR_ID'){
+        if(subclass == 'Accel' || subclass == 'Decel' || subclass == 'QuickStart' || subclass == 'SuddenStop'){
+            y_value = Object.keys(data[0])[7]
+			keys = Object.keys(data[0]).slice(7);
+        } else if(subclass == 'FuelEfficiency'){
+            y_value = Object.keys(data[0])[4]
+            keys = Object.keys(data[0]).slice(4);
+        }
     }
-    
     console.log(isScrollDisplayed)
 
 // The number of datapoints
@@ -898,7 +804,6 @@ var line = d3.line()
     )
 	
 		           //레전드 
-                   if(subclass == 'Distance'){
                     diagram.append("text")
                   .attr("class", "label")
                   .attr("transform", "rotate(-90)")
@@ -906,27 +811,8 @@ var line = d3.line()
                   .attr("x",0 - (height / 2))
                   .attr("dy", "1em")
                   .style("text-anchor", "middle")
-                  .text("미터"); 
-                } else if(subclass == 'FuelEfficiency' || subclass == 'Fuel'){
-                    diagram.append("text")
-                    .attr("class", "label")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 0 - margin.left - 3)
-                    .attr("x",0 - (height / 2))
-                    .attr("dy", "1em")
-                    .style("text-anchor", "middle")
-                    .text("양");   
-                }else {
-                    diagram.append("text")
-                  .attr("class", "label")
-                  .attr("transform", "rotate(-90)")
-                  .attr("y", 0 - margin.left - 3)
-                  .attr("x",0 - (height / 2))
-                  .attr("dy", "1em")
-                  .style("text-anchor", "middle")
-                  .text("횟수"); 
-                }
-	
+                  .text(kyaxis()); 
+                
 	//범례
 	    var legend = diagram.append("g")
     .attr("font-family", "sans-serif")
@@ -948,7 +834,7 @@ var line = d3.line()
     .attr("x", width - 24)
     .attr("y", 9.5)
     .attr("dy", "0.32em")
-    .text(function (d) { return d; });
+    .text(function (d) { return klegend(d); });
 	
 	var x_labels = diagram.append("text")  
 	  .attr("class", "label")			
@@ -956,7 +842,7 @@ var line = d3.line()
             "translate(" + (width/2) + " ," + 
                            (height + margin.top +30) + ")")
       .style("text-anchor", "middle")
-      .text(x_value);
+      .text(kxaxis());
     if (isScrollDisplayed){
 		x_labels.attr("transform",
             "translate(" + (width/2) + " ," + 
@@ -1065,6 +951,264 @@ diagram.selectAll(".dot")
     };
 
 }
+//도넛차트
+function donutbar(){      
+      d3.select('.svgclass').remove();
+    
+      var data = [
+        {name: "USA", value: 60},
+        {name: "UK", value: 20},
+        {name: "Canada", value: 30},
+        {name: "Maxico", value: 15},
+        {name: "Japan", value: 10},
+      ];
+
+      function donutChart() {
+        var width,
+            height,
+            margin = {top: 10, right: 10, bottom: 10, left: 10},
+            colour = d3.scaleOrdinal(d3.schemeCategory20c), // colour scheme
+            variable, // value in data that will dictate proportions on chart
+            category, // compare data by
+            padAngle, // effectively dictates the gap between slices
+            floatFormat = d3.format('.5r'),//  sets how rounded the corners are on each slice
+            cornerRadius, // sets how rounded the corners are on each slice
+            percentFormat = d3.format(',.0%');//sets the number of decimal places in the percentages
+    
+        function chart(selection){
+            selection.each(function(data) {
+                // generate chart
+    
+                // ===========================================================================================
+                // Set up constructors for making donut. See https://github.com/d3/d3-shape/blob/master/README.md
+                var radius = Math.min(width, height) / 2;
+    
+                // creates a new pie generator
+                var pie = d3.pie()
+                    .value(function(d) { return floatFormat(d[variable]); })
+                    .sort(null);
+    
+                // contructs and arc generator. This will be used for the donut. The difference between outer and inner
+                // radius will dictate the thickness of the donut
+                var arc = d3.arc()
+                    .outerRadius(radius * 0.8)
+                    .innerRadius(radius * 0.6)
+                    .cornerRadius(cornerRadius)
+                    .padAngle(padAngle);
+    
+                // this arc is used for aligning the text labels
+                var outerArc = d3.arc()
+                    .outerRadius(radius * 0.9)
+                    .innerRadius(radius * 0.9);
+                // ===================================================================================
+              //add title to the chart
+       
+    
+                // ===========================================================================================
+              
+             // append the svg object to the selection
+                var svg = selection.append('svg')
+                    .attr('width', width + margin.left + margin.right)
+                    .attr('height', height + margin.top + margin.bottom)
+                    .call(responsivefy)
+                  .append('g')
+                    .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')'); //===========================================================================================
+    
+                // ===========================================================================================
+                // g elements to keep elements within svg modular
+                svg.append('g').attr('class', 'slices');
+                svg.append('g').attr('class', 'labelName');
+                svg.append('g').attr('class', 'lines');
+                // =================================================================================== 
+                // add and colour the donut slices
+                var path = svg.select('.slices')
+                    .datum(data).selectAll('path')
+                    .data(pie)
+                  .enter().append('path')
+                    .attr('fill', function(d) { return colour(d.data[category]); })
+                    .attr('d', arc);
+                // ===========================================================================================
+    
+                // ===========================================================================================
+                // add text labels
+                var label = svg.select('.labelName').selectAll('text')
+                    .data(pie)
+                  .enter().append('text')
+                    .attr('dy', '0em')//position of text label
+                    .html(function(d) {
+                        // add "key: value" for given category. Number inside tspan is bolded in stylesheet.
+                        return d.data[category];
+                    })
+                    .attr('transform', function(d) {
+    
+                        // effectively computes the centre of the slice.
+                        // see https://github.com/d3/d3-shape/blob/master/README.md#arc_centroid
+                        var pos = outerArc.centroid(d);
+    
+                        // changes the point to be on left or right depending on where label is.
+                        pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
+                        return 'translate(' + pos + ')';
+                    })
+                    .style('text-anchor', function(d) {
+                        // if slice centre is on the left, anchor text to start, otherwise anchor to end
+                        return (midAngle(d)) < Math.PI ? 'start' : 'end';
+                    });
+                // ===========================================================================================
+    
+                // ===========================================================================================
+                // add lines connecting labels to slice. A polyline creates straight lines connecting several points
+                var polyline = svg.select('.lines')
+                    .selectAll('polyline')
+                    .data(pie)
+                  .enter().append('polyline')
+                    .attr('points', function(d) {
+    
+                        // see label transform function for explanations of these three lines.
+                        var pos = outerArc.centroid(d);
+                        pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
+                        return [arc.centroid(d), outerArc.centroid(d), pos]
+                    });
+                // ===========================================================================================
+    
+                // ===========================================================================================
+                // add tooltip to mouse events on slices and labels
+                d3.selectAll('.labelName text, .slices path').call(toolTip);
+                // ===========================================================================================
+    
+                // ===========================================================================================
+                // Functions
+    
+                // calculates the angle for the middle of a slice
+                function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle) / 2; }
+    
+                // function that creates and adds the tool tip to a selected element
+                function toolTip(selection) {
+    
+                    // add tooltip (svg circle element) when mouse enters label or slice
+                    selection.on('mouseenter', function (data) {
+    
+                        svg.append('text')
+                            .attr('class', 'toolCircle')
+                            .attr('dy', -15) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                            .html(toolTipHTML(data)) // add text to the circle.
+                            .style('font-size', '.9em')
+                            .style('text-anchor', 'middle'); // centres text in tooltip
+    
+                        svg.append('circle')
+                            .attr('class', 'toolCircle')
+                            .attr('r', radius * 0.55) // radius of tooltip circle
+                            .style('fill', colour(data.data[category])) // colour based on category mouse is over
+                            .style('fill-opacity', 0.35);
+    
+                    });
+    
+                    // remove the tooltip when mouse leaves the slice/label
+                    selection.on('mouseout', function () {
+                        d3.selectAll('.toolCircle').remove();
+                    });
+                }
+    
+                // function to create the HTML string for the tool tip. Loops through each key in data object
+                // and returns the html string key: value
+                function toolTipHTML(data) {
+    
+                    var tip = '',
+                        i   = 0;
+    
+                    for (var key in data.data) {
+    
+                        // assigning the value part of tooltip as our skill number of years
+                                                                        var value = data.data[key];
+                        // leave off 'dy' attr for first tspan so the 'dy' attr on text element works. The 'dy' attr on
+                        // tspan effectively imitates a line break.
+                        if (i === 0) tip += '<tspan x="0">' + key + ': ' + value + '</tspan>';
+                        else tip += '<tspan x="0" dy="1.2em">' + key + ': ' + value + '</tspan>';
+                        i++;
+                    }
+    
+    
+                    return tip;
+                }
+                // ===========================================================================================
+    
+            });
+        }
+    
+        // getter and setter functions. See Mike Bostocks post "Towards Reusable Charts" for a tutorial on how this works.
+        chart.width = function(value) {
+            if (!arguments.length) return width;
+            width = value;
+            return chart;
+        };
+    
+        chart.height = function(value) {
+            if (!arguments.length) return height;
+            height = value;
+            return chart;
+        };
+    
+        chart.margin = function(value) {
+            if (!arguments.length) return margin;
+            margin = value;
+            return chart;
+        };
+    
+        chart.radius = function(value) {
+            if (!arguments.length) return radius;
+            radius = value;
+            return chart;
+        };
+    
+        chart.padAngle = function(value) {
+            if (!arguments.length) return padAngle;
+            padAngle = value;
+            return chart;
+        };
+    
+        chart.cornerRadius = function(value) {
+            if (!arguments.length) return cornerRadius;
+            cornerRadius = value;
+            return chart;
+        };
+    
+        chart.colour = function(value) {
+            if (!arguments.length) return colour;
+            colour = value;
+            return chart;
+        };
+    
+        chart.variable = function(value) {
+            if (!arguments.length) return variable;
+            variable = value;
+            return chart;
+        };
+    
+        chart.category = function(value) {
+            if (!arguments.length) return category;
+            category = value;
+            return chart;
+        };
+    
+        return chart;
+    }
+
+    var margin =  {top: 20, right: 20, bottom: 100, left: 80};
+    var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
+    var selectorHeight = 40;
+    var width = 1300 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom - selectorHeight;
+
+      var donut = donutChart()
+        .width(width)
+        .height(height)
+        .cornerRadius(3) // sets how rounded the corners are on each slice
+        .padAngle(0.03) // effectively dictates the gap between slices
+        .variable('value')
+        .category('name');
+        d3.select('.svg-container')
+            .datum(data) // bind data to the div
+            .call(donut) // draw chart in div;
+   }
 
 
 //svg다시~
@@ -1107,3 +1251,89 @@ function responsivefy(svg) {
         svg.attr('height', Math.round(w / aspect));
     }
   }
+
+  function kyaxis(){
+      var kor = null;
+      if(subclass == 'Fuel' || subclass == 'FuelEfficiency'){
+          kor = '양';
+      } else if(subclass == 'Distance'){
+          kor = '미터';
+      } else {
+          kor = '횟수';
+      } 
+      return kor;
+  }
+
+  function kxaxis(){
+    var kor = null;
+    if(x_value == 'CAR_ID'){
+        kor = '차량 번호';
+    } else if(x_value == 'Year'){
+        kor = '연도별';
+    } else if(x_value == 'Month'){
+        kor = '월별';
+    } else if(x_value == 'Day'){
+        kor = '일별';
+    }
+    return kor;
+  }
+
+  function klegend(val){
+    var kor = null;
+    if(subclass == 'Accel' || subclass == 'QuickStart'){
+        if(val == 'TOTAL_COUNT' || val == 'count'){
+            kor = '전체 횟수';
+        } else if(val == 'DIFF_1'){
+            kor = '시속 11~21';
+        } else if(val == 'DIFF_2'){
+            kor = '시속 22~32';
+        } else if(val == 'DIFF_3'){
+            kor = '시속 33~43';
+        } else if(val == 'DIFF_4'){
+            kor = '시속 44~54';
+        } else if(val == 'DIFF_5'){
+            kor = '시속 55이상';
+        } else if(val == 'TOTAL_DISTANCE'){
+            kor = '이동거리'
+        } else if(val == 'TOTAL_FUEL'){
+            kor = '연료 사용량'
+        } else if(val == 'EFFICIENCY'){
+            kor = '연료 효율성'
+        }
+                
+        
+    } else if(subclass == 'Decel' || subclass == 'SuddenStop'){
+        if(val == 'TOTAL_COUNT' || val == 'count'){
+            kor = '전체 횟수';
+        } else if(val == 'DIFF_1'){
+            kor = '시속 8~14';
+        } else if(val == 'DIFF_2'){
+            kor = '시속 15~22';
+        } else if(val == 'DIFF_3'){
+            kor = '시속 23~29';
+        } else if(val == 'DIFF_4'){
+            kor = '시속 30~37';
+        } else if(val == 'DIFF_5'){
+            kor = '시속 38이상';
+        } else if(val == 'TOTAL_DISTANCE'){
+            kor = '전체 이동거리'
+        } else if(val == 'TOTAL_FUEL'){
+            kor = '연료 사용량'
+        } else if(val == 'EFFICIENCY'){
+            kor = '연료 효율성'
+        }
+    } else {
+        if(val == 'TOTAL_COUNT' || val == 'count'){
+            kor = '전체 횟수';
+        } else if(val == 'TOTAL_DISTANCE'){
+            kor = '전체 이동거리'
+        } else if(val == 'TOTAL_FUEL'){
+            kor = '연료 사용량'
+        } else if(val == 'EFFICIENCY'){
+            kor = '연료 효율성'
+        }
+    }
+    return kor;
+  }
+
+ 

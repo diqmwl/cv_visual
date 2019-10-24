@@ -219,7 +219,8 @@ p {
 .card .card-header {
     background-color: transparent;
     border-bottom: none;
-    padding: 25px 20px
+    padding: 25px 20px;
+    margin-left: 46%;
 }
 
 .card .card-header .card-header-left {
@@ -25262,12 +25263,13 @@ nav > .nav.nav-tabs{
     padding-right: 10px;
 }
 
-.tab:focus, .active{
+.tab:focus{
     color:#fff !important;
     background-color:#404E67 !important;
     border: 0 !important;
     outline: 0 !important;
 }
+
 
 
 .stepwizard-step p {
@@ -25351,7 +25353,7 @@ svg {
   
   
   .bar {
-    fill: #01A9AC;
+    fill: #8DDBDA;
     clip-path: url(#clip);
   }
     
@@ -25617,6 +25619,11 @@ svg {
 	  font-size: 20px;
 	  font-weight: bold;
   }
+  .chart-name{
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 20px !important;
+    font-weight: bold !important;     
+  }
 
   
   .grid line {
@@ -25636,4 +25643,29 @@ svg {
     padding-bottom: 0 !important;
 
     }
+
+
+    /*도넛차트*/
+     /* Add shadow effect to chart. If you don't like it, get rid of it. */
+svg {
+    -webkit-filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.3) );
+    filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.25) );
+}
+
+
+/*Styling for the lines connecting the labels to the slices*/
+polyline{
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: none;
+}
+
+    
+/* Lets italicize the  skill names. */
+.labelName {
+    font-size: 0.936000000000001em;
+    font-style: italic;
+  font-weight: 700;
+}
 /*# sourceMappingURL=style.css.map */
