@@ -3,7 +3,7 @@ var jslib = require('../public/files/assets/js/d3_draw.js');
 var express = require('express');
 var router = express.Router();
 const Influx = require('influxdb-nodejs');
-var http = require("http");
+var request = require('request');
 
 var client;
 var calAry = new Array();
@@ -180,25 +180,19 @@ router.get('/donutdraw', async function(req, res, next) {
       client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
     } else if(company == 'CarSharring'){
         var options = {
-            url: 'http://tinyos:tinyos@125.140.110.217/query?db=CS_ANALYSIS',
-            port: '8999',
-            method: 'XPOST',
+            url: 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS',
+            method: 'POST',
             form: {
                 q: 'show measurements',
             },
         };
-        const req = http.request(options, (res) => {
-            console.log(res);
-            console.log(`STATUS: ${res.statusCode}`);
-            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-            res.setEncoding('utf8');
-            res.on('data', (chunk) => {
-              console.log(`BODY: ${chunk}`);
-            });
-            res.on('end', () => {
-              console.log('No more data in response.');
-            });
-        });
+
+        request.post(options, function(err,httpResponse,body){
+            var myobj = JSON.parse(body)["results"][0]["series"][0]["values"];
+            console.log(myobj)
+        })
+
+
     }
     
     //curl -GET 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS' --data-urlencode 'q=show measurements'
