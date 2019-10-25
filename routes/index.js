@@ -180,21 +180,15 @@ router.get('/donutdraw', async function(req, res, next) {
       client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
     } else if(company == 'CarSharring'){
         var options = {
-            url: 'http://125.140.110.217/query?db=CS_ANALYSIS',
-            port: 8999,
-            method: 'POST',
-            auth: {
-                'user': 'tinyos',
-                'pass': 'tinyos'
-            },
+            url: 'http://tinyos:tinyos@125.140.110.217/query?db=CS_ANALYSIS',
+            port: '8999',
+            method: 'XPOST',
             form: {
                 q: 'show measurements',
             },
-            headers: {
-                'Accept': '*/*'
-            }
         };
         const req = http.request(options, (res) => {
+            console.log(res);
             console.log(`STATUS: ${res.statusCode}`);
             console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
             res.setEncoding('utf8');
@@ -207,23 +201,8 @@ router.get('/donutdraw', async function(req, res, next) {
         });
     }
     
-    //curl -XPOST 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS' --data-urlencode 'q=show measurements'
+    //curl -GET 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS' --data-urlencode 'q=show measurements'
     
-    client.query(subclass+'_Year')
-        .set({format: 'json'})
-        .where('time', '2018-01-01 00:00:00', '>=')
-        .then((countdata)=> {
-            var percent = parseInt(countdata[subclass+'_Year'].length * (rangeslider_value/100))
-            if(percent == 0){
-                percent = 1;
-            }
-            client.query(subclass+'_Year')
-            .set({format: 'json', limit: percent})
-            .where('time', '2018-01-01 00:00:00', '>=')
-            .then((data)=> {
-              res.send(data[subclass+'_Year']);
-            }).catch(console.error);
-        }).catch(err => res.send(err));
 });
 
 
