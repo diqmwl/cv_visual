@@ -4,9 +4,12 @@ var express = require('express');
 var router = express.Router();
 const Influx = require('influxdb-nodejs');
 var request = require('request');
+var MongoClient = require('mongodb').MongoClient;
+
 
 var client;
 var calAry = new Array();
+var sumAry = new Array();
 var scname;
 
 /* GET home page. */
@@ -172,13 +175,34 @@ router.get('/getcarlist', async function(req, res, next) {
         }).catch(err => res.send(err));
 })
 
+  router.get('/firstdraw', async function(req, res, next) {
+    var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
+    sumAry = []
+    console.log("토탈 드로우")
+       
+        await MongoClient.connect('mongodb://cschae:cschae@125.140.110.217:27027/', function(err, db) {
+            var dbo = db.db("carssum");
+            dbo.stats({}, async function(err, result) {
+              var dataJson = new Object();
+                dataJson.name = result.db;
+                dataJson.count = result.objects;
+                await sumAry.push(dataJson);
+              db.close();
+            });
+        });
+    console.log(sumAry+'a')
+});  
+
 router.get('/donutdraw', async function(req, res, next) {
     var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
+    sumAry = []
+    console.log("도넛드로우")
     if(company == 'B2B_1'){
       client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/미정');
     } else if(company == 'B2B_2') {
       client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_Analysis');
-    } else if(company == 'CarSharring'){
+    } else if(company == 'CarSharring'){        
+      client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/CS_ANALYSIS');
         var options = {
             url: 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS',
             method: 'POST',
@@ -186,15 +210,23 @@ router.get('/donutdraw', async function(req, res, next) {
                 q: 'show measurements',
             },
         };
-
-        request.post(options, function(err,httpResponse,body){
-            var myobj = JSON.parse(body)["results"][0]["series"][0]["values"];
-            console.log(myobj)
-        })
-
-
     }
-    
+    request.post(options, async function(err,httpResponse,body){
+        var myobj = JSON.parse(body)["results"][0]["series"][0]["values"];
+
+        for(var i = 0; i < myobj.length; i++){
+            await client.query(myobj[i][0])
+            .set({format: 'json'})
+            .then((countdata)=> {
+                console.log(myobj[i][0]+'/'+ countdata[myobj[i][0]].length)
+                var dataJson = new Object();
+                dataJson.name = myobj[i][0];
+                dataJson.count = countdata[myobj[i][0]].length;
+                sumAry.push(dataJson);
+            }).catch(err => res.send(err));
+        }
+    res.send(sumAry);
+   })
     //curl -GET 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS' --data-urlencode 'q=show measurements'
     
 });

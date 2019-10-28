@@ -952,9 +952,9 @@ diagram.selectAll(".dot")
 
 }
 //도넛차트
-function donutbar(){      
+function donutbar(data){      
       d3.select('.svgclass').remove();
-    
+    /*
       var data = [
         {name: "USA", value: 60},
         {name: "UK", value: 20},
@@ -962,7 +962,7 @@ function donutbar(){
         {name: "Maxico", value: 15},
         {name: "Japan", value: 10},
       ];
-
+    */
       function donutChart() {
         var width,
             height,
@@ -1010,6 +1010,7 @@ function donutbar(){
                 var svg = selection.append('svg')
                     .attr('width', width + margin.left + margin.right)
                     .attr('height', height + margin.top + margin.bottom)
+                    .attr("class", "svgclass")
                     .call(responsivefy)
                   .append('g')
                     .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')'); //===========================================================================================
@@ -1203,7 +1204,7 @@ function donutbar(){
         .height(height)
         .cornerRadius(3) // sets how rounded the corners are on each slice
         .padAngle(0.03) // effectively dictates the gap between slices
-        .variable('value')
+        .variable('count')
         .category('name');
         d3.select('.svg-container')
             .datum(data) // bind data to the div

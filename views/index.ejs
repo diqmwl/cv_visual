@@ -97,6 +97,18 @@
             $('#nav-subclass-tab').focus();
             $('#nav-category-tab').text(category);
         }
+//최초 총데이터 차트 그리기
+function firstdraw(){
+    $.get("/firstdraw", 
+    { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
+    // 서버가 필요한 정보를 같이 보냄. 
+        function(data, status) {
+            donutbar(data);
+        } 
+); 
+}
+
+
 //차트에 필요한 데이터 요청
         function selectsubclass(x){
             $('#nav-subclass-tab').last().trigger('click');
@@ -154,7 +166,7 @@
                             } else if(chartType == 'line'){
                                 linechart(data);
                             } else if(chartType == 'donut'){
-                                donutbar();
+                                donutbar(data);
                             }
                         }
                     } 
@@ -638,10 +650,13 @@ function ksubclass(val){
 <script>
 //캘린더
 $(document).ready(function() {
+
     //탭 메뉴 포커스 주려고!
     $('#nav-company-tab').last().trigger('click');
     $('#nav-company-tab').focus();
-
+    //첫 차트 그리기
+    firstdraw();
+    
     $('#yearpicker').datepicker({
         range: true,
         toggleSelected: false,

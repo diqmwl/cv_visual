@@ -15,6 +15,7 @@
     "influx": "^5.4.1",
     "influxdb-nodejs": "^3.1.0",
     "jade": "~1.11.0",
+    "mongoose": "^5.7.7",
     "morgan": "^1.9.1",
     "request": "^2.88.0"
   }
