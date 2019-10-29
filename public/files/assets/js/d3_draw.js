@@ -248,7 +248,6 @@ function simplebar(data){
     };
 }
 
-
 function groupbar(data){
     d3.select('.svgclass').remove();
     var margin =  {top: 20, right: 20, bottom: 100, left: 80};
@@ -584,7 +583,7 @@ function calgroupbar(data){
     .attr("x", width - 24)
     .attr("y", 9.5)
     .attr("dy", "0.32em")
-    .text(function (d) { return klegend(d); });
+    .text(function (d) { return d; });
     
     if (isScrollDisplayed)
     {

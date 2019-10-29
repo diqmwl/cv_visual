@@ -157,7 +157,15 @@ function firstdraw(){
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
-                            alert("데이터가 없습니다")
+                            if(subclass == 'total_data'){
+                                if(x_value != "CAR_ID"){
+                                    alert("차량아이디로 이용하세요")
+                                }else {
+                                    alert("도넛차트를 이용하세요")
+                                }
+                            } else{
+                                alert("데이터가 없습니다")
+                            }
                         } else{
                             if(chartType == 'simplebar'){
                                 simplebar(data);
@@ -165,9 +173,7 @@ function firstdraw(){
                                 groupbar(data);
                             } else if(chartType == 'line'){
                                 linechart(data);
-                            } else if(chartType == 'donut'){
-                                donutbar(data);
-                            }
+                            } 
                         }
                     } 
                 ); 
@@ -542,7 +548,7 @@ function ksubclass(val){
                                                     <div class="col-xl-15 col-md-12" ">
                                                         <div class="card">
                                                                 <div class="card-header">
-                                                                        <h5 class="chart-name">Application Sales</h5>
+                                                                        <h5 class="chart-name">회사별 총 데이터</h5>
                                                                         <div class="card-header-right">
                                                                             <ul class="list-unstyled card-option">
                                                                                 <li><i class="feather icon-maximize full-card"></i></li>
@@ -656,7 +662,7 @@ $(document).ready(function() {
     $('#nav-company-tab').focus();
     //첫 차트 그리기
     firstdraw();
-    
+
     $('#yearpicker').datepicker({
         range: true,
         toggleSelected: false,

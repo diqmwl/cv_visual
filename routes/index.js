@@ -180,17 +180,34 @@ router.get('/getcarlist', async function(req, res, next) {
     sumAry = []
     console.log("토탈 드로우")
        
-        await MongoClient.connect('mongodb://cschae:cschae@125.140.110.217:27027/', function(err, db) {
-            var dbo = db.db("carssum");
-            dbo.stats({}, async function(err, result) {
-              var dataJson = new Object();
-                dataJson.name = result.db;
-                dataJson.count = result.objects;
-                await sumAry.push(dataJson);
-              db.close();
-            });
+    MongoClient.connect('mongodb://cschae:cschae@125.140.110.217:27027/', async function(err, db) {
+        var dbo = db.db('carssum');
+        var dataJson = new Object();
+        dbo.stats({}, function(err, result) {
+            dataJson.name = result.db;
+            dataJson.count = result.objects;
+            sumAry.push(dataJson);
+
+        dbo = db.db('elex');
+        dataJson = new Object();
+        dbo.stats({}, function(err, result) {
+            dataJson.name = result.db;
+            dataJson.count = result.objects;
+            sumAry.push(dataJson);
+
+        dbo = db.db('hanuri');
+        dataJson = new Object();
+        dbo.stats({}, function(err, result) {
+            dataJson.name = result.db;
+            dataJson.count = result.objects;
+            sumAry.push(dataJson);
+            console.log(sumAry)
+            res.send(sumAry);
         });
-    console.log(sumAry+'a')
+    });
+});
+
+})        
 });  
 
 router.get('/donutdraw', async function(req, res, next) {
@@ -213,6 +230,15 @@ router.get('/donutdraw', async function(req, res, next) {
     }
     request.post(options, async function(err,httpResponse,body){
         var myobj = JSON.parse(body)["results"][0]["series"][0]["values"];
+        
+        var i = 0;
+        while( i  < myobj.length){
+            if(myobj[i][0].match(/Day/) || myobj[i][0].match(/Detail/) || myobj[i][0].match(/Month/)){
+                myobj.splice(i,1)
+            }else{
+                i++
+            }
+        }
 
         for(var i = 0; i < myobj.length; i++){
             await client.query(myobj[i][0])
@@ -403,6 +429,7 @@ async function groupdate_query(startdate,subclass, x_value, car_ID){
         }).catch(console.error);    
     return calAry;
 }
+
 
 function subclassName(val){
     if(val == 'Distance'){
