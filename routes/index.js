@@ -91,6 +91,7 @@ router.get('/chartdraw', async function(req, res, next) {
 
 });
 
+//그룹차트 캘린더
 router.get('/groupdraw', async function(req, res, next) {
   subclassName(subclass);
   calAry = [];
@@ -142,6 +143,7 @@ router.get('/groupdraw', async function(req, res, next) {
 
 });
 
+//차량목록 얻기
 router.get('/getcarlist', async function(req, res, next) {
     var {company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
     var carAry = new Array();
@@ -175,6 +177,7 @@ router.get('/getcarlist', async function(req, res, next) {
         }).catch(err => res.send(err));
 })
 
+//첫 차트 그려주기
   router.get('/firstdraw', async function(req, res, next) {
     var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
     sumAry = []
@@ -210,6 +213,7 @@ router.get('/getcarlist', async function(req, res, next) {
 })        
 });  
 
+//총데이터 도넛으로 그리기
 router.get('/donutdraw', async function(req, res, next) {
     var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
     sumAry = []
