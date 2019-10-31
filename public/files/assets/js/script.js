@@ -298,6 +298,7 @@ $('#styleSelector').append('' +
                 '<option name="chart_type"  style="background-image:url(barchart.png);" value="simplebar">막대 차트</option>' +
                 '<option name="chart_type" value="groupbar">그룹바 차트</option>' +
                 '<option name="chart_type" value="line">라인 차트</option>' +
+                '<option name="chart_type" value="groupline">그룹라인 차트</option>' +
                 '<option name="chart_type" value="donut">도넛 차트</option>' +
             '</select>' +
         '</li>' +
