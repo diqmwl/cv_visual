@@ -1012,7 +1012,8 @@ function grouplinechart(data){
 diagram.append("path")
     .datum(data.slice(0, numBars)) // 10. Binds data to the line 
     .attr("class", "line") // Assign a class for styling 
-    .attr("d", d3.line().x(function(d) { return xscale(d[x_value]); }).y(function(d) { return yscale(d[keys[i]]); }).curve(d3.curveMonotoneX).attr("fill", z))
+    .style("stroke",)
+    .attr("d", d3.line().x(function(d) { return xscale(d[x_value]); }).y(function(d) { return yscale(d[keys[i]]); }).curve(d3.curveMonotoneX))
 
 // 12. Appends a circle for each datapoint 
 diagram.selectAll(".dot")
