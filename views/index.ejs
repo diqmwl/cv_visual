@@ -71,9 +71,16 @@
         function selectcompany(x){
             company = x;
             $('#nav-company-tab').text(company);
-            $('#nav-category-tab').last().trigger('click');
-            $('#nav-category-tab').focus();
-
+            if(x == "홍익대"){
+                $('.firstdiv').css("display", "none");
+                $('.lastdiv').css("display", "inline-block");   
+            }
+            else{
+                $('.firstdiv').css("display", "inline-block");
+                $('.lastdiv').css("display", "none");   
+                $('#nav-category-tab').last().trigger('click');
+                $('#nav-category-tab').focus();
+            }
         }
         //메인 카테고리 설정        
         function selectcategory(x){
@@ -331,6 +338,8 @@ function ksubclass(val){
                           <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="company" role="tabpanel" aria-labelledby="nav-company-tab">
                                 <ul class="pcoded-item pcoded-left-item" id="selectcompany">
+                                    
+                                    <div class="pcoded-navigatio-lavel">Company</div>
                                     <li class="pcoded-hasmenu  pcoded-trigger">
                                         <a href="javascript:void(0)" onclick="selectcompany('B2B_1')">
                                             <span class="pcoded-micon span_img"><img src="Product.png"></span>
@@ -349,7 +358,15 @@ function ksubclass(val){
                                             <span class="pcoded-mtext"><b>CarSharring</b></span>
                                         </a>
                                     </li>
-                                </ul> 
+                                    
+                                <div class="pcoded-navigatio-lavel">University</div>
+                                <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)" onclick="selectcompany('홍익대')">
+                                            <span class="pcoded-micon span_img"><img src="Product.png"></span>
+                                            <span class="pcoded-mtext"><b>홍익대학교</b></span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="nav-category-tab">
                                     <ul class="pcoded-item pcoded-left-item">
@@ -373,6 +390,7 @@ function ksubclass(val){
                                             </li>
                                         </ul>   
                             </div>
+
                             <div class="tab-pane fade" id="subclass" role="tabpanel" aria-labelledby="nav-subclass-tab">
                                     <ul class="pcoded-item pcoded-left-item" id="driving_type">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
@@ -547,7 +565,7 @@ function ksubclass(val){
                                                            
                                                             <!-- task, page, download counter  end -->
                                                     <!--  sale analytics start -->
-                                                    <div class="col-xl-15 col-md-12" ">
+                                                    <div class="col-xl-15 col-md-12 firstdiv">
                                                         <div class="card">
                                                                 <div class="card-header">
                                                                         <h5 class="chart-name">회사별 총 데이터</h5>
@@ -566,6 +584,84 @@ function ksubclass(val){
                                                                     </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                            <div class="card">
+                                                                    <div class="card-header">
+                                                                            <h5 class="chart-name">1번</h5>
+                                                                            <div class="card-header-right">
+                                                                                <ul class="list-unstyled card-option">
+                                                                                    <li><i class="feather icon-maximize full-card"></i></li>
+                                                                                    <li><i class="feather icon-minus minimize-card"></i></li>
+                                                                                    <li><i class="feather icon-trash-2 close-card"></i></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-block">
+                                                                            <div class="table-responsive svg-container">
+                                                                                <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                            </div> 
+                                                                        </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                            <div class="card">
+                                                                    <div class="card-header">
+                                                                            <h5 class="chart-name">2번</h5>
+                                                                            <div class="card-header-right">
+                                                                                <ul class="list-unstyled card-option">
+                                                                                    <li><i class="feather icon-maximize full-card"></i></li>
+                                                                                    <li><i class="feather icon-minus minimize-card"></i></li>
+                                                                                    <li><i class="feather icon-trash-2 close-card"></i></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-block">
+                                                                            <div class="table-responsive svg-container">
+                                                                                <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                            </div> 
+                                                                        </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                            <div class="card">
+                                                                    <div class="card-header">
+                                                                            <h5 class="chart-name">3번</h5>
+                                                                            <div class="card-header-right">
+                                                                                <ul class="list-unstyled card-option">
+                                                                                    <li><i class="feather icon-maximize full-card"></i></li>
+                                                                                    <li><i class="feather icon-minus minimize-card"></i></li>
+                                                                                    <li><i class="feather icon-trash-2 close-card"></i></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-block">
+                                                                            <div class="table-responsive svg-container">
+                                                                                <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                            </div> 
+                                                                        </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                            <div class="card">
+                                                                    <div class="card-header">
+                                                                            <h5 class="chart-name">4번</h5>
+                                                                            <div class="card-header-right">
+                                                                                <ul class="list-unstyled card-option">
+                                                                                    <li><i class="feather icon-maximize full-card"></i></li>
+                                                                                    <li><i class="feather icon-minus minimize-card"></i></li>
+                                                                                    <li><i class="feather icon-trash-2 close-card"></i></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-block">
+                                                                            <div class="table-responsive svg-container">
+                                                                                <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                            </div> 
+                                                                        </div>
+                                                            </div>
+                                                    </div>
+                                                    
+
                                             </div>
                                     </div>
                                 </div>

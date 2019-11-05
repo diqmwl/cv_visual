@@ -987,6 +987,19 @@ function grouplinechart(data){
     .attr("class", "svgclass")
     .call(responsivefy);
 
+    //background line
+function make_x_gridlines() {		
+    return d3.axisBottom(xscale)
+    .ticks(5)
+}
+
+// gridlines in y axis function
+function make_y_gridlines() {		
+    return d3.axisLeft(yscale)
+    .ticks(5)
+}
+
+
     var diagram = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .attr("class", "gcontainer");
 
@@ -1012,8 +1025,8 @@ function grouplinechart(data){
 diagram.append("path")
     .datum(data.slice(0, numBars)) // 10. Binds data to the line 
     .attr("class", "line") // Assign a class for styling 
-    .style("stroke",)
     .attr("d", d3.line().x(function(d) { return xscale(d[x_value]); }).y(function(d) { return yscale(d[keys[i]]); }).curve(d3.curveMonotoneX))
+    .style("stroke", z(i))
 
 // 12. Appends a circle for each datapoint 
 diagram.selectAll(".dot")
@@ -1023,9 +1036,25 @@ diagram.selectAll(".dot")
     .attr("cx", function(d, i) { return xscale(d[x_value]) })
     .attr("cy", function(d) { return yscale(d[keys[i]]) })
     .attr("r", 5)
+    .attr("fill", function (d) { return z(d.key); });
+
 }   
 
+	//background line
+	diagram.append("g")			
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+    )
 
+	diagram.append("g")			
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+    )
 	
            //레전드 
             diagram.append("text")

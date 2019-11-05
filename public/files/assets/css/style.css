@@ -25668,4 +25668,9 @@ polyline{
     font-style: italic;
   font-weight: 700;
 }
+
+/*디브 두개 만들기 */
+.lastdiv{
+    display: none;
+}
 /*# sourceMappingURL=style.css.map */
