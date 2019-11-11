@@ -53,6 +53,7 @@
 
 
     <script>
+        var car_select = null;
         var claender_check = 0; //캘린더 처음 클릭인지 두번째 클릭인지 확인
         var company = "B2B_1"; //어떤 회사인지
         var category = "driving_type"; //어떤 카테고리인지
@@ -73,7 +74,7 @@
             $('#nav-company-tab').text(company);
             if(x == "홍익대"){
                 $('.firstdiv').css("display", "none");
-                $('.lastdiv').css("display", "inline-block");   
+                $('.lastdiv').css("display", "inline-block");
             }
             else{
                 $('.firstdiv').css("display", "inline-block");
@@ -224,6 +225,18 @@ function firstdraw(){
         ); 
         }
 
+//홍익대 카 리스트 불러오기
+function hongikgetcar(val){
+    $.get("/hongikgetcar",
+    { phonenum: val }, 
+    // 서버가 필요한 정보를 같이 보냄. 
+        function(data, status) {
+            console.log(data);
+            hongiklinechart(data);
+        } 
+); 
+}
+
 //서브클래스 한글화
 function ksubclass(val){
     if(val == 'Accel'){
@@ -261,6 +274,15 @@ function ksubclass(val){
     }
     return korsubclass;
 }
+
+//홍대 차량 선택
+//시각화 차트 수정할때 함수
+$(document).ready(function() {
+    $(".search-btn").click(function() {
+        car_select = $('#car_select').val();
+        hongikgetcar(car_select);
+    });
+})
     </script>
 </head>
 
@@ -359,11 +381,11 @@ function ksubclass(val){
                                         </a>
                                     </li>
                                     
-                                <div class="pcoded-navigatio-lavel">University</div>
+                                <div class="pcoded-navigatio-lavel">Hongik University</div>
                                 <li class="pcoded-hasmenu">
                                         <a href="javascript:void(0)" onclick="selectcompany('홍익대')">
                                             <span class="pcoded-micon span_img"><img src="Product.png"></span>
-                                            <span class="pcoded-mtext"><b>홍익대학교</b></span>
+                                            <span class="pcoded-mtext"><b>차량예지보전</b></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -508,7 +530,7 @@ function ksubclass(val){
                                     <div class="page-body">
                                             <div class="row">
                                                             <!-- task, page, download counter  start -->
-                                                            <div class="col-xl-4 col-md-6">
+                                                            <div class="col-xl-4 col-md-6 firstdiv">
                                                                 <div class="card bg-c-yellow update-card">
                                                                     <div class="card-block">
                                                                         <div class="row align-items-end">
@@ -526,7 +548,7 @@ function ksubclass(val){
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xl-4 col-md-6">
+                                                            <div class="col-xl-4 col-md-6 firstdiv">
                                                                 <div class="card bg-c-green update-card">
                                                                     <div class="card-block">
                                                                         <div class="row align-items-end">
@@ -544,7 +566,7 @@ function ksubclass(val){
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xl-4 col-md-6">
+                                                            <div class="col-xl-4 col-md-6 firstdiv">
                                                                 <div class="card bg-c-lite-green update-card">
                                                                     <div class="card-block">
                                                                         <div class="row align-items-end">
@@ -562,7 +584,50 @@ function ksubclass(val){
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                           
+                                                            <div class="col-xl-12 col-md-12 lastdiv">
+                                                                    <div class="card">
+                                                                            <div class="card-header">
+                                                                                    <h5 class="chart-name">차량 검색</h5>
+                                                                                </div>
+                                                                                <div class="card-block">
+                                                                                    <div class="table-responsive search-container">
+                                                                                        <div class="search-left">
+                                                                                                    <b>차량 선택</b> 
+                                                                                                    <select id="car_select" name="car_select" class="form-control minimal width250">
+                                                                                                            <option name="car_select" value="01225797031">01225797031</option>
+                                                                                                    </select>
+                                                                                                    <button type="button" class="btn btn-info search-btn">조회하기</button>
+
+                                                                                        </div>
+                                                                                        <div class="search-right">
+                                                                                                <table border=2 class="tg">
+                                                                                                        <tr>
+                                                                                                          <th class="tg-vt9a">고장확률</th>
+                                                                                                          <th class="tg-vt9a">색상</th>
+                                                                                                          <th class="tg-vt9a">상태</th>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                          <td class="tg-7xlb">0% 이상 30% 미만</td>
+                                                                                                          <td class="tg-s3fx">초록</td>
+                                                                                                          <td class="tg-7xlb">정상</td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                          <td class="tg-7xlb">30% 이상 70% 미만</td>
+                                                                                                          <td class="tg-hppj">노랑</td>
+                                                                                                          <td class="tg-7xlb">주의</td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                          <td class="tg-7xlb">70% 이상</td>
+                                                                                                          <td class="tg-s1jn">빨강</td>
+                                                                                                          <td class="tg-7xlb">정비 요망</td>
+                                                                                                        </tr>
+                                                                                                      </table>
+
+                                                                                        </div>
+                                                                                    </div> 
+                                                                                </div>
+                                                                    </div>
+                                                            </div>
                                                             <!-- task, page, download counter  end -->
                                                     <!--  sale analytics start -->
                                                     <div class="col-xl-15 col-md-12 firstdiv">
@@ -597,7 +662,7 @@ function ksubclass(val){
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-block">
-                                                                            <div class="table-responsive svg-container">
+                                                                            <div class="table-responsive svg-container1">
                                                                                 <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
                                                                             </div> 
                                                                         </div>
@@ -759,7 +824,7 @@ $(document).ready(function() {
     $('#nav-company-tab').last().trigger('click');
     $('#nav-company-tab').focus();
     //첫 차트 그리기
-    firstdraw();
+    //firstdraw();
 
     $('#yearpicker').datepicker({
         range: true,

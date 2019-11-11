@@ -1018,27 +1018,31 @@ function make_y_gridlines() {
     .attr("class", "y axis")
     .style("font","12px Verdana")
     .call(yAxis);
+var i = 0;
 
-    for(var i = 0; i < keys.length; i++){
-        
-// 9. Append the path, bind the data, and call the line generator 
-diagram.append("path")
-    .datum(data.slice(0, numBars)) // 10. Binds data to the line 
-    .attr("class", "line") // Assign a class for styling 
-    .attr("d", d3.line().x(function(d) { return xscale(d[x_value]); }).y(function(d) { return yscale(d[keys[i]]); }).curve(d3.curveMonotoneX))
-    .style("stroke", z(i))
+var line = d3.line().x(function(d) {
+     return xscale(d[x_value]); })
+     .y(function(d) { return yscale(d[keys[i]]); })
+     .curve(d3.curveMonotoneX);
 
-// 12. Appends a circle for each datapoint 
-diagram.selectAll(".dot")
+var lines = svg.selectAll(".gcontainer")
     .data(data.slice(0, numBars))
-  .enter().append("circle") // Uses the enter().append() method
+    .enter().append("g")
+    .attr("class", "lines")
+
+// 9. Append the path, bind the data, and call the line generator 
+lines.append("path")
+    .attr("class", "line")
+    .attr("d", line(data.slice(0, numBars)))
+    
+// 12. Appends a circle for each datapoint 
+lines.append("circle") // Uses the enter().append() method
     .attr("class", "dot") // Assign a class for styling
     .attr("cx", function(d, i) { return xscale(d[x_value]) })
     .attr("cy", function(d) { return yscale(d[keys[i]]) })
     .attr("r", 5)
     .attr("fill", function (d) { return z(d.key); });
-
-}   
+ 
 
 	//background line
 	diagram.append("g")			
@@ -1461,6 +1465,58 @@ function donutbar(data){
             .call(donut) // draw chart in div;
    }
 
+   function hongiklinechart(data){
+    var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select(".svg-container1")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+//Read the data
+data.forEach(
+  // When reading the csv, I must format variables:
+  function(d){
+    { date : d3.timeParse("%Y-%m-%d")(d.date); value : d.value }
+  }
+)
+
+  // Now I can use this dataset:
+console.log(data)
+    // Add X axis --> it is a date format
+    var x = d3.scaleTime()
+      .domain(d3.extent(data, function(d) { return d.date; }))
+      .range([ 0, width ]);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain([0, d3.max(data, function(d) { return +d.value; })])
+      .range([ height, 0 ]);
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    // Add the line
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .x(function(d) { return x(d.date) })
+        .y(function(d) { return y(d.value) })
+        )
+
+
+}
 
 //svg다시~
 function responsivefy(svg) {
@@ -1587,4 +1643,3 @@ function responsivefy(svg) {
     return kor;
   }
 
- 

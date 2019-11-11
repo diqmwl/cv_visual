@@ -5,6 +5,9 @@ var router = express.Router();
 const Influx = require('influxdb-nodejs');
 var request = require('request');
 var MongoClient = require('mongodb').MongoClient;
+var mongoose    = require('mongoose');
+var Result = require('../models/hongik.js');
+mongoose.connect('mongodb://125.140.110.217:27037/config',{useNewUrlParser:true ,useUnifiedTopology: true});
 
 
 var client;
@@ -206,10 +209,10 @@ router.get('/getcarlist', async function(req, res, next) {
             sumAry.push(dataJson);
             console.log(sumAry)
             res.send(sumAry);
+            db.close();
         });
     });
 });
-
 })        
 });  
 
@@ -260,6 +263,35 @@ router.get('/donutdraw', async function(req, res, next) {
     //curl -GET 'http://tinyos:tinyos@125.140.110.217:8999/query?db=CS_ANALYSIS' --data-urlencode 'q=show measurements'
     
 });
+
+
+//홍익대차량목록 얻기
+router.get('/hongikgetcar', async function(req, res, next) {
+    var { phonenum } = req.query
+    var date = new Date('2019-06-01');
+    var ary = new Array();
+
+    while(date.getMonth() < 7){
+        var data = await Result.find({'PHONE_NUM' : phonenum, "DTC": 'AD',  'time': {$gte: date.toISOString().slice(0,10)+' 00:00:00', $lte: date.toISOString().slice(0,10)+' 23:59:59'}}).limit(1)
+        console.log(data)
+        var dataJson = new Object();
+            if(JSON.stringify(data) == '[]'){
+                dataJson.date = date.toISOString().slice(0,10);
+                dataJson.value = "0";
+                ary.push(dataJson);
+            } else {
+                dataJson.date = date.toISOString().slice(0,10);
+                dataJson.value = data[0]['prob'].replace("%","");
+                ary.push(dataJson);
+            }
+        date.setDate(date.getDate()+1)
+    }
+    dataJson.date = '2020-01-01';
+    dataJson.value = '50';
+    ary.push(dataJson);
+    res.send(ary)
+ 
+})
 
 
 module.exports = router;

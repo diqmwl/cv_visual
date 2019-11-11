@@ -25673,4 +25673,41 @@ polyline{
 .lastdiv{
     display: none;
 }
+/*홍익대 디브 만들기 */
+.search-container{
+    display: table;
+    position: relative;
+    width:100%;
+}
+.search-left{
+    display:table-cell;
+    padding:auto;
+    width: 50%;
+    height: 205px;
+    vertical-align:middle;
+}
+.search-right{
+    display:table-cell;
+    width:50%;
+    height: 205px;
+    vertical-align:middle;
+}
+
+.width250{
+    width:250px;
+    display: inline-block;
+    margin:0px 10px;
+}
+
+/*홍익대 테이블*/
+.tg  {border-collapse:collapse;border-spacing:0; margin: auto; width:80%;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-hppj{font-size:16px;font-family:"Arial Black", Gadget, sans-serif !important;;color:#f8ff00;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-s1jn{font-size:16px;font-family:"Arial Black", Gadget, sans-serif !important;;color:#fd6864;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-vt9a{font-weight:bold;font-size:16px;font-family:"Arial Black", Gadget, sans-serif !important;;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-7xlb{font-size:16px;font-family:"Arial Black", Gadget, sans-serif !important;;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-s3fx{font-size:16px;font-family:"Arial Black", Gadget, sans-serif !important;;color:#32cb00;border-color:inherit;text-align:center;vertical-align:top}
+
 /*# sourceMappingURL=style.css.map */
