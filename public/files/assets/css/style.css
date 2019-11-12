@@ -220,7 +220,6 @@ p {
     background-color: transparent;
     border-bottom: none;
     padding: 25px 20px;
-    margin-left: 46%;
 }
 
 .card .card-header .card-header-left {
@@ -25697,6 +25696,10 @@ polyline{
     width:250px;
     display: inline-block;
     margin:0px 10px;
+}
+
+.margin_46{
+    margin-left: 46%;
 }
 
 /*홍익대 테이블*/

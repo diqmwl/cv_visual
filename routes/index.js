@@ -276,19 +276,16 @@ router.get('/hongikgetcar', async function(req, res, next) {
         console.log(data)
         var dataJson = new Object();
             if(JSON.stringify(data) == '[]'){
-                dataJson.date = date.toISOString().slice(0,10);
+                dataJson.time = date.toISOString().slice(0,10);
                 dataJson.value = "0";
                 ary.push(dataJson);
             } else {
-                dataJson.date = date.toISOString().slice(0,10);
+                dataJson.time = date.toISOString().slice(0,10);
                 dataJson.value = data[0]['prob'].replace("%","");
                 ary.push(dataJson);
             }
         date.setDate(date.getDate()+1)
     }
-    dataJson.date = '2020-01-01';
-    dataJson.value = '50';
-    ary.push(dataJson);
     res.send(ary)
  
 })

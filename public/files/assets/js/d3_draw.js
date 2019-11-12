@@ -1466,6 +1466,9 @@ function donutbar(data){
    }
 
    function hongiklinechart(data){
+
+    d3.select('.svgclass').remove();
+
     var margin = {top: 10, right: 30, bottom: 30, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
@@ -1475,20 +1478,42 @@ var svg = d3.select(".svg-container1")
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    .attr("class", "svgclass")
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+    var redBox = svg.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", width)
+    .attr("height", 360/10*3)
+    .attr("fill", "red")
+    .attr("opacity", 0.1);
+
+    var yellowBox = svg.append("rect")
+    .attr("x", 0)
+    .attr("y", 360/10*3)
+    .attr("width", width)
+    .attr("height", 360/10*4)
+    .attr("fill", "yellow")
+    .attr("opacity", 0.1);
+    
+    var greenBox = svg.append("rect")
+    .attr("x", 0)
+    .attr("y", 360/10*7)
+    .attr("width", width)
+    .attr("height", 360/10*3)
+    .attr("fill", "green")
+    .attr("opacity", 0.1);
+
 //Read the data
-data.forEach(
-  // When reading the csv, I must format variables:
-  function(d){
-    { date : d3.timeParse("%Y-%m-%d")(d.date); value : d.value }
-  }
-)
+data.forEach(function(d) {
+    var day = new Date(d.time)
+    d.date = (day);
+});
 
   // Now I can use this dataset:
-console.log(data)
     // Add X axis --> it is a date format
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date; }))
