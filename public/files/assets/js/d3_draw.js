@@ -1465,16 +1465,16 @@ function donutbar(data){
             .call(donut) // draw chart in div;
    }
 
-   function hongiklinechart(data){
-
-    d3.select('.svgclass').remove();
+   function hongiklinechart(data, value){
+    
+    //d3.select('.svgclass').remove();
 
     var margin = {top: 10, right: 30, bottom: 30, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-var svg = d3.select(".svg-container1")
+var svg = d3.select(".svg-container"+value)
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)

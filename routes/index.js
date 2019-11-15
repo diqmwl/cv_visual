@@ -268,24 +268,78 @@ router.get('/donutdraw', async function(req, res, next) {
 //홍익대차량목록 얻기
 router.get('/hongikgetcar', async function(req, res, next) {
     var { phonenum } = req.query
-    var date = new Date('2019-06-01');
     var ary = new Array();
+    var ary1 = new Array();
+    var ary2 = new Array();
+    var ary3 = new Array();
+    var ary4 = new Array();
 
-    while(date.getMonth() < 7){
-        var data = await Result.find({'PHONE_NUM' : phonenum, "DTC": 'AD',  'time': {$gte: date.toISOString().slice(0,10)+' 00:00:00', $lte: date.toISOString().slice(0,10)+' 23:59:59'}}).limit(1)
-        console.log(data)
-        var dataJson = new Object();
-            if(JSON.stringify(data) == '[]'){
-                dataJson.time = date.toISOString().slice(0,10);
+
+        var data = await Result.find({'PHONE_NUM' : phonenum, "DTC": 'AD'  })
+
+        for(var i = 0 ; i < data.length; i++){
+            var dataJson = new Object();
+            if(JSON.stringify(data[i]) == '[]'){
+                dataJson.time = data[i]['time'].slice(0,10);
                 dataJson.value = "0";
-                ary.push(dataJson);
+                ary1.push(dataJson);
             } else {
-                dataJson.time = date.toISOString().slice(0,10);
-                dataJson.value = data[0]['prob'].replace("%","");
-                ary.push(dataJson);
+                dataJson.time = data[i]['time'].slice(0,10);
+                dataJson.value = data[i]['prob'].replace("%","");
+                ary1.push(dataJson);
             }
-        date.setDate(date.getDate()+1)
-    }
+        }
+
+        var data = await Result.find({'PHONE_NUM' : phonenum, "DTC": '9C'  })
+
+        for(var i = 0 ; i < data.length; i++){
+            var dataJson = new Object();
+            if(JSON.stringify(data[i]) == '[]'){
+                dataJson.time = data[i]['time'].slice(0,10);
+                dataJson.value = "0";
+                ary2.push(dataJson);
+            } else {
+                dataJson.time = data[i]['time'].slice(0,10);
+                dataJson.value = data[i]['prob'].replace("%","");
+                ary2.push(dataJson);
+            }
+        }
+
+        var data = await Result.find({'PHONE_NUM' : phonenum, "DTC": 'BA'  })
+
+        for(var i = 0 ; i < data.length; i++){
+            var dataJson = new Object();
+            if(JSON.stringify(data[i]) == '[]'){
+                dataJson.time = data[i]['time'].slice(0,10);
+                dataJson.value = "0";
+                ary3.push(dataJson);
+            } else {
+                dataJson.time = data[i]['time'].slice(0,10);
+                dataJson.value = data[i]['prob'].replace("%","");
+                ary3.push(dataJson);
+            }
+        }
+
+        var data = await Result.find({'PHONE_NUM' : phonenum, "DTC": 'E7'  })
+
+        for(var i = 0 ; i < data.length; i++){
+            var dataJson = new Object();
+            if(JSON.stringify(data[i]) == '[]'){
+                dataJson.time = data[i]['time'].slice(0,10);
+                dataJson.value = "0";
+                ary4.push(dataJson);
+            } else {
+                dataJson.time = data[i]['time'].slice(0,10);
+                dataJson.value = data[i]['prob'].replace("%","");
+                ary4.push(dataJson);
+            }
+        }
+        ary.push(ary1)
+        ary.push(ary2)
+        ary.push(ary3)
+        ary.push(ary4)
+        console.log(ary[1])
+    
     res.send(ary)
  
 })

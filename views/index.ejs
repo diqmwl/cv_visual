@@ -232,7 +232,11 @@ function hongikgetcar(val){
     // 서버가 필요한 정보를 같이 보냄. 
         function(data, status) {
             console.log(data);
-            hongiklinechart(data);
+            hongiklinechart(data[0],1);
+            hongiklinechart(data[1],2);
+            hongiklinechart(data[2],3);
+            hongiklinechart(data[3],4);
+
         } 
 ); 
 }
@@ -824,7 +828,7 @@ $(document).ready(function() {
     $('#nav-company-tab').last().trigger('click');
     $('#nav-company-tab').focus();
     //첫 차트 그리기
-    //firstdraw();
+    firstdraw();
 
     $('#yearpicker').datepicker({
         range: true,
