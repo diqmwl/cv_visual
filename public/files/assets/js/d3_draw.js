@@ -1467,10 +1467,14 @@ function donutbar(data){
 
    function hongiklinechart(data, value){
     
-    //d3.select('.svgclass').remove();
+    $('.svg-container'+value).empty();
 
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = 460 - margin.left - margin.right,
+    var margin = {top: 10, right: 30, bottom: 30, left: 60}
+    if(value == 1 || value == 4){
+        width = 960 - margin.left - margin.right
+    }else{
+        width = 440 - margin.left - margin.right //원래는 460
+    }
     height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
@@ -1479,9 +1483,11 @@ var svg = d3.select(".svg-container"+value)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .attr("class", "svgclass")
-  .append("g")
+
+    .append("g")
     .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+          "translate(" + margin.left + "," + margin.top + ")")
+
 
     var redBox = svg.append("rect")
     .attr("x", 0)
@@ -1524,7 +1530,7 @@ data.forEach(function(d) {
 
     // Add Y axis
     var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.value; })])
+      .domain([0, 100])
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y));

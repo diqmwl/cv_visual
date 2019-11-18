@@ -344,7 +344,10 @@ router.get('/hongikgetcar', async function(req, res, next) {
  
 })
 
-
+//홍익대차량목록 얻기
+router.get('/hongikgetlist', async function(req, res, next) {
+    res.send(await Result.distinct("PHONE_NUM"))
+})
 module.exports = router;
 
 async function date_query(val,subclass, x_value, car_ID){

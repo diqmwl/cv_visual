@@ -73,6 +73,7 @@
             company = x;
             $('#nav-company-tab').text(company);
             if(x == "홍익대"){
+                hongikgetlist();
                 $('.firstdiv').css("display", "none");
                 $('.lastdiv').css("display", "inline-block");
             }
@@ -105,6 +106,19 @@
             $('#nav-subclass-tab').focus();
             $('#nav-category-tab').text(category);
         }
+//최초 홍익대 목록 그리기
+function hongikgetlist(){
+    $.get("/hongikgetlist", 
+    { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
+    // 서버가 필요한 정보를 같이 보냄. 
+        function(data, status) {
+            for(var i = 0; i < data.length; i++){
+                $("#car_select").append("<option value='"+data[i]+"'>"+data[i]+"</option>")
+            }
+        } 
+); 
+}
+
 //최초 총데이터 차트 그리기
 function firstdraw(){
     $.get("/firstdraw", 
@@ -285,6 +299,8 @@ $(document).ready(function() {
     $(".search-btn").click(function() {
         car_select = $('#car_select').val();
         hongikgetcar(car_select);
+        var offset = $('.svg-container1').offset();
+        $('html').animate({scrollTop : offset.top}, 1000);
     });
 })
     </script>
@@ -598,7 +614,6 @@ $(document).ready(function() {
                                                                                         <div class="search-left">
                                                                                                     <b>차량 선택</b> 
                                                                                                     <select id="car_select" name="car_select" class="form-control minimal width250">
-                                                                                                            <option name="car_select" value="01225797031">01225797031</option>
                                                                                                     </select>
                                                                                                     <button type="button" class="btn btn-info search-btn">조회하기</button>
 
@@ -653,7 +668,7 @@ $(document).ready(function() {
                                                                     </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                    <div class="col-xl-8 col-md-12 lastdiv">
                                                             <div class="card">
                                                                     <div class="card-header">
                                                                             <h5 class="chart-name">엔진 인젝터 타이밍 압력 이상</h5>
@@ -672,7 +687,7 @@ $(document).ready(function() {
                                                                         </div>
                                                             </div>
                                                     </div>
-                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                    <div class="col-xl-4 col-md-12 lastdiv">
                                                             <div class="card">
                                                                     <div class="card-header">
                                                                             <h5 class="chart-name">엔진 배기가스 온도 이상</h5>
@@ -691,7 +706,7 @@ $(document).ready(function() {
                                                                         </div>
                                                             </div>
                                                     </div>
-                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                    <div class="col-xl-4 col-md-12 lastdiv">
                                                             <div class="card">
                                                                     <div class="card-header">
                                                                             <h5 class="chart-name">PTO 속도 센서 저전압</h5>
@@ -710,7 +725,7 @@ $(document).ready(function() {
                                                                         </div>
                                                             </div>
                                                     </div>
-                                                    <div class="col-xl-6 col-md-12 lastdiv">
+                                                    <div class="col-xl-8 col-md-12 lastdiv">
                                                             <div class="card">
                                                                     <div class="card-header">
                                                                             <h5 class="chart-name">소모 연료 이상</h5>
