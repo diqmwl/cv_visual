@@ -26,32 +26,35 @@ router.get('/index', function(req, res, next) {
 
 //차트 그리는 함수
 router.get('/chartdraw', async function(req, res, next) {
-    subclassName(subclass);
   calAry = [];
   var { company, category, subclass, chartType, x_value, y_value, rangeslider_value, calender_start, calender_end, car_ID } = req.query
-  console.log(subclass+'_Year')
+  subclassName(subclass);
+
+  var subclassvalue = '';
   if(company == 'B2B_1'){
     client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/미정');
   } else if(company == 'B2B_2') {
     client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/ELEX_ANALYSIS');
+    subclassvalue = subclass + '_Day'
   } else if(company == 'CarSharring'){
     client = new Influx('http://tinyos:tinyos@125.140.110.217:8999/CS_ANALYSIS');
+    subclassvalue = subclass + '_Year'
   }
-  
   if(x_value == 'CAR_ID'){
-    client.query(subclass+'_Year')
+    client.query(subclassvalue)
     .set({format: 'json'})
     .where('time', '2018-01-01 00:00:00', '>=')
     .then((countdata)=> {
-        var percent = parseInt(countdata[subclass+'_Year'].length * (rangeslider_value/100))
+        var percent = parseInt(countdata[subclassvalue].length * (rangeslider_value/100))
         if(percent == 0){
             percent = 1;
         }
-        client.query(subclass+'_Year')
+        client.query(subclassvalue)
         .set({format: 'json', limit: percent})
         .where('time', '2018-01-01 00:00:00', '>=')
+        .where(scname, 0, '>')
         .then((data)=> {
-          res.send(data[subclass+'_Year']);
+          res.send(data[subclassvalue]);
         }).catch(console.error);
     }).catch(err => res.send(err));
   } else {
