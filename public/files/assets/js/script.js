@@ -289,7 +289,7 @@ function paging(x){
         --------------------------------------------------------   */
 $('#styleSelector').append('' +
     '<div class="selector-toggle">' +
-        '<a href="javascript:void(0)"></a>' +
+        '<a id="open_button" href="javascript:void(0)"></a>' +
     '</div>' +
     '<ul>' +
         '<li>' +

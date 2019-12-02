@@ -72,12 +72,21 @@
         function selectcompany(x){
             company = x;
             $('#nav-company-tab').text(company);
-            if(x == "홍익대"){
+            if(x == "Predictive"){
+
+                $("#styleSelector").attr('class', '')
+                $("#open_button").css("pointer-events", "none");
+                $('#styleSelector *').fadeTo('slow', .6);
+
                 hongikgetlist();
                 $('.firstdiv').css("display", "none");
                 $('.lastdiv').css("display", "inline-block");
             }
             else{
+                $("#open_button").css("pointer-events", "auto");
+                $('#styleSelector *').fadeTo('slow', 1);
+                $('#x_default').trigger('click');
+
                 $('.firstdiv').css("display", "inline-block");
                 $('.lastdiv').css("display", "none");   
                 $('#nav-category-tab').last().trigger('click');
@@ -142,7 +151,7 @@ function firstdraw(){
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
-                        $('.chart-name').text(ksubclass(subclass))
+                        $('.company-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
@@ -159,7 +168,7 @@ function firstdraw(){
                 } else{            // 서버가 필요한 정보를 같이 보냄. 
                     $.get("/donutdraw", { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
                     function(data, status) {
-                        $('.chart-name').text(ksubclass(subclass))
+                        $('.company-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
@@ -175,7 +184,7 @@ function firstdraw(){
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
-                        $('.chart-name').text(ksubclass(subclass))
+                        $('.company-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
@@ -402,9 +411,9 @@ $(document).ready(function() {
                                         </a>
                                     </li>
                                     
-                                <div class="pcoded-navigatio-lavel">Prediction</div>
+                                <div class="pcoded-navigatio-lavel">Predictive Vehicle</div>
                                 <li class="pcoded-hasmenu">
-                                        <a href="javascript:void(0)" onclick="selectcompany('홍익대')">
+                                        <a href="javascript:void(0)" onclick="selectcompany('Predictive')">
                                             <span class="pcoded-micon span_img"><img src="Product.png"></span>
                                             <span class="pcoded-mtext"><b>차량예지보전</b></span>
                                         </a>
@@ -653,7 +662,7 @@ $(document).ready(function() {
                                                     <div class="col-xl-15 col-md-12 firstdiv">
                                                         <div class="card">
                                                                 <div class="card-header margin_46">
-                                                                        <h5 class="chart-name">회사별 총 데이터</h5>
+                                                                        <h5 class="chart-name company-name">회사별 총 데이터</h5>
                                                                         <div class="card-header-right">
                                                                             <ul class="list-unstyled card-option">
                                                                                 <li><i class="feather icon-maximize full-card"></i></li>
