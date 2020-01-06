@@ -32,17 +32,15 @@
     <!--체크박스-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
 
-    <!-- 그리드스터 
-    <link rel="stylesheet" href="..\files\assets\css\gridstack.css" />
-    <script src="..\files\assets\js\gridstack.js"></script>
-    <script src="..\files\assets\js\gridstack.jQueryUI.js"></script>
-    -->
-
     <!--D3.JS-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="..\files\assets\js\d3_draw.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
+    <!-- 그리드스택 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@0.5.5/dist/gridstack.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gridstack@0.5.5/dist/gridstack.all.js"></script>
 
   <!--캘린더-->
 <link href="..\files\bower_components\dist\css\airdatepicker.css" rel="stylesheet" type="text/css">
@@ -53,6 +51,8 @@
 
 
     <script>
+        var chartchoice = "svg-container";
+        var divnum = 0;
         var car_select = null;
         var claender_check = 0; //캘린더 처음 클릭인지 두번째 클릭인지 확인
         var company = "B2B_1"; //어떤 회사인지
@@ -68,7 +68,9 @@
         var rangeslider_value = 60;
         var calender_start = null;
         var calender_end = null;
-//회사 설정     
+
+
+    //회사 설정     
         function selectcompany(x){
             company = x;
             $('#nav-company-tab').text(company);
@@ -121,6 +123,7 @@ function hongikgetlist(){
     { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
     // 서버가 필요한 정보를 같이 보냄. 
         function(data, status) {
+            console.log(data);
             for(var i = 0; i < data.length; i++){
                 $("#car_select").append("<option value='"+data[i]+"'>"+data[i]+"</option>")
             }
@@ -151,13 +154,12 @@ function firstdraw(){
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
-                        $('.company-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
                             alert("데이터가 없습니다")
                         } else{
-                                calgroupbar(data);
+                                calgroupbar(data, chartchoice);
                         }
                     } 
                 ); 
@@ -168,13 +170,12 @@ function firstdraw(){
                 } else{            // 서버가 필요한 정보를 같이 보냄. 
                     $.get("/donutdraw", { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
                     function(data, status) {
-                        $('.company-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
                             alert("데이터가 없습니다")
                         } else{
-                                donutbar(data);
+                                donutbar(data, chartchoice);
                         }
                     } 
                     ); 
@@ -184,7 +185,6 @@ function firstdraw(){
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
-                        $('.company-name').text(ksubclass(subclass))
                         console.log(data)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
@@ -199,13 +199,13 @@ function firstdraw(){
                             }
                         } else{
                             if(chartType == 'simplebar'){
-                                simplebar(data);
+                                simplebar(data, chartchoice);
                             } else if(chartType == 'groupbar'){
-                                groupbar(data);
+                                groupbar(data, chartchoice);
                             } else if(chartType == 'line'){
-                                linechart(data);
+                                linechart(data, chartchoice);
                             } else if(chartType == 'groupline'){
-                                grouplinechart(data);
+                                grouplinechart(data, chartchoice);
                             } 
                         }
                     } 
@@ -420,6 +420,16 @@ $(document).ready(function() {
                                     </li>
                                 </ul>
                             </div>
+
+                            <div class="pcoded-navigatio-lavel">Mornitoring</div>
+                            <li class="pcoded-hasmenu">
+                                    <a href="javascript:void(0)" onclick="selectcompany('Predictive')">
+                                        <span class="pcoded-micon span_img"><img src="Product.png"></span>
+                                        <span class="pcoded-mtext"><b>차량출도착서비스</b></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                             <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="nav-category-tab">
                                     <ul class="pcoded-item pcoded-left-item">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
@@ -446,37 +456,37 @@ $(document).ready(function() {
                             <div class="tab-pane fade" id="subclass" role="tabpanel" aria-labelledby="nav-subclass-tab">
                                     <ul class="pcoded-item pcoded-left-item" id="driving_type">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
-                                                <a href="javascript:void(0)" onclick="selectsubclass('Accel')">
+                                                <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Accel')">
                                                     <span class="pcoded-micon span_img"><img src="Accel.png"></span>
                                                     <span class="pcoded-mtext">급 가속</span>
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
-                                                <a href="javascript:void(0)" onclick="selectsubclass('Decel')">
+                                                <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Decel')">
                                                     <span class="pcoded-micon span_img"><img src="Decel.png"></span>
                                                     <span class="pcoded-mtext">급 감속</span>
                                                 </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('QuickStart')">
-                                                <a href="javascript:void(0)">
+                                            <li class="pcoded-hasmenu" >
+                                                <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('QuickStart')">
                                                     <span class="pcoded-micon span_img"><img src="Start.png"></span>
                                                     <span class="pcoded-mtext">급 출발</span>
                                                 </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('SuddenStop')">
-                                                    <a href="javascript:void(0)">
+                                            <li class="pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('SuddenStop')">
                                                         <span class="pcoded-micon span_img"><img src="stop.png"></span>
                                                         <span class="pcoded-mtext">급 정지</span>
                                                     </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('LeftAndRight')">
-                                                    <a href="javascript:void(0)">
+                                            <li class="pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('LeftAndRight')">
                                                         <span class="pcoded-micon span_img"><img src="Leftright.png"></span>
                                                         <span class="pcoded-mtext">급 좌우회전</span>
                                                     </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('UTurn')">
-                                                    <a href="javascript:void(0)">
+                                            <li class="pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('UTurn')">
                                                         <span class="pcoded-micon span_img"><img src="Uturn.png"></span>
                                                         <span class="pcoded-mtext">급 유턴</span>
                                                     </a>
@@ -484,37 +494,37 @@ $(document).ready(function() {
                                     </ul>     
                                     <ul class="pcoded-item pcoded-left-item" id="car_manage">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
-                                                    <a href="javascript:void(0)" onclick="selectsubclass('Distance')">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Distance')">
                                                         <span class="pcoded-micon span_img"><img src="Distance.png"></span>
                                                         <span class="pcoded-mtext">이동거리</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu  pcoded-trigger">
-                                                    <a href="javascript:void(0)" onclick="selectsubclass('Fuel')">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Fuel')">
                                                         <span class="pcoded-micon span_img"><img src="Fuel.png"></span>
                                                         <span class="pcoded-mtext">연료 사용량</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu  pcoded-trigger">
-                                                        <a href="javascript:void(0)" onclick="selectsubclass('FuelEfficiency')">
+                                                        <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('FuelEfficiency')">
                                                             <span class="pcoded-micon span_img"><img src="Efficiency.png"></span>
                                                             <span class="pcoded-mtext">연비효율</span>
                                                         </a>
                                                     </li>
                                                 <li class="pcoded-hasmenu">
-                                                    <a href="javascript:void(0)" onclick="selectsubclass('evg_efficiency')">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('evg_efficiency')">
                                                         <span class="pcoded-micon span_img"><img src="Efficiency.png"></span>
                                                         <span class="pcoded-mtext">평균연비</span>
                                                     </a>
                                                 </li>
-                                                <li class="pcoded-hasmenu" onclick="selectsubclass('idling')">
-                                                    <a href="javascript:void(0)">
+                                                <li class="pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('idling')">
                                                         <span class="pcoded-micon span_img"><img src="Idling.png"></span>
                                                         <span class="pcoded-mtext">공회전</span>
                                                     </a>
                                                 </li>
-                                                <li class="pcoded-hasmenu" onclick="selectsubclass('fuel_economy')">
-                                                        <a href="javascript:void(0)">
+                                                <li class="pcoded-hasmenu">
+                                                        <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('fuel_economy')">
                                                             <span class="pcoded-micon span_img"><img src="Rank.png"></span>
                                                             <span class="pcoded-mtext">연비 순위</span>
                                                         </a>
@@ -522,25 +532,25 @@ $(document).ready(function() {
                                     </ul>     
                                     <ul class="pcoded-item pcoded-left-item" id="etc">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
-                                                <a href="javascript:void(0)" onclick="selectsubclass('total_data')">
+                                                <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('total_data')">
                                                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                     <span class="pcoded-mtext">총 데이터</span>
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
-                                                <a href="javascript:void(0)" onclick="selectsubclass('car_gps')">
+                                                <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('car_gps')">
                                                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                     <span class="pcoded-mtext">차량 위치</span>
                                                 </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('car_route')">
-                                                <a href="javascript:void(0)">
+                                            <li class="pcoded-hasmenu">
+                                                <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('car_route')">
                                                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                     <span class="pcoded-mtext">이동경로</span>
                                                 </a>
                                             </li>
-                                            <li class="pcoded-hasmenu" onclick="selectsubclass('car_stop')">
-                                                    <a href="javascript:void(0)">
+                                            <li class="pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('car_stop')">
                                                         <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                                                         <span class="pcoded-mtext">주/정차</span>
                                                     </a>
@@ -614,6 +624,7 @@ $(document).ready(function() {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <!--홍대 윗부분-->
                                                             <div class="col-xl-12 col-md-12 lastdiv">
                                                                     <div class="card">
                                                                             <div class="card-header">
@@ -659,25 +670,55 @@ $(document).ready(function() {
                                                             </div>
                                                             <!-- task, page, download counter  end -->
                                                     <!--  sale analytics start -->
-                                                    <div class="col-xl-15 col-md-12 firstdiv">
-                                                        <div class="card">
-                                                                <div class="card-header margin_46">
-                                                                        <h5 class="chart-name company-name">회사별 총 데이터</h5>
-                                                                        <div class="card-header-right">
-                                                                            <ul class="list-unstyled card-option">
-                                                                                <li><i class="feather icon-maximize full-card"></i></li>
-                                                                                <li><i class="feather icon-minus minimize-card"></i></li>
-                                                                                <li><i class="feather icon-trash-2 close-card"></i></li>
-                                                                            </ul>
+
+
+                                                            <div class="container-fluid">
+                                                                    <div class="grid-stack grid-stack-instance-7030" data-gs-current-height="0" style="height: 100px;">
+                                                                            <div class="grid-stack-item firstdonut firstdiv data-gs-x="0" data-gs-y="0" data-gs-width="12" data-gs-height="7"">
+                                                                            <div class="grid-stack-item-content">
+                                                                                <div class="card">
+                                                                                            <div class="card-header margin_46">
+                                                                                                    <h5 class="chart-name company-name">회사별 총 데이터</h5>
+                                                                                                    <div class="card-header-right">
+                                                                                                        <ul class="list-unstyled card-option">
+                                                                                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                                                                                            <li><i class="feather icon-minus minimize-card"></i></li>
+                                                                                                            <li><i class="feather icon-trash-2 close-card"></i></li>
+                                                                                                        </ul>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="card-block">
+                                                                                                    <div class="table-responsive svg-container">
+                                                                                                        <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                                                    </div> 
+                                                                                                </div>
+                                                                                    </div>  
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card-block">
-                                                                        <div class="table-responsive svg-container">
-                                                                            <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
-                                                                        </div> 
-                                                                    </div>
                                                         </div>
+
+                                                    <!--
+                                                <div class="col-xl-15 col-md-12 firstdiv">
+                                                    <div class="card">
+                                                            <div class="card-header margin_46">
+                                                                    <h5 class="chart-name company-name">회사별 총 데이터</h5>
+                                                                    <div class="card-header-right">
+                                                                        <ul class="list-unstyled card-option">
+                                                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                                                            <li><i class="feather icon-minus minimize-card"></i></li>
+                                                                            <li><i class="feather icon-trash-2 close-card"></i></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-block">
+                                                                    <div class="table-responsive svg-container">
+                                                                        <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                    </div> 
+                                                                </div>
                                                     </div>
+                                                </div>-->
+                                                
                                                     <div class="col-xl-8 col-md-12 lastdiv">
                                                             <div class="card">
                                                                     <div class="card-header">
@@ -849,6 +890,78 @@ $(document).ready(function() {
 //캘린더
 $(document).ready(function() {
 
+    //그리드스택
+    $(function () {
+        var options = {
+          float: true
+        };
+        $('.grid-stack').gridstack(options);
+  
+        new function () {
+          this.items = [
+            {x: 0, y: 0, width: 9, height: 7},
+            {x: 3, y: 1, width: 5, height: 7},
+            {x: 4, y: 1, width: 5, height: 5},
+            {x: 2, y: 3, width: 7, height: 5},
+  //          {x: 1, y: 4, width: 1, height: 1},
+  //          {x: 1, y: 3, width: 1, height: 1},
+  //          {x: 2, y: 4, width: 1, height: 1},
+            {x: 2, y: 5, width: 7, height: 4}
+          ];
+  
+          this.grid = $('.grid-stack').data('gridstack');
+  
+          this.addNewWidget = function () {
+            console.log(divnum);
+            if(divnum > 3){
+                alert("더이상 대시보드를 추가할 수 없습니다.")
+            }
+
+            else{
+                if(divnum < 1){
+                    console.log("a")
+                    $('.grid-stack').data('gridstack').removeWidget('.firstdonut');
+                }
+                var node = this.items.pop() || {
+                    x: 12 * Math.random(),
+                    y: 5 * Math.random(),
+                    width: 1 + 3 * Math.random(),
+                    height: 1 + 3 * Math.random()
+                  };
+                  
+              this.grid.addWidget($('<div><div class="grid-stack-item-content data-gs-width="4" data-gs-height="2"">'+
+                              '<div class="card">'+
+                                      '<div class="card-header margin_46">'+
+                                              '<h5 class="chart-name company-name'+divnum+'">회사별 총 데이터</h5>'+
+                                              '<div class="card-header-right">'+
+                                                  '<ul class="list-unstyled card-option">'+
+                                                      '<li><i class="feather icon-maximize full-card"></i></li>'+
+                                                      '<li><i class="feather icon-minus minimize-card"></i></li>'+
+                                                      '<li><i class="feather icon-trash-2 close-card"></i></li>'+
+                                                  '</ul>'+
+                                              '</div>'+
+                                          '</div>'+
+                                          '<div class="card-block">'+
+                                              '<div class="table-responsive svg-container'+divnum+'">'+
+                                                  '<div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>'+
+                                              '</div>'+ 
+                                          '</div>'+
+                              '</div>'+
+                      '</div></div>'), node);
+                      $('.company-name'+divnum).text(ksubclass(subclass))
+                      '<option name="chart_choice" value="simplebar">기본</option>' +
+                      $('#chart_choice').append('<option name="chart_choice" value="svg-container'+divnum+'">svg-container'+divnum+'</option>');
+                      chartchoice = "svg-container"+divnum
+                      divnum++;
+              return false;
+            }
+          }.bind(this);
+  
+          $('.add-widget').click(this.addNewWidget);
+        };
+      });
+
+    
     //탭 메뉴 포커스 주려고!
     $('#nav-company-tab').last().trigger('click');
     $('#nav-company-tab').focus();

@@ -1,5 +1,5 @@
-function simplebar(data){
-    d3.select('.svgclass').remove();
+function simplebar(data, chartchoice){
+    $("."+chartchoice).empty();
     
     var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
@@ -29,7 +29,7 @@ function simplebar(data){
         }
     }
     console.log(isScrollDisplayed)
-      
+
     var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -62,8 +62,7 @@ function simplebar(data){
 		.ticks(5)
 	}
 
-
-    var svg = d3.select(".svg-container").append("svg")
+    var svg = d3.select("."+chartchoice).append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom + selectorHeight)
                 .attr("class", "svgclass")
@@ -248,8 +247,8 @@ function simplebar(data){
     };
 }
 
-function groupbar(data){
-    d3.select('.svgclass').remove();
+function groupbar(data, chartchoice){
+    $("."+chartchoice).empty();
     var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
     var selectorHeight = 40;
@@ -279,7 +278,7 @@ function groupbar(data){
     var z = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-    var svg = d3.select(".svg-container").append("svg")
+    var svg = d3.select("."+chartchoice).append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom + selectorHeight)
     .attr("class", "svgclass")
@@ -465,9 +464,9 @@ function groupbar(data){
 
 }
 
-function calgroupbar(data){
+function calgroupbar(data, chartchoice){
     
-    d3.select('.svgclass').remove();
+    $("."+chartchoice).empty();
 
     var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
@@ -498,7 +497,7 @@ function calgroupbar(data){
     var z = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-    var svg = d3.select(".svg-container").append("svg")
+    var svg = d3.select("."+chartchoice).append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom + selectorHeight)
     .attr("class", "svgclass")
@@ -684,8 +683,8 @@ function calgroupbar(data){
 
 }
 
-function linechart(data){
-    d3.select('.svgclass').remove();
+function linechart(data, chartchoice){
+    $("."+chartchoice).empty();
 
     var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
@@ -762,7 +761,7 @@ var line = d3.line()
 	.curve(d3.curveMonotoneX) // apply smoothing to the line
 
 	// 1. Add the SVG to the page and employ #2
-	var svg = d3.select(".svg-container").append("svg")
+	var svg = d3.select("."+chartchoice).append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom + selectorHeight)
     .attr("class", "svgclass")
@@ -951,8 +950,8 @@ diagram.selectAll(".dot")
 
 }
 //그룹 라인차트
-function grouplinechart(data){
-    d3.select('.svgclass').remove();
+function grouplinechart(data, chartchoice){
+    $("."+chartchoice).empty();
 
     var margin =  {top: 20, right: 20, bottom: 100, left: 80};
     var marginOverview = {top: 30, right: 10, bottom: 20, left: 40};
@@ -1051,7 +1050,7 @@ var line = d3.line()
 	.curve(d3.curveMonotoneX) // apply smoothing to the line
 
 	// 1. Add the SVG to the page and employ #2
-	var svg = d3.select(".svg-container").append("svg")
+	var svg = d3.select("."+chartchoice).append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom + selectorHeight)
     .attr("class", "svgclass")
@@ -1071,22 +1070,24 @@ var line = d3.line()
     .attr("d", function(d){return line(d.values)}) // 11. Calls the line generator 
     .style("stroke",function(d){
         return z(d.name)
-      });
+    });
 
 
-      diagram.selectAll('.circle-group')
-      .data(namevalue).enter()
-      .append('g')
-      .attr('class', 'circle-group')  
-      .append('circle')
-      .attr('class', 'dot')  
-      .attr("class", "dot") // Assign a class for styling
-      .attr("cx", function(d, i) { return xscale(d.values[x_value]) })
-      .attr("cy", function(d) { return yscale(d.values.value) })
-      .attr("r", 5)
-        .style("stroke",function(d){
-          return z(d.name)
-        });
+    diagram.selectAll('.circle-group')
+    .data(namevalue).enter()
+    .append('g')
+    .attr('class', 'circle-group')
+    .selectAll("circle")
+    .data(d => d.values).enter()
+    .append("g")
+    .append('circle')
+    .attr('class', 'dot')  
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d, i) { return xscale(d[x_value]) })
+    .attr("cy", function(d) { return yscale(d.value) })
+    .attr("r", 5)
+    .style("fill",(d, i) => z(i));  
+    
 
 
 	// 3. Call the x axis in a group tag
@@ -1620,6 +1621,11 @@ function responsivefy(svg) {
     // multiple listeners for the same event type
     // requires a namespace, i.e., 'click.foo'
     // api docs: https://goo.gl/F3ZCFr
+    $('.grid-stack').on('change', function (e, items) {
+        resize()
+    }
+    )
+
     d3.select(window).on(
         'resize.' + container.attr('id'), 
         resize

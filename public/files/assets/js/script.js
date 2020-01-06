@@ -179,6 +179,13 @@ $(document).ready(function() {
     });
 })
 
+//차트 선택할때 함수
+$(document).ready(function() {
+    $("#chart_choice").on('change', function() {
+        chartchoice = this.value
+    });
+})
+
 // X축 버튼 클릭시 함수
 $(document).ready(function() {
     $(".x_value").click(function() {
@@ -292,8 +299,13 @@ $('#styleSelector').append('' +
         '<a id="open_button" href="javascript:void(0)"></a>' +
     '</div>' +
     '<ul>' +
+            '<li>' +
+            '<p class="selector-title main-title st-main-title"><b>시각화 </b>차트 선택</p>' +
+            '<select id="chart_choice" name="chart_choice" class="form-control minimal">' +
+            '</select>' +
+        '</li>' +
         '<li>' +
-            '<p class="selector-title main-title st-main-title"><b>시각화 </b>차트 설정</p>' +
+            '<p class="selector-title main-title st-main-title"><b>시각화 </b>차트 종류 설정</p>' +
             '<select id="chart_type" name="chart_type" class="form-control minimal">' +
                 '<option name="chart_type"  style="background-image:url(barchart.png);" value="simplebar">막대 차트</option>' +
                 '<option name="chart_type" value="groupbar">그룹바 차트</option>' +
