@@ -352,6 +352,24 @@ router.get('/hongikgetlist', async function(req, res, next) {
     console.log('실행');
     res.send(await Result.distinct("PHONE_NUM"))
 })
+
+//최우정 삼표 모니터링
+router.get('/monitor', function(req, res, next) {
+    var { mapnumber } = req.query
+    
+    var options = {
+        url: 'http://tinyos:tinyos@125.140.110.217:8999/query?pretty=true',
+        method: 'POST',
+        form: {
+            db: 'SAMPYO_MONIT',
+            q: 'SELECT * FROM DEPARTARRIV_TIME WHERE LOC_NUM = '+mapnumber,
+        },
+    };
+    request(options, function(error, response, body) {
+        res.send(JSON.parse(body)['results'][0]['series']);
+    });
+});
+
 module.exports = router;
 
 async function date_query(val,subclass, x_value, car_ID){
@@ -533,3 +551,9 @@ function subclassName(val){
         scname = 'TOTAL_COUNT';
     }
 }
+
+
+
+
+
+//curl -G 'http://tinyos:tinyos@125.140.110.217:8999/query?pretty=true' --data-urlencode "db=SAMPYO_MONIT" --data-urlencode "q=SELECT * FROM DEPARTARRIV_TIME WHERE LOC_NUM = 1"

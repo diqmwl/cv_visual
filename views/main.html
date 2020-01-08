@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0; width: 100%; height:100%;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+td{text-align:center;vertical-align:top}
+td{text-align:center;vertical-align:middle}
+</style>
+<script>
+
+    var mapnumber = 1;
+    var table;
+
+  $(document).ready(function() {
+    $("#map_type").on('change', function() {
+        mapnumber = this.value
+        monitor(mapnumber)
+    });
+  })
+
+function monitor(num){
+    $.get("/monitor", 
+    { mapnumber: mapnumber}, 
+    // 서버가 필요한 정보를 같이 보냄. 
+        function(data, status) {
+            console.log(data);
+            table = data
+            tabledraw(table);
+        } 
+); 
+}
+
+function tabledraw(data){
+        $('.tg').empty()
+
+    var namestr;
+    
+    namestr = '<tr><th class="tg-nrix" colspan="5">차량 테이블</th></tr><tr>';
+    for(var i = 0; i < data[0]['columns'].length; i++){
+        namestr += '<td>'+ data[0]['columns'][i] +'</td>'
+    }
+    namestr += '</tr>';
+    $('.tg').append(namestr)
+
+    for(var i = 0; i < data[0]['values'].length; i++){
+        var valuestr = '<tr>'
+
+        for(var j = 0; j < data[0]['values'][i].length; j++){
+            valuestr += '<td>'+ data[0]['values'][i][j] +'</td>'
+        }
+
+        valuestr += '</tr>'
+
+        $('.tg').append(valuestr)
+
+    }
+
+    console.log(data[0]['columns']);
+}
+
+    monitor(mapnumber);
+
+
+</script>
+
+</head>
+
+<body>
+    <img src="keti.jpg" alt="KETI_LOGO">
+  <p>
+    <font size = '4' face='휴먼엽서체'>
+        <b>(주)삼표산업 레미콘 차량 출도착 확인 서비스</b>
+    </font>
+  </p>
+              <select id="map_type" name="map_type" class="form-control minimal">
+                <option name="map_type" value="1">SeongSU</option>
+                <option name="map_type" value="2">PungNap</option>
+                <option name="map_type" value="3">Gwangju</option>
+                <option name="map_type" value="4">DongSeoul</option>
+                <option name="map_type" value="5">YangJu</option>
+                <option name="map_type" value="6">YeonCheon</option>
+                <option name="map_type" value="7">SeoBu</option>
+                <option name="map_type" value="8">IlSan</option>
+                <option name="map_type" value="9">Gimpo</option>
+                <option name="map_type" value="10">AnYang</option>
+                <option name="map_type" value="11">HwaSeong</option>
+                <option name="map_type" value="12">InCheon</option>
+                <option name="map_type" value="13">SongDo</option>
+                <option name="map_type" value="14">PyeongTaek</option>
+                <option name="map_type" value="15">OSan</option>
+                <option name="map_type" value="16">YeoJu</option>
+                <option name="map_type" value="17">WonJu</option>
+                <option name="map_type" value="18">ChungJu</option>
+                <option name="map_type" value="19">YongIn</option>
+                <option name="map_type" value="20">AnSeong</option>
+                <option name="map_type" value="21">ASan</option>
+                <option name="map_type" value="22">DangJin</option>
+                <option name="map_type" value="23">CheongWon</option>
+                <option name="map_type" value="24">DaeJeon</option>
+                <option name="map_type" value="25">NamBu</option>
+                <option name="map_type" value="26">NamGwangJu</option>
+                <option name="map_type" value="27">SeoBusan</option>
+                <option name="map_type" value="28">PoHang</option>
+                <option name="map_type" value="29">GunSan</option>
+            </select>
+
+    <hr>
+  <p aligh="center">
+    <!---->
+    <div style="display: table; position: relative;">
+    <iframe width="940" height="670" margin="0" src ="../../../var/www/maps/Map1.html" name="test1" id="test1" frameborder="1" scrolling="yes" align="middle">
+    </iframe>
+    <div style="display:table-cell; width: 50%; vertical-align:top;">
+    
+    <table class="tg">
+
+</table>
+                                                                                        
+
+    </div>
+    </div>
+  </p>
+  <hr>
+  <p aligh="center">
+
+    <a href="index.html">메인페이지</a>
+    <a href="main.html">크게보기</a>
+    <a href="1.html">성수공장</a>
+
+</body>
+<!--
+겟 포스트...
+-->
+
+</html>
