@@ -12,11 +12,11 @@ td{text-align:center;vertical-align:middle}
 <script>
 
     var mapnumber = 1;
-    var table;
 
   $(document).ready(function() {
     $("#map_type").on('change', function() {
         mapnumber = this.value
+        $('#test1').attr('src', 'www/maps/Map'+mapnumber+'.html');
         monitor(mapnumber)
     });
   })
@@ -27,8 +27,7 @@ function monitor(num){
     // 서버가 필요한 정보를 같이 보냄. 
         function(data, status) {
             console.log(data);
-            table = data
-            tabledraw(table);
+            tabledraw(data);
         } 
 ); 
 }
@@ -38,23 +37,27 @@ function monitor(num){
 
 
 
-function tabledraw(data){
+function tabledraw(temp){
         $('.tg').empty()
-
+    var data_columns = temp[0][0]['columns']
+    var data_values = temp[0][0]['values'].sort(function (a, b) { 
+        return a[3] - b[3];
+    });
+    console.log(data_values)
     var namestr;
     
-    namestr = '<tr><th class="tg-nrix" colspan="5">차량 테이블</th></tr><tr>';
-    for(var i = 0; i < data[0]['columns'].length; i++){
-        namestr += '<td>'+ data[0]['columns'][i] +'</td>'
+    namestr = '<tr><th class="tg-nrix" colspan="5">외부 차량</th></tr><tr>';
+    for(var i = data_columns.length-1; i >= 3; i--){
+        namestr += '<td>'+ data_columns[i] +'</td>'
     }
     namestr += '</tr>';
     $('.tg').append(namestr)
-
-    for(var i = 0; i < data[0]['values'].length; i++){
+    
+    for(var i = 0; i < data_values.length; i++){
         var valuestr = '<tr>'
 
-        for(var j = 0; j < data[0]['values'][i].length; j++){
-            valuestr += '<td>'+ data[0]['values'][i][j] +'</td>'
+        for(var j = data_values[i].length-1; j >= 3; j--){
+            valuestr += '<td>'+ data_values[i][j] +'</td>'
         }
 
         valuestr += '</tr>'
@@ -63,7 +66,31 @@ function tabledraw(data){
 
     }
 
-    console.log(data[0]['columns']);
+    var data_columns = temp[1][0]['columns']
+    var data_values = temp[1][0]['values'].sort(function (a, b) { 
+        return b[3] - a[3];
+    });    
+    var namestr;
+    namestr = '<tr><th class="tg-nrix" colspan="5">내부 차량</th></tr><tr>';
+
+    for(var i = data_columns.length-1; i >= 3; i--){
+        namestr += '<td>'+ data_columns[i] +'</td>'
+    }
+    namestr += '</tr>';
+    $('.tg').append(namestr)
+
+    for(var i = 0; i < data_values.length; i++){
+        var valuestr = '<tr>'
+
+        for(var j = data_values[i].length-1; j >= 3; j--){
+            valuestr += '<td>'+ data_values[i][j] +'</td>'
+        }
+
+        valuestr += '</tr>'
+
+        $('.tg').append(valuestr)
+
+    }
 }
 
     monitor(mapnumber);
@@ -74,7 +101,7 @@ function tabledraw(data){
 </head>
 
 <body>
-    <img src="keti.jpg" alt="KETI_LOGO">
+    <img src="www/images/keti.jpg" alt="KETI_LOGO">
   <p>
     <font size = '4' face='휴먼엽서체'>
         <b>(주)삼표산업 레미콘 차량 출도착 확인 서비스</b>
@@ -115,7 +142,7 @@ function tabledraw(data){
     <hr>
   <p aligh="center">
     <!---->
-    <iframe style="float:left" width=50% height="670" margin="0" src ="../../../var/www/maps/Map1.html" name="test1" id="test1" frameborder="1" scrolling="yes" align="middle">
+    <iframe style="float:left" width=50% height="670" margin="0" src ="www/maps/Map1.html" name="test1" id="test1" frameborder="1" scrolling="yes" align="middle">
     </iframe>
     <div style= "float: left; width: 49.7%; vertical-align:top; height: 670px; overflow: auto;">
     

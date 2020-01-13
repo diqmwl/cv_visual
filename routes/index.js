@@ -354,23 +354,42 @@ router.get('/hongikgetlist', async function(req, res, next) {
 })
 
 //최우정 삼표 모니터링
-router.get('/monitor', function(req, res, next) {
+router.get('/monitor', async function(req, res, next) {
     var { mapnumber } = req.query
-    
+    var selectquery_array = new Array();
+
     var options = {
         url: 'http://tinyos:tinyos@125.140.110.217:8999/query?pretty=true',
         method: 'POST',
         form: {
             db: 'SAMPYO_MONIT',
-            q: 'SELECT * FROM DEPARTARRIV_TIME WHERE LOC_NUM = '+mapnumber,
+            q: "SELECT * FROM DEPARTARRIV_TIME WHERE LOC_NUM = "+mapnumber+" AND STATUS = 'outside'",
         },
     };
-    request(options, function(error, response, body) {
-        res.send(JSON.parse(body)['results'][0]['series']);
-    });
+    selectquery_array.push(JSON.parse(await curl_query(options))['results'][0]['series'])
+
+    var options = {
+        url: 'http://tinyos:tinyos@125.140.110.217:8999/query?pretty=true',
+        method: 'POST',
+        form: {
+            db: 'SAMPYO_MONIT',
+            q: "SELECT * FROM DEPARTARRIV_TIME WHERE LOC_NUM = "+mapnumber+" AND STATUS = 'inside'",
+        },
+    };
+    selectquery_array.push(JSON.parse(await curl_query(options))['results'][0]['series'])
+
+    res.send(selectquery_array);
 });
 
 module.exports = router;
+
+async function curl_query(options){
+    return new Promise(function (resolve, reject) {
+         request(options, function(error, response, body) {
+            resolve(body)
+    });
+})
+}
 
 async function date_query(val,subclass, x_value, car_ID){
     subclassName(subclass);
