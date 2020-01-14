@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0; width: 100%; height:100%;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-td{text-align:center;vertical-align:top}
-td{text-align:center;vertical-align:middle}
+
+
 </style>
+
 <script>
 
     var mapnumber = 1;
@@ -39,58 +41,61 @@ function monitor(num){
 
 function tabledraw(temp){
         $('.tg').empty()
+
     var data_columns = temp[0][0]['columns']
     var data_values = temp[0][0]['values'].sort(function (a, b) { 
         return a[3] - b[3];
     });
-    console.log(data_values)
-    var namestr;
     
-    namestr = '<tr><th class="tg-nrix" colspan="5">외부 차량</th></tr><tr>';
+    var namestr; 
+    namestr = '<thead class="thead-light"><tr><th class="tg-nrix" colspan="5">외부 차량</th></tr></thead><tr>';
     for(var i = data_columns.length-1; i >= 3; i--){
-        namestr += '<td>'+ data_columns[i] +'</td>'
+        namestr += '<th>'+ data_columns[i] +'</th>'
     }
     namestr += '</tr>';
     $('.tg').append(namestr)
     
+    var valuestr = '<tbody>'
     for(var i = 0; i < data_values.length; i++){
-        var valuestr = '<tr>'
+        valuestr += '<tr>'
 
         for(var j = data_values[i].length-1; j >= 3; j--){
             valuestr += '<td>'+ data_values[i][j] +'</td>'
         }
 
         valuestr += '</tr>'
-
-        $('.tg').append(valuestr)
-
     }
+    valuestr += '</tbody>'
+
+    $('.tg').append(valuestr)
+
 
     var data_columns = temp[1][0]['columns']
     var data_values = temp[1][0]['values'].sort(function (a, b) { 
         return b[3] - a[3];
     });    
     var namestr;
-    namestr = '<tr><th class="tg-nrix" colspan="5">내부 차량</th></tr><tr>';
+    namestr = '<thead class="thead-light"><tr><th class="tg-nrix" colspan="5">내부 차량</th></tr></thead><tr>';
 
     for(var i = data_columns.length-1; i >= 3; i--){
-        namestr += '<td>'+ data_columns[i] +'</td>'
+        namestr += '<th>'+ data_columns[i] +'</th>'
     }
     namestr += '</tr>';
-    $('.tg').append(namestr)
+    $('.tg2').append(namestr)
 
+    var valuestr = '<tbody>'
     for(var i = 0; i < data_values.length; i++){
-        var valuestr = '<tr>'
+        valuestr += '<tr>'
 
         for(var j = data_values[i].length-1; j >= 3; j--){
             valuestr += '<td>'+ data_values[i][j] +'</td>'
         }
 
         valuestr += '</tr>'
-
-        $('.tg').append(valuestr)
-
     }
+    valuestr += '</tbody>'
+    $('.tg2').append(valuestr)
+
 }
 
     monitor(mapnumber);
@@ -107,7 +112,7 @@ function tabledraw(temp){
         <b>(주)삼표산업 레미콘 차량 출도착 확인 서비스</b>
     </font>
   </p>
-              <select id="map_type" name="map_type" class="form-control minimal">
+              <select id="map_type" name="map_type" class="form-control minimal" style="width: 20%">
                 <option name="map_type" value="1">SeongSU</option>
                 <option name="map_type" value="2">PungNap</option>
                 <option name="map_type" value="3">Gwangju</option>
@@ -139,25 +144,18 @@ function tabledraw(temp){
                 <option name="map_type" value="29">GunSan</option>
             </select>
 
-    <hr>
-  <p aligh="center">
+
     <!---->
-    <iframe style="float:left" width=50% height="670" margin="0" src ="www/maps/Map1.html" name="test1" id="test1" frameborder="1" scrolling="yes" align="middle">
+    <div style="margin-top: 20px;">
+    <iframe style="float:left" width=70% height="800" margin="0" src ="www/maps/Map1.html" name="test1" id="test1" frameborder="1" scrolling="yes" align="middle">
     </iframe>
-    <div style= "float: left; width: 49.7%; vertical-align:top; height: 670px; overflow: auto;">
+    <div class="container" style= "float: left; width: 29.7%; vertical-align:top; height: 800px; overflow: auto;">
     
-    <table class="tg">
-
-</table>
-                                                                                        
-
+    <table class="tg table table-hover" style="text-align: center"></table>    
+    <table class="tg2 table table-hover" style="text-align: center"></table>                                                                         
     </div>
-  </p>
+</div>
 
-</br>
-</br>
-
-  <hr>
 </body>
 <!--
 겟 포스트...
