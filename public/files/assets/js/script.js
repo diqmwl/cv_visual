@@ -194,7 +194,7 @@ $(document).ready(function() {
 
         if(this.value == "CAR_ID"){
             x_value = "CAR_ID"
-            $("#carID_img").attr('src','id_white.png')
+            $("#carID_img").attr('src','/index/id_white.png')
             $("#calender_div").css('display','none');
             $("#carID_div").css('display','block');
         } else if(this.value == "Year"){
@@ -322,11 +322,11 @@ $('#styleSelector').append('' +
         '<div class="process">' +
         '<div class="process-row">' +
             '<div class="process-step">' +
-                '<button type="button" class="btn btn-default btn-circle x_value" id="x_default" value="CAR_ID"><img src="id.png" id="carID_img" alt="" style="max-width: 60%; height: auto;><i class="fa fa-user fa-3x"></i></button>' +
+                '<button type="button" class="btn btn-default btn-circle x_value" id="x_default" value="CAR_ID"><img src="/index/id.png" id="carID_img" alt="" style="max-width: 60%; height: auto;><i class="fa fa-user fa-3x"></i></button>' +
                 '<p>Car ID</p>' +
             '</div>' +
             '<div class="process-step">' +
-                '<button type="button" class="btn btn-default btn-circle x_value" value="Year"><img src="calendar.png" id="calendar_img" alt="" style="max-width: 60%; height: auto;><i class="fa fa-comments-o fa-3x"></i></button>' +
+                '<button type="button" class="btn btn-default btn-circle x_value" value="Year"><img src="calendar.png" id="/index/calendar_img" alt="" style="max-width: 60%; height: auto;><i class="fa fa-comments-o fa-3x"></i></button>' +
                 '<p>연도별</p>' +
             '</div>' +
             '<div class="process-step">' +

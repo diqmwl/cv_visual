@@ -68,6 +68,13 @@
         var rangeslider_value = 60;
         var calender_start = null;
         var calender_end = null;
+//인증
+        function auth(data){
+            if(data == '401'){
+                alert("로그인이 필요합니다.")
+                location.replace('/');
+            }
+        }
 
 
     //회사 설정     
@@ -119,7 +126,7 @@
         }
 //최초 홍익대 목록 그리기
 function hongikgetlist(){
-    $.get("/hongikgetlist", 
+    $.get("/index/hongikgetlist", 
     { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
     // 서버가 필요한 정보를 같이 보냄. 
         function(data, status) {
@@ -128,18 +135,22 @@ function hongikgetlist(){
                 $("#car_select").append("<option value='"+data[i]+"'>"+data[i]+"</option>")
             }
         } 
-); 
+).fail(function(error){
+    auth(error.status);
+});
 }
 
 //최초 총데이터 차트 그리기
 function firstdraw(){
-    $.get("/firstdraw", 
+    $.get("/index/firstdraw", 
     { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
     // 서버가 필요한 정보를 같이 보냄. 
         function(data, status) {
             donutbar(data);
         } 
-); 
+).fail(function(error){
+    auth(error.status);
+}); 
 }
 
 
@@ -150,7 +161,7 @@ function firstdraw(){
             $('.loading_div').css("display", "block");
             subclass = x;
             if(chartType == 'groupbar' && x_value != 'CAR_ID'){
-                $.get("/groupdraw", 
+                $.get("/index/groupdraw", 
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
@@ -162,13 +173,15 @@ function firstdraw(){
                                 calgroupbar(data, chartchoice);
                         }
                     } 
-                ); 
+                ).fail(function(error){
+                    auth(error.status);
+                }); 
             } else if(chartType == 'donut'){
                 if(subclass != "total_data"){
                     alert("도넛차트는 총 데이터에만 이용할 수 있습니다.")
                     $('.loading_div').css("display", "none");
                 } else{            // 서버가 필요한 정보를 같이 보냄. 
-                    $.get("/donutdraw", { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
+                    $.get("/index/donutdraw", { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
                     function(data, status) {
                         console.log(data)
                         $('.loading_div').css("display", "none");
@@ -178,14 +191,16 @@ function firstdraw(){
                                 donutbar(data, chartchoice);
                         }
                     } 
-                    ); 
+                    ).fail(function(error){
+                        auth(error.status);
+                    }); 
                 }
             } else{
-                $.get("/chartdraw", 
+                $.get("/index/chartdraw", 
                 { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                     function(data, status) {
-                        console.log(data)
+                        console.log(status)
                         $('.loading_div').css("display", "none");
                         if( !data[0] ){
                             if(subclass == 'total_data'){
@@ -209,7 +224,9 @@ function firstdraw(){
                             } 
                         }
                     } 
-                ); 
+                ).fail(function(error){
+                    auth(error.status);
+                }); 
             }
         }
 //차트에 필요한 카 입력
@@ -232,7 +249,7 @@ function firstdraw(){
 //캘린더 클릭시 사용가능한 차 종류 만들어냄
         function getcarList(start, end){
             car_ID = [];
-            $.get("/getcarlist", 
+            $.get("/index/getcarlist", 
             { company: company, category: category, subclass: subclass, chartType: chartType, x_value: x_value, y_value: y_value, rangeslider_value: rangeslider_value, calender_start: calender_start, calender_end: calender_end, car_ID: car_ID}, 
             // 서버가 필요한 정보를 같이 보냄. 
                 function(data, status) {
@@ -246,12 +263,14 @@ function firstdraw(){
                         }                    
                     }
                 } 
-        ); 
+        ).fail(function(error){
+            auth(error.status);
+        }); 
         }
 
 //홍익대 카 리스트 불러오기
 function hongikgetcar(val){
-    $.get("/hongikgetcar",
+    $.get("/index/hongikgetcar",
     { phonenum: val }, 
     // 서버가 필요한 정보를 같이 보냄. 
         function(data, status) {
@@ -262,7 +281,9 @@ function hongikgetcar(val){
             hongiklinechart(data[3],4);
 
         } 
-); 
+).fail(function(error){
+    auth(error.status);
+}); 
 }
 
 //서브클래스 한글화
@@ -366,7 +387,7 @@ $(document).ready(function() {
                         <a class="mobile-menu" id="mobile-collapse" href="#!">
                             <i class="feather icon-menu"></i>
                         </a>
-                        <a href="/">
+                        <a href="/index">
                             <img class="img-fluid" src="..\files\assets\images\logo2.png" alt="Theme-Logo">
                         </a>
                         <a class="mobile-options">
@@ -421,7 +442,7 @@ $(document).ready(function() {
 
                                     <div class="pcoded-navigatio-lavel">Monitoring</div>
                                 <li class="pcoded-hasmenu">
-                                        <a href="./main.html">
+                                        <a href="/index/main.html">
                                             <span class="pcoded-micon span_img"><img src="Product.png"></span>
                                             <span class="pcoded-mtext"><b>차량 출 도착 서비스</b></span>
                                         </a>

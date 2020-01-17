@@ -15,11 +15,11 @@ var calAry = new Array();
 var sumAry = new Array();
 var scname;
 
-/* GET home page. */
+/* GET home page.
 router.get('/', function(req, res, next) {
   res.render('index');
 });
-
+ */
 router.get('/index', function(req, res, next) {
     res.render('index');
 });
