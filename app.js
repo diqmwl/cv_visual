@@ -99,6 +99,13 @@ app.get('/', function(req, res, next) {
     res.render('login.html');
 });
 
+app.get('/logout', function(req, res, next) {
+    req.logout();
+    req.session.save(function(){
+        res.redirect('/');
+    })
+});
+
 
 app.use(logger('dev'));
 app.use(express.json());

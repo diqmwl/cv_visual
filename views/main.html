@@ -24,7 +24,7 @@
   })
 
 function monitor(num){
-    $.get("/monitor", 
+    $.get("/index/monitor", 
     { mapnumber: mapnumber}, 
     // 서버가 필요한 정보를 같이 보냄. 
         function(data, status) {
@@ -50,9 +50,8 @@ function tabledraw(temp){
     
     var namestr; 
     namestr = '<thead class="thead-light"><tr><th class="tg-nrix" colspan="5">외부 차량</th></tr></thead><tr>';
-    for(var i = data_columns.length-1; i >= 3; i--){
-        namestr += '<th>'+ data_columns[i] +'</th>'
-    }
+        namestr += '<th>차량 번호</th>' 
+        namestr += '<th>시간(분)</th>'
     namestr += '</tr>';
     $('.tg').append(namestr)
     
@@ -77,10 +76,8 @@ function tabledraw(temp){
     });    
     var namestr;
     namestr = '<thead class="thead-light"><tr><th class="tg-nrix" colspan="5">내부 차량</th></tr></thead><tr>';
-
-    for(var i = data_columns.length-1; i >= 3; i--){
-        namestr += '<th>'+ data_columns[i] +'</th>'
-    }
+        namestr += '<th>차량 번호</th>' 
+        namestr += '<th>시간(분)</th>'
     namestr += '</tr>';
     $('.tg2').append(namestr)
 

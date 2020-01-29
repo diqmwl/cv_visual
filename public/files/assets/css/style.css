@@ -25717,4 +25717,9 @@ polyline{
 .gridcontainer{
     height: 700px;
 }
+
+.logout{
+    border: 1px solid #B1B5AF;
+    padding: 5px !important;
+}
 /*# sourceMappingURL=style.css.map */
