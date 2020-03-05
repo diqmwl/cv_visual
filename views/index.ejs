@@ -3,12 +3,7 @@
 
 <head>
     <title>Adminty - Premium Admin Template by Colorlib </title>
-    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 10]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
+
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -135,9 +130,7 @@ function hongikgetlist(){
                 $("#car_select").append("<option value='"+data[i]+"'>"+data[i]+"</option>")
             }
         } 
-).fail(function(error){
-    auth(error.status);
-});
+)
 }
 
 //최초 총데이터 차트 그리기
@@ -148,9 +141,7 @@ function firstdraw(){
         function(data, status) {
             donutbar(data);
         } 
-).fail(function(error){
-    auth(error.status);
-}); 
+) 
 }
 
 
@@ -173,9 +164,7 @@ function firstdraw(){
                                 calgroupbar(data, chartchoice);
                         }
                     } 
-                ).fail(function(error){
-                    auth(error.status);
-                }); 
+                ) 
             } else if(chartType == 'donut'){
                 if(subclass != "total_data"){
                     alert("도넛차트는 총 데이터에만 이용할 수 있습니다.")
@@ -191,9 +180,7 @@ function firstdraw(){
                                 donutbar(data, chartchoice);
                         }
                     } 
-                    ).fail(function(error){
-                        auth(error.status);
-                    }); 
+                    )
                 }
             } else{
                 $.get("/index/chartdraw", 
@@ -224,9 +211,7 @@ function firstdraw(){
                             } 
                         }
                     } 
-                ).fail(function(error){
-                    auth(error.status);
-                }); 
+                ) 
             }
         }
 //차트에 필요한 카 입력
@@ -263,9 +248,7 @@ function firstdraw(){
                         }                    
                     }
                 } 
-        ).fail(function(error){
-            auth(error.status);
-        }); 
+        ) 
         }
 
 //홍익대 카 리스트 불러오기
@@ -281,9 +264,7 @@ function hongikgetcar(val){
             hongiklinechart(data[3],4);
 
         } 
-).fail(function(error){
-    auth(error.status);
-}); 
+)
 }
 
 //서브클래스 한글화
@@ -424,19 +405,19 @@ $(document).ready(function() {
                                     <div class="pcoded-navigatio-lavel">Company</div>
                                     <li class="pcoded-hasmenu  pcoded-trigger">
                                         <a href="javascript:void(0)" onclick="selectcompany('B2B_1')">
-                                            <span class="pcoded-micon span_img"><img src="Product.png"></span>
+                                            <span class="pcoded-micon span_img"><img src="..\Product.png"></span>
                                             <span class="pcoded-mtext"><b>B2B(물산)</b></span>
                                         </a>
                                     </li>
                                     <li class="pcoded-hasmenu">
                                         <a href="javascript:void(0)" onclick="selectcompany('B2B_2')">
-                                            <span class="pcoded-micon span_img"><img src="Machine.png"></span>
+                                            <span class="pcoded-micon span_img"><img src="..\Machine.png"></span>
                                             <span class="pcoded-mtext"><b>B2B(기계, 건설)</b></span>
                                         </a>
                                     </li>
                                     <li class="pcoded-hasmenu" onclick="selectcompany('CarSharring')">
                                         <a href="javascript:void(0)">
-                                            <span class="pcoded-micon span_img"><img src="Sharing.png"></span>
+                                            <span class="pcoded-micon span_img"><img src="..\Sharing.png"></span>
                                             <span class="pcoded-mtext"><b>CarSharring</b></span>
                                         </a>
                                     </li>
@@ -444,16 +425,8 @@ $(document).ready(function() {
                                 <div class="pcoded-navigatio-lavel">Predictive Vehicle</div>
                                 <li class="pcoded-hasmenu">
                                         <a href="javascript:void(0)" onclick="selectcompany('Predictive')">
-                                            <span class="pcoded-micon span_img"><img src="Product.png"></span>
+                                            <span class="pcoded-micon span_img"><img src="..\Product.png"></span>
                                             <span class="pcoded-mtext"><b>차량예지보전</b></span>
-                                        </a>
-                                    </li>
-
-                                    <div class="pcoded-navigatio-lavel">Monitoring</div>
-                                <li class="pcoded-hasmenu">
-                                        <a href="/index/main.html">
-                                            <span class="pcoded-micon span_img"><img src="Product.png"></span>
-                                            <span class="pcoded-mtext"><b>차량 출 도착 서비스</b></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -464,19 +437,19 @@ $(document).ready(function() {
                                     <ul class="pcoded-item pcoded-left-item">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
                                                 <a href="javascript:void(0)" onclick="selectcategory('driving_type')">
-                                                    <span class="pcoded-micon span_img"><img src="Driving.png"></span>
+                                                    <span class="pcoded-micon span_img"><img src="..\Driving.png"></span>
                                                     <span class="pcoded-mtext">주행형태</span>
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
                                                 <a href="javascript:void(0)" onclick="selectcategory('car_manage')">
-                                                    <span class="pcoded-micon span_img"><img src="Manage.png"></span>
+                                                    <span class="pcoded-micon span_img"><img src="..\Manage.png"></span>
                                                     <span class="pcoded-mtext">차량관리</span>
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu" onclick="selectcategory('etc')">
                                                 <a href="javascript:void(0)">
-                                                    <span class="pcoded-micon span_img"><img src="Etc.png"></span>
+                                                    <span class="pcoded-micon span_img"><img src="..\Etc.png"></span>
                                                     <span class="pcoded-mtext">기타</span>
                                                 </a>
                                             </li>
@@ -487,37 +460,37 @@ $(document).ready(function() {
                                     <ul class="pcoded-item pcoded-left-item" id="driving_type">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
                                                 <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Accel')">
-                                                    <span class="pcoded-micon span_img"><img src="Accel.png"></span>
+                                                    <span class="pcoded-micon span_img"><img src="..\Accel.png"></span>
                                                     <span class="pcoded-mtext">급 가속</span>
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
                                                 <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Decel')">
-                                                    <span class="pcoded-micon span_img"><img src="Decel.png"></span>
+                                                    <span class="pcoded-micon span_img"><img src="..\Decel.png"></span>
                                                     <span class="pcoded-mtext">급 감속</span>
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu" >
                                                 <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('QuickStart')">
-                                                    <span class="pcoded-micon span_img"><img src="Start.png"></span>
+                                                    <span class="pcoded-micon span_img"><img src="..\Start.png"></span>
                                                     <span class="pcoded-mtext">급 출발</span>
                                                 </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
                                                     <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('SuddenStop')">
-                                                        <span class="pcoded-micon span_img"><img src="stop.png"></span>
+                                                        <span class="pcoded-micon span_img"><img src="..\stop.png"></span>
                                                         <span class="pcoded-mtext">급 정지</span>
                                                     </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
                                                     <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('LeftAndRight')">
-                                                        <span class="pcoded-micon span_img"><img src="Leftright.png"></span>
+                                                        <span class="pcoded-micon span_img"><img src="..\Leftright.png"></span>
                                                         <span class="pcoded-mtext">급 좌우회전</span>
                                                     </a>
                                             </li>
                                             <li class="pcoded-hasmenu">
                                                     <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('UTurn')">
-                                                        <span class="pcoded-micon span_img"><img src="Uturn.png"></span>
+                                                        <span class="pcoded-micon span_img"><img src="..\Uturn.png"></span>
                                                         <span class="pcoded-mtext">급 유턴</span>
                                                     </a>
                                             </li>
@@ -525,37 +498,37 @@ $(document).ready(function() {
                                     <ul class="pcoded-item pcoded-left-item" id="car_manage">
                                             <li class="pcoded-hasmenu  pcoded-trigger">
                                                     <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Distance')">
-                                                        <span class="pcoded-micon span_img"><img src="Distance.png"></span>
+                                                        <span class="pcoded-micon span_img"><img src="..\Distance.png"></span>
                                                         <span class="pcoded-mtext">이동거리</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu  pcoded-trigger">
                                                     <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('Fuel')">
-                                                        <span class="pcoded-micon span_img"><img src="Fuel.png"></span>
+                                                        <span class="pcoded-micon span_img"><img src="..\Fuel.png"></span>
                                                         <span class="pcoded-mtext">연료 사용량</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu  pcoded-trigger">
                                                         <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('FuelEfficiency')">
-                                                            <span class="pcoded-micon span_img"><img src="Efficiency.png"></span>
+                                                            <span class="pcoded-micon span_img"><img src="..\Efficiency.png"></span>
                                                             <span class="pcoded-mtext">연비효율</span>
                                                         </a>
                                                     </li>
                                                 <li class="pcoded-hasmenu">
                                                     <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('evg_efficiency')">
-                                                        <span class="pcoded-micon span_img"><img src="Efficiency.png"></span>
+                                                        <span class="pcoded-micon span_img"><img src="..\Efficiency.png"></span>
                                                         <span class="pcoded-mtext">평균연비</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu">
                                                     <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('idling')">
-                                                        <span class="pcoded-micon span_img"><img src="Idling.png"></span>
+                                                        <span class="pcoded-micon span_img"><img src="..\Idling.png"></span>
                                                         <span class="pcoded-mtext">공회전</span>
                                                     </a>
                                                 </li>
                                                 <li class="pcoded-hasmenu">
                                                         <a href="javascript:void(0)" class="add-widget" onclick="selectsubclass('fuel_economy')">
-                                                            <span class="pcoded-micon span_img"><img src="Rank.png"></span>
+                                                            <span class="pcoded-micon span_img"><img src="..\Rank.png"></span>
                                                             <span class="pcoded-mtext">연비 순위</span>
                                                         </a>
                                                 </li>
@@ -763,7 +736,7 @@ $(document).ready(function() {
                                                                         </div>
                                                                         <div class="card-block">
                                                                             <div class="table-responsive svg-container1">
-                                                                                <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="loading.gif" alt="Chrome"></div>
+                                                                                <div class="loading_div" style="display:none"><img style="margin-left: 50%;" src="..\loading.gif" alt="Chrome"></div>
                                                                             </div> 
                                                                         </div>
                                                             </div>
@@ -898,14 +871,13 @@ $(document).ready(function() {
     <script src="..\files\assets\pages\widget\amchart\serial.js"></script>
     <script src="..\files\assets\pages\widget\amchart\light.js"></script>
     <script src="..\files\assets\js\jquery.mCustomScrollbar.concat.min.js"></script>
-    <script type="text/javascript" src="..\files\assets\js\SmoothScroll.js"></script>
+    <!-- <script type="text/javascript" src="..\files\assets\js\SmoothScroll.js"></script> -->
     <script src="..\files\assets\js\pcoded.min.js"></script>
     <!-- custom js -->
     <script src="..\files\assets\js\vartical-layout.min.js"></script>
-    <script type="text/javascript" src="..\files\assets\pages\dashboard\custom-dashboard.js"></script>
+    <!-- <script type="text/javascript" src="..\files\assets\pages\dashboard\custom-dashboard.js"></script> -->
     <script type="text/javascript" src="..\files\assets\js\script.js"></script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+
 <!-- slider -->
 <link rel="stylesheet" type="text/css" href="..\files\assets\css\ion.rangeSlider.css">
 <script src="..\files\assets\js\ion.rangeSlider.js"></script>
@@ -979,7 +951,6 @@ $(document).ready(function() {
                               '</div>'+
                       '</div></div>'), node);
                       $('.company-name'+divnum).text(ksubclass(subclass))
-                      '<option name="chart_choice" value="simplebar">기본</option>' +
                       $('#chart_choice').append('<option name="chart_choice" value="svg-container'+divnum+'">svg-container'+divnum+'</option>');
                       chartchoice = "svg-container"+divnum
                       divnum++;

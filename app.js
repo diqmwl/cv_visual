@@ -10,21 +10,46 @@ var fs = require('fs');
 var bodyParser = require('body-parser')
 var session = require('express-session')
 var FileStore = require('session-file-store')(session)
+var request = require('request');
 
 var auth = function(req, res, next) {
+
+    var cookie = request.cookie("JSESSIONID="+req.cookies.JSESSIONID)
+    var options = {
+        url: 'http://125.140.110.217/security',
+        method: 'GET',
+        headers: {
+            'Cookie': cookie,
+        },
+    };
+
+    request(options, function(error, response, body) {
+        if(body == "ROLE_USER"){
+            console.log("success");
+            return next();
+        }else{
+            console.log("에러에러");
+            res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
+            res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
+            res.redirect("http://125.140.110.217/login")
+        }
+    });
+
+    /*
     console.log("auth"+req.isAuthenticated())
     if(req.isAuthenticated()){
         return next();
     }else{
         console.log('실행')
         res.redirect(401,'/');
-    }
+    }   
+    패스포트 주석
+    */
+
 };
 
-
 var app = express();
-
-
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -36,7 +61,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
 
-
+    /*
 var USER = {
     name: 'keti',
     password: 'keti1234'
@@ -86,6 +111,7 @@ var passport = require('passport')
     }
   ));
 
+  
   app.post('/login_check',
   passport.authenticate('local', {failureRedirect: '/'}),
 
@@ -93,10 +119,12 @@ var passport = require('passport')
       res.render('index');
   }
 );
+패스포트 주석
+*/
 
 app.get('/', function(req, res, next) {
-    console.log("/로옴")
-    res.render('login.html');
+    res.redirect('/index');
+    //res.render('login.html'); 패스포트 주석
 });
 
 app.get('/logout', function(req, res, next) {
@@ -112,6 +140,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/index', express.static(path.join(__dirname, 'public')));
 app.use('/index', express.static(path.join(__dirname, 'views')));
 
 app.use('/index',auth ,indexRouter);
