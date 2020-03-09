@@ -291,6 +291,22 @@ function paging(x){
     }
 }
 
+// 페이지 구분 함수
+$(document).ready(function() {
+    $.urlParam = function(name){
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results==null){
+           return null;
+        }
+        else{
+           return results[1] || 0;
+        }
+    }
+    if($.urlParam('page') != 'null'){
+        $('#Predictive').trigger("click");
+    }
+});
+
 /* --------------------------------------------------------
         Color picker - demo only
         --------------------------------------------------------   */
