@@ -302,7 +302,8 @@ $(document).ready(function() {
            return results[1] || 0;
         }
     }
-    if($.urlParam('page') != 'null'){
+    console.log($.urlParam('page'));
+    if($.urlParam('page') != null){
         $('#Predictive').trigger("click");
     }
 });
