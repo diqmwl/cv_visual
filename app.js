@@ -16,7 +16,7 @@ var auth = function(req, res, next) {
 
     var cookie = request.cookie("JSESSIONID="+req.cookies.JSESSIONID)
     var options = {
-        url: 'http://125.140.110.217/security',
+        url: 'http://125.140.110.217:8891/security',
         method: 'GET',
         headers: {
             'Cookie': cookie,
@@ -32,7 +32,7 @@ var auth = function(req, res, next) {
             res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
             res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
             res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
-            res.redirect("http://125.140.110.217/login")
+            res.redirect("http://125.140.110.217:8891/login")
         }
     });
 
