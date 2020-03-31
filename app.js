@@ -16,7 +16,7 @@ var auth = function(req, res, next) {
 
     var cookie = request.cookie("JSESSIONID="+req.cookies.JSESSIONID)
     var options = {
-        url: 'http://125.140.110.217:8891/security',
+        url: 'https://keti-carbigdata.org:8891/security',
         method: 'GET',
         headers: {
             'Cookie': cookie,
